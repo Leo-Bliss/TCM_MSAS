@@ -377,7 +377,7 @@ class RunDBNPLS:
         self.df = df
         self.all_dict = all_dict
 
-    def init_parameter(self):
+    def initParameter(self):
         var_dict = self.all_dict.get('var_dict')
         parameter_dict = self.all_dict.get('parameter_dict')
         self.independent_var = var_dict.get('independ_var')
@@ -390,7 +390,7 @@ class RunDBNPLS:
 
 
     def run(self):
-        self.init_parameter()
+        self.initParameter()
         x0 = np.mat(self.df[self.independent_var])
         y0 = np.mat(self.df[self.dependent_var])
         dbn_pls_model = DBN_PLS(pretraining_epochs=self.pretraining_epochs, pretrain_lr=self.pretrain_lr, k=self.k,
@@ -402,6 +402,8 @@ class RunDBNPLS:
         print(u"回归系数：")
         print(dbn_pls_model.ch0)
         print(dbn_pls_model._coef)
+    def getRes(self):
+        pass
 
 
 

@@ -74,9 +74,8 @@ class LAPLS:
 
     # 求均值-标准差
     def data_Mean_Std(self, x0, y0):
-        print(type(x0))
-        x0 = np.matrix(x0, dtype=np.float64)
-        y0 = np.matrix(y0, dtype=np.float64)
+        x0 = mat(x0, dtype=np.float64)
+        y0 = mat(y0, dtype=np.float64)
         mean_x = mean(x0, 0)
         mean_y = mean(y0, 0)
         std_x = std(x0, axis=0, ddof=1)
@@ -101,6 +100,7 @@ class LAPLS:
         press = mat(zeros((1, m)))
         Q_h2 = mat(zeros((1, m)))
         beta = mat(zeros((1, m))).T
+        h = 0
         for i in range(1, m + 1):
             # 计算w,w*和t的得分向量
             matrix = e0.T * f0 * (f0.T * e0)
@@ -180,7 +180,7 @@ class LAPLS:
         rss = lambda X, y, w: (y - X * w).T * (y - X * w)
         # 初始化回归系数w.
         m, n = X.shape
-        w = matrix(zeros((n, 1)))
+        w = mat(zeros((n, 1)))
         r = rss(X, y, w)
         # 使用坐标下降法优化回归系数w
         niter = itertools.count(1)
@@ -294,7 +294,7 @@ class RunLAPLS:
         self.df = df
         self.all_dict = all_dict
 
-    def init_parameter(self):
+    def initParameter(self):
         var_dict = self.all_dict.get('var_dict')
         parameter_dict = self.all_dict.get('parameter_dict')
         self.independent_var = var_dict.get('independ_var')
@@ -305,7 +305,7 @@ class RunLAPLS:
         self.lambd_k = parameter_dict.get('lambd_k')
 
     def run(self):
-        self.init_parameter()
+        self.initParameter()
         x0 = np.mat(self.df[self.independent_var])
         y0 = np.mat(self.df[self.dependent_var])
 

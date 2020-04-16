@@ -371,7 +371,7 @@ class RunDSAPLS:
         self.df = df
         self.all_dict = all_dict
 
-    def init_parameter(self):
+    def initParameter(self):
         var_dict = self.all_dict.get('var_dict')
         parameter_dict = self.all_dict.get('parameter_dict')
         self.independent_var = var_dict.get('independ_var')
@@ -385,7 +385,7 @@ class RunDSAPLS:
         self.sp = parameter_dict.get('sp')
 
     def run(self):
-        self.init_parameter()
+        self.initParameter()
         X = self.df[self.independent_var]
         y = self.df[self.dependent_var]
         X = np.mat(X)
