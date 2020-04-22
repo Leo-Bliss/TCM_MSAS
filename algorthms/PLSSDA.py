@@ -91,6 +91,7 @@ class PLS_S_DA:
     def row_col(self, x):
         m, n = np.shape(x)
         return m, n
+
     ##对划分数据进行0均值标准化处理
     ##原数据类型是mat
     def standardDataSetZscoreMat(self, x, y):

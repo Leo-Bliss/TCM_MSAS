@@ -12,30 +12,11 @@
 from numpy import *
 from sklearn import preprocessing
 import pandas as pd
-import random
 import numpy as np
 from sklearn import neural_network
 from sklearn.cross_decomposition import PLSRegression
 
-
-# 数据随机划分
-def splitDataSet(x, y, q=0.7):  # q表示训练集的样本占比, x,y不能是DataFrame类型
-    m = shape(x)[0]
-    train_sum = int(round(m * q))
-    # 利用range()获得样本序列
-    randomData = range(0, m)
-    randomData = list(randomData)
-    # 根据样本序列进行分割- random.sample(A,rep)
-    train_List = random.sample(randomData, train_sum)
-    test_List = list(set(randomData).difference(set(train_List)))
-    # 获取训练集数据-train
-    train_x = x[train_List, :]
-    train_y = y[train_List, :]
-    # 获取测试集数据-test
-    test_x = x[test_List, :]
-    test_y = y[test_List, :]
-    return train_x, train_y, test_x, test_y
-
+from algorthms.SplitDataSet import SplitDataHelper
 
 # 一层波尔茨曼机
 class One_RBM:
@@ -321,7 +302,8 @@ class RunRBMPLS:
         X = np.mat(X)
         y = np.mat(y)
         # 划分训练集测试集
-        train_x, train_y, test_x, test_y = splitDataSet(X, y, q=self.q)
+        split_helper = SplitDataHelper()
+        train_x, train_y, test_x, test_y = split_helper.splitDataSet(X, y, q=self.q)
 
         # 建模
         """

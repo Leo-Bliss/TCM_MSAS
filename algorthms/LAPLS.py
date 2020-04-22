@@ -11,8 +11,9 @@ from numpy import *
 import numpy as np
 from sklearn import preprocessing
 import itertools
-import random
 import pandas as pd
+
+from algorthms.SplitDataSet import SplitDataHelper
 
 
 # import matplotlib.pyplot as plt
@@ -22,39 +23,20 @@ import pandas as pd
 # import pandas as pd
 
 
-# 数据读取-单因变量与多因变量
-def loadDataSet01(filename):
-    fr = open(filename)
-    arrayLines = fr.readlines()
-    row = len(arrayLines)
-    x = mat(zeros((row, 9)))
-    y = mat(zeros((row, 1)))
-    index = 0
-    for line in arrayLines:
-        curLine = line.strip().split('\t')
-        x[index, :] = curLine[0:9]
-        y[index, :] = curLine[-1]
-        index += 1
-    return x, y
-
-
-# 数据随机划分
-def splitDataSet(x, y, q=0.7):  # q表示训练集的样本占比, x,y不能是DataFrame类型
-    m = shape(x)[0]
-    train_sum = int(round(m * q))
-    # 利用range()获得样本序列
-    randomData = range(0, m)
-    randomData = list(randomData)
-    # 根据样本序列进行分割- random.sample(A,rep)
-    train_List = random.sample(randomData, train_sum)
-    test_List = list(set(randomData).difference(set(train_List)))
-    # 获取训练集数据-train
-    train_x = x[train_List, :]
-    train_y = y[train_List, :]
-    # 获取测试集数据-test
-    test_x = x[test_List, :]
-    test_y = y[test_List, :]
-    return train_x, train_y, test_x, test_y
+# # 数据读取-单因变量与多因变量
+# def loadDataSet01(filename):
+#     fr = open(filename)
+#     arrayLines = fr.readlines()
+#     row = len(arrayLines)
+#     x = mat(zeros((row, 9)))
+#     y = mat(zeros((row, 1)))
+#     index = 0
+#     for line in arrayLines:
+#         curLine = line.strip().split('\t')
+#         x[index, :] = curLine[0:9]
+#         y[index, :] = curLine[-1]
+#         index += 1
+#     return x, y
 
 
 class LAPLS:
@@ -309,8 +291,9 @@ class RunLAPLS:
         x0 = np.mat(self.df[self.independent_var])
         y0 = np.mat(self.df[self.dependent_var])
 
-        # 划分训练集测试集
-        train_x, train_y, test_x, test_y = splitDataSet(x0, y0, q=self.q)
+        #
+        split_helper = SplitDataHelper()
+        train_x, train_y, test_x, test_y = split_helper.splitDataSet(x0, y0, q=self.q)
 
         # 建模
         """

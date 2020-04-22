@@ -40,9 +40,8 @@ from numpy import * #尽量避免这样全部导入！
 from sklearn import preprocessing
 import pandas as pd
 import numpy as np
-import random
 from sklearn.cross_decomposition import PLSRegression
-
+from algorthms.SplitDataSet import SplitDataHelper
 random.seed(0)
 
 
@@ -57,25 +56,6 @@ def s(x, deriv=False):
     if (deriv == True):
         return x * (1 - x)
     return 1.0 / (1 + np.exp(-x))
-
-
-# 数据随机划分
-def splitDataSet(x, y, q=0.7):  # q表示训练集的样本占比, x,y不能是DataFrame类型
-    m = shape(x)[0]
-    train_sum = int(round(m * q))
-    # 利用range()获得样本序列
-    randomData = range(0, m)
-    randomData = list(randomData)
-    # 根据样本序列进行分割- random.sample(A,rep)
-    train_List = random.sample(randomData, train_sum)
-    test_List = list(set(randomData).difference(set(train_List)))
-    # 获取训练集数据-train
-    train_x = x[train_List, :]
-    train_y = y[train_List, :]
-    # 获取测试集数据-test
-    test_x = x[test_List, :]
-    test_y = y[test_List, :]
-    return train_x, train_y, test_x, test_y
 
 
 # ---定义一个降噪自编码器
@@ -388,13 +368,14 @@ class RunDSAPLS:
         self.initParameter()
         X = self.df[self.independent_var]
         y = self.df[self.dependent_var]
-        X = np.mat(X)
-        y = np.mat(y)
+        X = np.mat(X,dtype=float)
+        y = np.mat(y,dtype=float)
         # print(X)
         # print(y)
 
         # 划分训练集测试集
-        train_x, train_y, test_x, test_y = splitDataSet(X, y, q=self.q)
+        split_helper = SplitDataHelper()
+        train_x, train_y, test_x, test_y = split_helper.splitDataSet(X, y, q=self.q)
 
         # 建模
         dsa_pls_model = DSA_PLS(self.n_components, ny=self.ny, iterations=self.iterations,

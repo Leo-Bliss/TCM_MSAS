@@ -30,20 +30,20 @@ from theano.tensor.shared_randomstreams import RandomStreams
 # from mlp import HiddenLayer
 # from rbm import RBM
 
-def loadDataSet(filename):
-    fr = open(filename)
-    arrayLines = fr.readlines()
-    del arrayLines[0]  # 删除列标这一行x1 	x2 	x3 	x4 	x5 	x6 	x7 	x8 	x9 	x10 	x11 	x12 	x13 	x14 	x15 	x16 	y1 	y2
-    row = len(arrayLines)
-    x = mat(zeros((row, 16)))
-    y = mat(zeros((row, 2)))
-    index = 0
-    for line in arrayLines:
-        curLine = line.strip().split('\t')
-        x[index, :] = curLine[0:16]
-        y[index, :] = curLine[16:18]
-        index += 1
-    return x, y
+# def loadDataSet(filename):
+#     fr = open(filename)
+#     arrayLines = fr.readlines()
+#     del arrayLines[0]  # 删除列标这一行x1 	x2 	x3 	x4 	x5 	x6 	x7 	x8 	x9 	x10 	x11 	x12 	x13 	x14 	x15 	x16 	y1 	y2
+#     row = len(arrayLines)
+#     x = mat(zeros((row, 16)))
+#     y = mat(zeros((row, 2)))
+#     index = 0
+#     for line in arrayLines:
+#         curLine = line.strip().split('\t')
+#         x[index, :] = curLine[0:16]
+#         y[index, :] = curLine[16:18]
+#         index += 1
+#     return x, y
 
 class HiddenLayer(object):
     def __init__(self, rng, input, n_in, n_out, W=None, b=None,
@@ -293,8 +293,6 @@ class DBN_PLS:
     def data_Mean_Std(self, x0, y0):
         mean_x = mean(x0, 0)
         mean_y = mean(y0, 0)
-        x0 = np.mat(x0, dtype=np.float64)
-        y0 = np.mat(y0, dtype=np.float64)
         std_x = std(x0, axis=0, ddof=1)
         std_y = std(y0, axis=0, ddof=1)
         return mean_x, mean_y, std_x, std_y
@@ -391,8 +389,8 @@ class RunDBNPLS:
 
     def run(self):
         self.initParameter()
-        x0 = np.mat(self.df[self.independent_var])
-        y0 = np.mat(self.df[self.dependent_var])
+        x0 = np.mat(self.df[self.independent_var],dtype=float)
+        y0 = np.mat(self.df[self.dependent_var],dtype=float)
         dbn_pls_model = DBN_PLS(pretraining_epochs=self.pretraining_epochs, pretrain_lr=self.pretrain_lr, k=self.k,
                                 batch_size=self.batch_size)
         y_predict, y_tr_RR, y_tr_RMSE = dbn_pls_model.train(x0, y0)

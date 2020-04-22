@@ -18,24 +18,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn import preprocessing
 from sklearn.metrics import mean_squared_error, r2_score
 
-import random
-#数据随机划分
-def splitDataSet(x, y, q=0.7):  # q表示训练集的样本占比, x,y不能是DataFrame类型
-    m =shape(x)[0]
-    train_sum = int(round(m * q))
-    # 利用range()获得样本序列
-    randomData = range(0, m)
-    randomData = list(randomData)
-    # 根据样本序列进行分割- random.sample(A,rep)
-    train_List = random.sample(randomData, train_sum)
-    test_List = list(set(randomData).difference(set(train_List)))
-    # 获取训练集数据-train
-    train_x = x[train_List, :]
-    train_y = y[train_List, :]
-    # 获取测试集数据-test
-    test_x = x[test_List, :]
-    test_y = y[test_List, :]
-    return train_x, train_y, test_x, test_y
+from algorthms.SplitDataSet import SplitDataHelper
+
 
 class Node:
     """
@@ -523,7 +507,8 @@ class RunMtreePLS:
         self.initParameter()
         X = self.df[self.independent_var]
         y = self.df[self.dependent_var]
-        train_x, train_y, test_x, test_y = splitDataSet(X.values, y.values.reshape(X.shape[0], 1), q=self.q)
+        split_helper = SplitDataHelper()
+        train_x, train_y, test_x, test_y = split_helper.splitDataSet(X.values, y.values.reshape(X.shape[0], 1), q=self.q)
 
         # 步骤:3：建模
         """
