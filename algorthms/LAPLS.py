@@ -7,6 +7,7 @@
 # @Blog    :    https://blog.csdn.net/tb_youth
 
 # coding:utf-8
+
 from numpy import *
 import numpy as np
 from sklearn import preprocessing
@@ -361,10 +362,12 @@ if __name__ == '__main__':
     # selected_x0 = lapls_model.getSelectedX(x0)
     # print(selected_x0)
 
-    df = pd.read_excel("../data/data02.xlsx")
+    #df = pd.read_excel("../data/data02.xlsx")
+    df = pd.read_csv("../data/TCMdata.csv")
+    header = df.columns.values.tolist()
     var_dict = {
-        'independ_var': ['x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8', 'x9'],
-        'depend_var': ['y']
+        'independ_var': header[:-1],
+        'depend_var': [header[-1]]
     }
     parameter_dict = {
         'q': 0.8,
