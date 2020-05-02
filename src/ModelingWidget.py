@@ -20,10 +20,8 @@ from PyQt5.QtGui import QIcon
 from src.PlotDataWidget import PlotDataWidget
 from src.PlotSettingWidget import PlotSettingWidget
 from src.PlotWidget import PlotWidget
-from src.BreifWidget import BreifWidget
-from src.MyThreads import WorkerThread,TimerThread
-
-
+from src.BriefWidget import BriefWidget
+from src.MyThreads import TimerThread,WorkerThread
 
 class ModelingWidget(QWidget):
     def __init__(self,model,all_dict,id):
@@ -43,7 +41,7 @@ class ModelingWidget(QWidget):
         hlayout = QHBoxLayout()
         self.tab_widget = QTabWidget()
 
-        self.brief_widget = BreifWidget()
+        self.brief_widget = BriefWidget()
         self.hideProgressBar()
         self.tab_widget.addTab(self.brief_widget, '摘要')
 
@@ -65,7 +63,10 @@ class ModelingWidget(QWidget):
         hlayout.setStretch(0,3)
         hlayout.setStretch(1,7)
         self.setLayout(hlayout)
-        self.work()
+        try:
+            self.work()
+        except:
+            pass
 
     #运行相应的模型
     def work(self):
@@ -102,7 +103,6 @@ class ModelingWidget(QWidget):
     #重新画图
     def onClickedRDraw(self):
         y_list, x_list = self.plot_data_widget.getData()
-        print(y_list,x_list)
         general_parameters_dict, other_parameters_dict = self.plot_setting_widget.getParameters()
         self.plot_widget.setPlotData(y_list, x_list, general_parameters_dict, other_parameters_dict)
         self.plot_widget.onClickedReDrawButton()

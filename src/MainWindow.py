@@ -23,6 +23,7 @@ from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtGui import QStandardItemModel, QPixmap, QIcon
 from PyQt5.QtGui import QStandardItem, QColor, QCursor, QKeySequence
 from PyQt5.QtCore import Qt, pyqtSignal, QObject
+
 from src import SetVarsParametersWidget
 from src.FindWidget import FindWidget
 from src.MyThreads import ReaderExcelThread, WriteExcelThread, InitVarListThread

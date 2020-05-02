@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 #@Time    :    2020/5/1 0001 12:08
 #@Author  :    tb_youth
-#@FileName:    BreifWidget.py
+#@FileName:    BriefWidget.py
 #@SoftWare:    PyCharm
 #@Blog    :    https://blog.csdn.net/tb_youth
 
@@ -14,9 +14,9 @@
 from PyQt5.QtWidgets import QWidget, QTextEdit, QStatusBar, QVBoxLayout, QHBoxLayout, QLabel
 from src.ProgressBar import CircleProgressBar
 
-class BreifWidget(QWidget):
+class BriefWidget(QWidget):
     def __init__(self):
-        super(BreifWidget,self).__init__()
+        super(BriefWidget,self).__init__()
         self.initUI()
 
     def initUI(self):
@@ -51,8 +51,8 @@ class BreifWidget(QWidget):
 
 if __name__ =='__main__':
     from PyQt5.QtWidgets import QApplication
-    import sys
+    import e
     app = QApplication(sys.argv)
-    w = BreifWidget()
+    w = BrifWidget()
     w.show()
     sys.exit(app.exec_())

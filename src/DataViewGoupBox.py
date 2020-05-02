@@ -5,7 +5,11 @@
 #@FileName:    DataViewGoupBox.py
 #@SoftWare:    PyCharm
 #@Blog    :    https://blog.csdn.net/tb_youth
-from PyQt5.QtCore import Qt
+
+'''
+QTableView + QGoupBox
+'''
+
 from PyQt5.QtWidgets import qApp, QGroupBox, QPushButton, QTableView
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWidgets import QStatusBar
@@ -15,7 +19,7 @@ from PyQt5.QtGui import QStandardItemModel
 from src.MyThreads import ReaderExcelThread,WriteExcelThread
 
 '''
-这里的表格数据不支持自定义的增删改（之前写了，出现bug），
+这里的表格数据不支持自定义的增删改（之前写了，快捷键操作出现bug），
 而且这里支持的话也是没有意义的，
 现在及时醒悟：
 生活已经那么难了，何必为难自己，
@@ -103,6 +107,7 @@ class DataViewGoupBox(QGroupBox):
         except Exception as e:
             print(e)
 
+    #得到表格中相应的数据类型
     def getCell(self,data):
         try:
             float(data)
@@ -120,7 +125,6 @@ class DataViewGoupBox(QGroupBox):
 
 
 if __name__=='__main__':
-    print(111)
     from PyQt5.QtWidgets import QApplication
     import sys
     app = QApplication(sys.argv)

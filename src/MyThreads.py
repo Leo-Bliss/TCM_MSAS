@@ -14,7 +14,7 @@ from openpyxl import workbook
 from src import DataConverter, ExcelHelper
 
 from algorthms import DSAPLS, LAPLS, RBMPLS, SEAPLS, PLSSDA, DBNPLS
-from algorthms import MtreePLS, RFPLS, PLSCF, SBMPLS, GARPLS
+from algorthms import MtreePLS, RFPLS, PLSCF, SBMPLS, GRAPLS
 
 
 class ReaderExcelThread(QThread):
@@ -173,7 +173,7 @@ class WorkerThread(QThread):
             7: RFPLS.RunRFPLS,
             8: PLSCF.RunPLSCF,
             9: SBMPLS.RunSBMPLS,
-            10: GARPLS.RunGRAPLS
+            10: GRAPLS.RunGRAPLS
         }
 
         self.start_signal.emit()
