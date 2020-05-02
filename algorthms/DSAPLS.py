@@ -121,7 +121,7 @@ class DSA:
         inputs = np.array(patterns)
         error = 0.0
         liust = list()
-        plt.figure()
+        # plt.figure()
         for k in range(self.iterations):
             self.forward(inputs, inputs.shape[1], inputs.shape[1])  # 后面两个参数是输入输出神经元的个数，等于inputs的特征个数
             error = self.backward(inputs)
@@ -130,7 +130,7 @@ class DSA:
                 print('-' * 50)
                 print(error)
         xh = range(self.iterations)
-        plt.plot(xh, liust, 'r')
+        # plt.plot(xh, liust, 'r')
 
     # ---取出中间层---
     def tranform(self, iput):

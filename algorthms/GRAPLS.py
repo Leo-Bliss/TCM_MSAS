@@ -5,7 +5,7 @@
 import numpy as np
 import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from sklearn.cross_decomposition import PLSRegression
 from algorthms.SplitDataSet import SplitDataHelper
 
@@ -80,15 +80,17 @@ class GRA(object):
                     maxCol = j
         return maxValue, maxCol
 
+    ## 这里的绘图会影响界面上的绘图！！！！
+
     # 灰色关联结果矩阵可视化
-    def ShowGRAHeatMap(self, graDf):
-        # %matplotlib inline
-        colormap = plt.cm.RdBu
-        plt.figure(figsize=(14, 12))
-        plt.title('Pearson Correlation of Features', y=1.05, size=15)
-        sns.heatmap(graDf.astype(float), linewidths=0.1, vmax=1.0, square=True,
-                    cmap=colormap, linecolor='white', annot=True)
-        plt.show()
+    # def ShowGRAHeatMap(self, graDf):
+    #     # %matplotlib inline
+    #     colormap = plt.cm.RdBu
+    #     plt.figure(figsize=(14, 12))
+    #     plt.title('Pearson Correlation of Features', y=1.05, size=15)
+    #     sns.heatmap(graDf.astype(float), linewidths=0.1, vmax=1.0, square=True,
+    #                 cmap=colormap, linecolor='white', annot=True)
+    #     plt.show()
     ## 保存
     def saveGRA(self, fileName, graDf):
         graDf.to_csv(fileName)
@@ -122,7 +124,7 @@ class GRA_PLS():
         print("GRA系数矩阵：", graDf)
         print("参考数列:{}； 其GRA系数:{}； 剔除列下标Index：{}".format(maxCol, maxColGra, minGraIndex))
         ## 关联系数可视化
-        self.gra_model.ShowGRAHeatMap(graDf=graDf)
+        # self.gra_model.ShowGRAHeatMap(graDf=graDf)
         return maxCol, minGraIndex
 
     def sampleCut(self):
