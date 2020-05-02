@@ -42,7 +42,6 @@ class ModelingWidget(QWidget):
         self.tab_widget = QTabWidget()
 
         self.brief_widget = BriefWidget()
-        self.hideProgressBar()
         self.tab_widget.addTab(self.brief_widget, '摘要')
 
         self.plot_data_widget = PlotDataWidget()
@@ -63,6 +62,7 @@ class ModelingWidget(QWidget):
         hlayout.setStretch(0,3)
         hlayout.setStretch(1,7)
         self.setLayout(hlayout)
+        # 开始运行模型
         try:
             self.work()
         except:
@@ -72,8 +72,8 @@ class ModelingWidget(QWidget):
     def work(self):
         self.worker_thread = WorkerThread(self.model,self.all_dict,self.id)
         self.worker_thread.start_signal.connect(self.showProgressBar)
+        self.worker_thread.res_signal.connect(self.showMainResInfo)
         self.worker_thread.end_signal.connect(self.hideProgressBar)
-        self.worker_thread.end_signal.connect(self.worker_thread.quit)
         self.timer_thread = TimerThread()
         self.timer_thread.start_signal.connect(self.setTimer)
         self.worker_thread.start()
@@ -85,10 +85,60 @@ class ModelingWidget(QWidget):
 
     def showProgressBar(self):
         self.brief_widget.progressbar.show()
+        self.brief_widget.status_bar.show()
+        alg_dict = {
+            0: 'DSA-PLS',
+            1: 'LAPLS',
+            2: 'RBM-PLS',
+            3: 'SEA-PLS',
+            4: 'PLS-S-DA',
+            5: 'DBN-PLS',
+            6: 'Mtree-PLS',
+            7: 'RF-PLS',
+            8: 'PLSCF',
+            9: 'SBMPLS',
+            10: 'GRA-PLS'
+        }
+
+        # 模型
+        self.brief_widget.appendText('模型：{}'.format(alg_dict.get(self.id)))
+        # （部分）变量
         self.brief_widget.setStatus('建模中...')
+
+    def showVarInfo(self):
+        var_dict = self.all_dict.get('var_dict')
+        independ_var_list = var_dict.get('independ_var')
+        depend_var_list = var_dict.get('depend_var')
+        cnt1 = len(independ_var_list)
+        cnt2 = len(depend_var_list)
+        show_independ = independ_var_list if cnt1 <= 10 else independ_var_list[0:10]
+        show_depend = depend_var_list if cnt2 <= 10 else depend_var_list[0:10]
+        tmp_x = str(show_independ)[1:-1]
+        #为了美观，暂时最多显示10个变量
+        if cnt1 > 10:
+            tmp_x += '...'
+        tmp_y = str(show_depend)[1:-1]
+        if cnt2 > 10:
+            tmp_y += '...'
+        var_info = '自变量：{}\n因变量：{}'.format(tmp_x, tmp_y)
+        self.brief_widget.appendText(var_info)
+
+    def showMainResInfo(self,dct):
+        self.brief_widget.appendText('-'*55)
+        for k,v in dct.items():
+            line = '{}：{}'.format(k,v)
+            self.brief_widget.appendText(line)
+        self.brief_widget.appendText('-'*55)
+
+
 
     def hideProgressBar(self):
         self.brief_widget.setStatus('建模已完成...')
+        self.showVarInfo()
+        self.brief_widget.appendText('-'*55)
+        self.brief_widget.appendText('总耗时：{}s\n'.format(self.brief_widget.getRunTime()))
+        if self.worker_thread:
+            self.worker_thread.quit()
         if self.timer_thread:
             self.timer_thread.is_running = False
         self.brief_widget.progressbar.close()

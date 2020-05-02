@@ -95,7 +95,7 @@ class MainWindow(QWidget):
         self.sea_pls_action = self.model_menu.addAction('SEA-PLS')
         self.dbn_pls_action = self.model_menu.addAction('DBN-PLS')
         self.model_menu.addSeparator()
-        self.mtree_pls_action = self.model_menu.addAction('MTree-PLS')
+        self.mtree_pls_action = self.model_menu.addAction('Mtree-PLS')
         self.rf_pls_action = self.model_menu.addAction('RF-PLS')
         self.pls_s_da_action = self.model_menu.addAction('PLS-S-DA')
 

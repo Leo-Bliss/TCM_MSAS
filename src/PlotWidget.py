@@ -32,7 +32,7 @@ class PlotWidget(QWidget):
         self.continue_draw_btn.setToolTip('将在现在图形基础上继续绘制~')
         self.reDraw_btn = QPushButton("重新绘制")
         self.reDraw_btn.setToolTip('将清除原有图形重新绘制~')
-        self.output_btn = QPushButton("导出")
+        self.output_btn = QPushButton("图形导出")
 
         self.wd_plt = wd_plt
         self.y_list, self.x_list = [],[]

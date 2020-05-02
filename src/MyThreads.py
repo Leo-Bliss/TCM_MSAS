@@ -140,7 +140,7 @@ class TimerThread(QThread):
     def run(self):
         # 这里最好不要使用while True,要不然不好终止线程
         while self.is_running:
-            self.start_signal.emit('运行计时：{}秒'.format(self.sec))
+            self.start_signal.emit(str(self.sec))
             self.msleep(1000)
             self.sec += 1
         self.quit()
@@ -152,7 +152,7 @@ class WorkerThread(QThread):
     '''
     start_signal = pyqtSignal()
     end_signal = pyqtSignal()
-    res_signal = pyqtSignal(tuple)
+    res_signal = pyqtSignal(dict)
 
     def __init__(self, model, all_dict, id):
         super(WorkerThread, self).__init__()
@@ -182,6 +182,8 @@ class WorkerThread(QThread):
         self.df = data_converter.list_to_DataFrame(self.data_list)
         alg = alg_dict[self.id](self.df, self.all_dict)
         alg.run()
+        res_dict = alg.getRes()
+        self.res_signal.emit(res_dict)
         self.end_signal.emit()
 
 

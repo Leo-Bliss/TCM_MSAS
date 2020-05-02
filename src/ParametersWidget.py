@@ -27,11 +27,11 @@ class MySignal(QObject):
 
 # 0,'DSA-PLS'
 class Widget0(QWidget):
-    def __init__(self):
+    def __init__(self,cnt=10000):
         super(Widget0,self).__init__()
-        self.initUI()
+        self.initUI(cnt)
 
-    def initUI(self):
+    def initUI(self,cnt):
         self.resize(400, 200)
         self.setWindowTitle('设置参数')
         self.setWindowIcon(QIcon('../images/参数.png'))
@@ -1028,6 +1028,6 @@ class Widget10(QWidget):
 
 if __name__=='__main__':
     app = QApplication(sys.argv)
-    window = Widget7()
+    window = Widget0()
     window.show()
     sys.exit(app.exec_())

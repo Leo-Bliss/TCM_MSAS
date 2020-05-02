@@ -23,6 +23,8 @@ class BriefWidget(QWidget):
         self.resize(800,800)
         self.text_edit = QTextEdit()
         self.status_bar = QStatusBar()
+        self.status_bar.hide()
+        self.timeCnt = 0
         vlayout = QVBoxLayout()
         vlayout.addWidget(self.text_edit)
         hlayout = QHBoxLayout()
@@ -42,17 +44,21 @@ class BriefWidget(QWidget):
         self.text_edit.append(text)
 
     def showTimer(self,msg):
-        self.status_bar.showMessage(msg)
+        self.timeCnt = msg
+        self.status_bar.showMessage('运行计时:{}s'.format(msg))
 
     def setStatus(self,status):
         self.status_label.setText(status)
+
+    def getRunTime(self):
+        return self.timeCnt
 
 
 
 if __name__ =='__main__':
     from PyQt5.QtWidgets import QApplication
-    import e
+    import sys
     app = QApplication(sys.argv)
-    w = BrifWidget()
+    w = BriefWidget()
     w.show()
     sys.exit(app.exec_())
