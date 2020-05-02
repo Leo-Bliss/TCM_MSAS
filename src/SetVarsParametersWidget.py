@@ -49,7 +49,7 @@ class PramaeterTabWidget(QTabWidget):
             10: pt.Widget10
         }
         self.tab1 = VarsWidget.VarTabWidget(var_list)
-        self.tab2 = parameter_widget_dict[id]()
+        self.tab2 = parameter_widget_dict[id](len(var_list)-1)
         self.addTab(self.tab1,'选项卡1')
         self.addTab(self.tab2,'选项卡2')
 

@@ -22,6 +22,7 @@ class BriefWidget(QWidget):
     def initUI(self):
         self.resize(800,800)
         self.text_edit = QTextEdit()
+        self.text_edit.setReadOnly(True)
         self.status_bar = QStatusBar()
         self.status_bar.hide()
         self.timeCnt = 0

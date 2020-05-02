@@ -29,9 +29,10 @@ class MySignal(QObject):
 class Widget0(QWidget):
     def __init__(self,cnt=10000):
         super(Widget0,self).__init__()
-        self.initUI(cnt)
+        self.cnt = cnt
+        self.initUI()
 
-    def initUI(self,cnt):
+    def initUI(self):
         self.resize(400, 200)
         self.setWindowTitle('设置参数')
         self.setWindowIcon(QIcon('../images/参数.png'))
@@ -59,7 +60,8 @@ class Widget0(QWidget):
 
         self.label_2 = QLabel('主成分个数:')
         self.spinbox_2 = QSpinBox()
-        self.spinbox_2.setRange(1, 100)
+        #要求： 小于成分（自变量）数
+        self.spinbox_2.setRange(1, self.cnt)
         self.spinbox_2.setValue(self.defuat_parameter_list[1])
         self.form_layout.addRow(self.label_2, self.spinbox_2)
 
@@ -160,7 +162,7 @@ class Widget0(QWidget):
 
 #1,'LAPLS'
 class Widget1(QWidget):
-    def __init__(self):
+    def __init__(self,*args):
         super(Widget1,self).__init__()
         self.initUI()
 
@@ -169,7 +171,7 @@ class Widget1(QWidget):
         self.setWindowTitle('设置参数')
         self.setWindowIcon(QIcon('../images/参数.png'))
         self.signal = MySignal()
-        self.defuat_parameter_list = [80, 20,0.20,9]
+        self.defuat_parameter_list = [80, 20,0.2000,9]
 
         self.form_layout = QFormLayout()
 
@@ -197,9 +199,11 @@ class Widget1(QWidget):
 
         self.label_3 = QLabel()
         self.label_3.setText('th_k:')
+        # 要求 0.1000  <= th_k <= 1.0000,这里下限设置不了,后期试试正则校验
         self.spinbox_3 = QDoubleSpinBox()
-        self.spinbox_3.setRange(0,1)
-        self.spinbox_3.setSingleStep(0.01)
+        self.spinbox_3.setDecimals(4)
+        self.spinbox_3.setRange(0.1000,1.0000)
+        self.spinbox_3.setSingleStep(0.0001)
         self.spinbox_3.setValue(self.defuat_parameter_list[2])
         self.form_layout.addRow(self.label_3, self.spinbox_3)
 
@@ -251,8 +255,9 @@ class Widget1(QWidget):
 
 # 2, 'RBM-PLS'
 class Widget2(QWidget):
-    def __init__(self):
+    def __init__(self,cnt=10000):
         super(Widget2,self).__init__()
+        self.cnt = cnt
         self.initUI()
 
     def initUI(self):
@@ -282,7 +287,7 @@ class Widget2(QWidget):
 
         self.label_2 = QLabel('主成分个数:')
         self.spinbox_2 = QSpinBox()
-        self.spinbox_2.setRange(1, 100)
+        self.spinbox_2.setRange(1, self.cnt)
         self.spinbox_2.setValue(self.defuat_parameter_list[1])
         self.form_layout.addRow(self.label_2, self.spinbox_2)
 
@@ -373,8 +378,9 @@ class Widget2(QWidget):
 
 # 3, 'SEA-PLS'
 class Widget3(QWidget):
-    def __init__(self):
+    def __init__(self,cnt=10000):
         super(Widget3,self).__init__()
+        self.cnt = cnt
         self.initUI()
 
     def initUI(self):
@@ -405,7 +411,7 @@ class Widget3(QWidget):
 
         self.label_2 = QLabel('主成分个数:')
         self.spinbox_2 = QSpinBox()
-        self.spinbox_2.setRange(1, 100)
+        self.spinbox_2.setRange(1, self.cnt)
         self.spinbox_2.setValue(self.defuat_parameter_list[1])
         self.form_layout.addRow(self.label_2, self.spinbox_2)
 
@@ -498,8 +504,9 @@ class Widget3(QWidget):
 
 #4,'PLS-S-DA'
 class Widget4(QWidget):
-    def __init__(self):
+    def __init__(self,cnt=10000):
         super(Widget4,self).__init__()
+        self.cnt = cnt
         self.initUI()
 
     def initUI(self):
@@ -517,7 +524,7 @@ class Widget4(QWidget):
 
         self.label_1 = QLabel('成分个数:')
         self.spinbox_1 = QSpinBox()
-        self.spinbox_1.setRange(1, 100)
+        self.spinbox_1.setRange(1, self.cnt)
         self.spinbox_1.setValue(self.defuat_parameter_list[0])
         self.form_layout.addRow(self.label_1, self.spinbox_1)
 
@@ -584,7 +591,7 @@ class Widget4(QWidget):
 
 # 5, 'DBN-PLS'
 class Widget5(QWidget):
-    def __init__(self):
+    def __init__(self,*args):
         super(Widget5,self).__init__()
         self.initUI()
 
@@ -673,8 +680,9 @@ class Widget5(QWidget):
 
 # 6, 'Mtree-PLS'
 class Widget6(QWidget):
-    def __init__(self):
+    def __init__(self,cnt=10000):
         super(Widget6, self).__init__()
+        self.cnt = cnt
         self.initUI()
 
     def initUI(self):
@@ -682,7 +690,7 @@ class Widget6(QWidget):
         self.setWindowTitle('设置参数')
         self.setWindowIcon(QIcon('../images/参数.png'))
         self.signal = MySignal()
-        self.defuat_parameter_list = [80, 10, 5, 2]
+        self.defuat_parameter_list = [80, 2, 5, 2]
 
         self.form_layout = QFormLayout()
 
@@ -704,7 +712,7 @@ class Widget6(QWidget):
 
         self.label_2 = QLabel('成分个数:')
         self.spinbox_2 = QSpinBox()
-        self.spinbox_2.setRange(1, 10000)
+        self.spinbox_2.setRange(1, self.cnt)
         self.spinbox_2.setValue(self.defuat_parameter_list[1])
         self.form_layout.addRow(self.label_2, self.spinbox_2)
 
@@ -720,7 +728,8 @@ class Widget6(QWidget):
         self.label_4.setText('min_samples_split:')
         self.label_4.setToolTip('最小分割样本数')
         self.spinbox_4 = QSpinBox()
-        self.spinbox_4.setRange(1, 100000)
+        #要求大于等于2，这样才会被分割
+        self.spinbox_4.setRange(2, 100000)
         self.spinbox_4.setValue(self.defuat_parameter_list[3])
         self.form_layout.addRow(self.label_4, self.spinbox_4)
         self.initLineEdit(True)
@@ -761,8 +770,9 @@ class Widget6(QWidget):
 
 # 7, 'RFPLS'
 class Widget7(QWidget):
-    def __init__(self):
+    def __init__(self,cnt=10000):
         super(Widget7, self).__init__()
+        self.cnt = cnt
         self.initUI()
 
     def initUI(self):
@@ -770,7 +780,7 @@ class Widget7(QWidget):
         self.setWindowTitle('设置参数')
         self.setWindowIcon(QIcon('../images/参数.png'))
         self.signal = MySignal()
-        self.defuat_parameter_list = [80, 10, 2, 0]
+        self.defuat_parameter_list = [80, 2, 2, 0]
 
         self.form_layout = QFormLayout()
 
@@ -793,7 +803,7 @@ class Widget7(QWidget):
 
         self.label_2 = QLabel('成分个数:')
         self.spinbox_2 = QSpinBox()
-        self.spinbox_2.setRange(1, 10000)
+        self.spinbox_2.setRange(1, self.cnt)
         self.spinbox_2.setValue(self.defuat_parameter_list[1])
         self.form_layout.addRow(self.label_2, self.spinbox_2)
 
@@ -855,12 +865,16 @@ class Widget7(QWidget):
 
 # 8, 'PLSCF'
 class Widget8(QWidget):
-    def __init__(self):
+    def __init__(self,cnt=10000):
         super(Widget8, self).__init__()
+        self.cnt = cnt
         self.initUI()
 
     def initUI(self):
         self.resize(400, 200)
+        layout = QFormLayout()
+        layout.addWidget(QLabel('Tip: 此算法不需要设置参数...'))
+        self.setLayout(layout)
     # 参数设置完成，发送信号并关闭设置参数对话框
     def getParameterDict(self):
         parameter_dict = {
@@ -870,8 +884,9 @@ class Widget8(QWidget):
 
 # 9, 'SBM-PLS'
 class Widget9(QWidget):
-    def __init__(self):
+    def __init__(self,cnt=10000):
         super(Widget9,self).__init__()
+        self.cnt = cnt
         self.initUI()
 
     def initUI(self):
@@ -899,7 +914,7 @@ class Widget9(QWidget):
 
         self.label_2 = QLabel('主成分个数:')
         self.spinbox_2 = QSpinBox()
-        self.spinbox_2.setRange(1, 100)
+        self.spinbox_2.setRange(1, self.cnt)
         self.spinbox_2.setValue(self.defuat_parameter_list[1])
         self.form_layout.addRow(self.label_2, self.spinbox_2)
 
@@ -937,8 +952,9 @@ class Widget9(QWidget):
 
 # 10, 'GRA-PLS'
 class Widget10(QWidget):
-    def __init__(self):
+    def __init__(self,cnt=10000):
         super(Widget10,self).__init__()
+        self.cnt = cnt
         self.initUI()
 
     def initUI(self):
@@ -966,7 +982,7 @@ class Widget10(QWidget):
 
         self.label_2 = QLabel('主成分个数:')
         self.spinbox_2 = QSpinBox()
-        self.spinbox_2.setRange(1, 100)
+        self.spinbox_2.setRange(1, self.cnt)
         self.spinbox_2.setValue(self.defuat_parameter_list[1])
         self.form_layout.addRow(self.label_2, self.spinbox_2)
 
@@ -1028,6 +1044,6 @@ class Widget10(QWidget):
 
 if __name__=='__main__':
     app = QApplication(sys.argv)
-    window = Widget0()
+    window = Widget1()
     window.show()
     sys.exit(app.exec_())

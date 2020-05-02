@@ -214,7 +214,7 @@ class MainWindow(QWidget):
         #一次行列删除暂时只支持删除一行或一列
         self.delRow_action.triggered.connect(lambda: self.model.removeRow(self.table_view.currentIndex().row()))
         self.delColumn_action.triggered.connect(
-            lambda: self.model.removeColumns(self.table_view.currentIndex().column()))
+            lambda: self.model.removeColumn(self.table_view.currentIndex().column()))
         self.customContextMenuRequested.connect(self.rightMenuShow)
         # 算法模型
         self.dsa_pls_action.triggered.connect(lambda: self.commonTriggered(0, 'DSA-PLS'))
@@ -243,7 +243,8 @@ class MainWindow(QWidget):
         self.all_dict = dic
         print(self.all_dict)
         self.modeling_widget = ModelingWidget(self.model, self.all_dict, id)
-        self.modeling_widget.setWindowModality(Qt.ApplicationModal)
+        # 设置模态的话，主界面全屏的会出现无法回到桌面的bug
+        #self.modeling_widget.setWindowModality(Qt.ApplicationModal)
         self.modeling_widget.show()
 
     # 设置算法的参数
