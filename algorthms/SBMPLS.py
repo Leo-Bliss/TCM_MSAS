@@ -180,6 +180,7 @@ class RunSBMPLS:
         ## dataFrame样本数据集， 相关参数字典
         self.df = df
         self.all_dict = all_dict
+        self.res_dict = {}
 
     def initParameter(self):
         var_dict = self.all_dict.get('var_dict')
@@ -220,9 +221,15 @@ class RunSBMPLS:
         print("测试集", y0_te_RMSE)
         print(sbm_pls_model.X_te_tranformed.shape)
 
+        self.res_dict = {
+            '训练集RMSE': y0_tr_RMSE,
+            '测试集RMSE': y0_te_RMSE
+        }
+
+
     # 获取结果中需要用到的数据（展示或画图所用数据）接口
     def getRes(self):
-        pass
+        return self.res_dict
 
 if __name__ == '__main__':
     # 读取数据

@@ -374,6 +374,7 @@ class RunDBNPLS:
     def __init__(self, df, all_dict):
         self.df = df
         self.all_dict = all_dict
+        self.res_dict = {}
 
     def initParameter(self):
         var_dict = self.all_dict.get('var_dict')
@@ -394,14 +395,20 @@ class RunDBNPLS:
         dbn_pls_model = DBN_PLS(pretraining_epochs=self.pretraining_epochs, pretrain_lr=self.pretrain_lr, k=self.k,
                                 batch_size=self.batch_size)
         y_predict, y_tr_RR, y_tr_RMSE = dbn_pls_model.train(x0, y0)
-
+        # 不太确点，待修正
+        self.res_dict = {
+            '可决系数':y_tr_RR,
+            '均方根误差':y_tr_RMSE,
+            '回归系数':dbn_pls_model.ch0
+        }
         print(u"可决系数:", y_tr_RR)
         print(u"均方根误差:", y_tr_RMSE)
         print(u"回归系数：")
         print(dbn_pls_model.ch0)
         print(dbn_pls_model._coef)
+
     def getRes(self):
-        pass
+        return self.res_dict
 
 
 

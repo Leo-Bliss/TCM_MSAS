@@ -276,6 +276,7 @@ class RunLAPLS:
     def __init__(self, df, all_dict):
         self.df = df
         self.all_dict = all_dict
+        self.res_dict = {}
 
     def initParameter(self):
         var_dict = self.all_dict.get('var_dict')
@@ -317,13 +318,16 @@ class RunLAPLS:
         # 预测测试集
         y_te_predict, y_te_RR, y_te_RMSE = lapls_model.predict(test_x, test_y)
         print("测试集", y_te_RMSE)
-
+        self.res_dict = {
+            '训练集RMSE': y_RMSE,
+            '测试集RMSE': y_te_RMSE
+        }
         # 经特征选择后的X
         selected_x0 = lapls_model.getSelectedX(x0)
         print(selected_x0)
 
     def getRes(self):
-        pass
+        return self.res_dict
 
 
 # 主函数

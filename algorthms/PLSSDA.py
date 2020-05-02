@@ -293,6 +293,7 @@ class RunPLSSDA:
     def __init__(self, df, all_dict):
         self.df = df
         self.all_dict = all_dict
+        self.res_dict = {}
 
     def initParameter(self):
         var_dict = self.all_dict.get('var_dict')
@@ -346,11 +347,15 @@ class RunPLSSDA:
 
         print('all_accuracy:', all_accuracy)
         print('mean_allaccuracy:', mean_allaccuracy)
+        self.res_dict = {
+            'all_accuracy':all_accuracy,
+            'mean_allaccuracy':mean_allaccuracy
+        }
 
 
     # 获取结果中需要用到的数据（展示或画图所用数据）接口
     def getRes(self):
-        pass
+        return self.res_dict
 
 
 if __name__ == '__main__':

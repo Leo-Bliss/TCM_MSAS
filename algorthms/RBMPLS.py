@@ -278,6 +278,7 @@ class RunRBMPLS:
     def __init__(self, df, all_dict):
         self.df = df
         self.all_dict = all_dict
+        self.res_dict = {}
 
 
     def initParameter(self):
@@ -325,13 +326,17 @@ class RunRBMPLS:
         # 预测 test_x
         y0_te_predict, y0_te_RMSE = rbm_pls_model.predict()
         print(y0_te_RMSE)
+        self.res_dict = {
+            '训练集RMSE': y0_tr_RMSE,
+            '测试集RMSE': y0_te_RMSE
+        }
 
         print(rbm_pls_model.X_te_tranformed.shape)
 
 
     # 获取结果中需要用到的数据（展示或画图所用数据）接口
     def getRes(self):
-        pass
+        return self.res_dict
 
 
 if __name__ == '__main__':

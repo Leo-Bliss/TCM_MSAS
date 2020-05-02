@@ -175,6 +175,7 @@ class RunPLSCF:
     def __init__(self, df, all_dict):
         self.df = df
         self.all_dict = all_dict
+        self.res_dict = {}
 
     def initParameter(self):
         var_dict = self.all_dict.get('var_dict')
@@ -213,12 +214,16 @@ class RunPLSCF:
         y_te_predict, y_te_RR, y_te_RMSE = plscf_model.predict(test_x, test_y)
         print("测试集", y_te_RMSE)
 
-        # 获取特征子集
+        self.res_dict = {
+            '训练集RMSE': y_RMSE,
+            '测试集RMSE': y_te_RMSE
+        }
 
+        # 获取特征子集
         sub_X = plscf_model.getSubX(X)
 
     def getRes(self):
-        pass
+        return self.res_dict
 
 
 if __name__ == '__main__':
