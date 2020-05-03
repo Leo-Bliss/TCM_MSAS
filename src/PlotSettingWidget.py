@@ -66,7 +66,7 @@ class PlotSettingWidget(QWidget):
         plot_type_list = ['折线图', '散点图', '箱线图', '柱状图']
         color_list = ['r', 'g', 'b', 'y', 'k', 'w']
         line_type_list = ['--', '-', '-.', ':']
-        mark_type_list = ['o', '.', '+','*', 'x', '^', 'v', '<', '>']
+        mark_type_list = ['*', '.', '+','o', 'x', '^', 'v', '<', '>']
 
         # type
         self.plot_type_label = QLabel('类型选择')
@@ -264,7 +264,7 @@ class PlotSettingWidget(QWidget):
     def getGeneralParameters(self):
         ##折线图,散点图(只用后四个参数)
         general_parameters_dict = {
-            'plot_type': self.plot_type_combox.currentText(),
+            'plot_type': self.plot_type_combox.currentIndex(),
             'plot_line_style': self.line_type_combox.currentText(),
             'plot_line_color': self.line_color_combox.currentText(),
             'plot_line_width': self.line_width_spinbox.value(),
