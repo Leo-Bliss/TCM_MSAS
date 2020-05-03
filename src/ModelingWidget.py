@@ -78,6 +78,7 @@ class ModelingWidget(QWidget):
         self.timer_thread.start_signal.connect(self.setTimer)
         self.worker_thread.start()
         self.timer_thread.start()
+        self.brief_widget.termination_btn.clicked.connect(self.endRun)
 
     #显示计时器
     def setTimer(self,mgs):
@@ -131,6 +132,15 @@ class ModelingWidget(QWidget):
         self.brief_widget.appendText('-'*55)
 
 
+    def endRun(self):
+        # 不会更好的终止方案。。。
+        if self.worker_thread:
+            self.worker_thread.terminate()
+        if self.timer_thread:
+            self.timer_thread.is_running = False
+        self.brief_widget.setStatus('已经终止建模...')
+        self.brief_widget.progressbar.close()
+        self.brief_widget.termination_btn.setEnabled(False)
 
     def hideProgressBar(self):
         self.brief_widget.setStatus('建模已完成...')
@@ -147,14 +157,16 @@ class ModelingWidget(QWidget):
     def onClickedCDraw(self):
         y_list, x_list = self.plot_data_widget.getData()
         general_parameters_dict, other_parameters_dict = self.plot_setting_widget.getParameters()
-        self.plot_widget.setPlotData(y_list,x_list,general_parameters_dict,other_parameters_dict)
+        plot_type = self.plot_setting_widget.plot_type_combox.currentIndex()
+        self.plot_widget.setPlotData(plot_type,y_list,x_list,general_parameters_dict,other_parameters_dict)
         self.plot_widget.onClickedContinueDrawButton()
 
     #重新画图
     def onClickedRDraw(self):
         y_list, x_list = self.plot_data_widget.getData()
         general_parameters_dict, other_parameters_dict = self.plot_setting_widget.getParameters()
-        self.plot_widget.setPlotData(y_list, x_list, general_parameters_dict, other_parameters_dict)
+        plot_type = self.plot_setting_widget.plot_type_combox.currentIndex()
+        self.plot_widget.setPlotData(plot_type,y_list, x_list, general_parameters_dict, other_parameters_dict)
         self.plot_widget.onClickedReDrawButton()
 
 
