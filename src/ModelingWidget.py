@@ -158,16 +158,14 @@ class ModelingWidget(QWidget):
     def onClickedCDraw(self):
         y_list, x_list = self.plot_data_widget.getData()
         general_parameters_dict, other_parameters_dict = self.plot_setting_widget.getParameters()
-        plot_type = self.plot_setting_widget.plot_type_combox.currentIndex()
-        self.plot_widget.setPlotData(plot_type,y_list,x_list,general_parameters_dict,other_parameters_dict)
+        self.plot_widget.setPlotData(y_list,x_list,general_parameters_dict,other_parameters_dict)
         self.plot_widget.onClickedContinueDrawButton()
 
     #重新画图
     def onClickedRDraw(self):
         y_list, x_list = self.plot_data_widget.getData()
         general_parameters_dict, other_parameters_dict = self.plot_setting_widget.getParameters()
-        plot_type = self.plot_setting_widget.plot_type_combox.currentIndex()
-        self.plot_widget.setPlotData(plot_type,y_list, x_list, general_parameters_dict, other_parameters_dict)
+        self.plot_widget.setPlotData(y_list, x_list, general_parameters_dict, other_parameters_dict)
         self.plot_widget.onClickedReDrawButton()
 
 
