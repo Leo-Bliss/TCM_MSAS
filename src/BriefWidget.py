@@ -11,7 +11,7 @@
 运行结果摘要
 '''
 
-from PyQt5.QtWidgets import QWidget, QTextEdit, QStatusBar, QVBoxLayout, QHBoxLayout, QLabel
+from PyQt5.QtWidgets import QWidget, QTextEdit, QStatusBar, QVBoxLayout, QHBoxLayout, QLabel, QPushButton
 from src.ProgressBar import CircleProgressBar
 
 class BriefWidget(QWidget):
@@ -34,6 +34,8 @@ class BriefWidget(QWidget):
         self.status_label = QLabel()
         hlayout.addWidget(self.status_label)
         hlayout.addWidget(self.status_bar)
+        self.termination_btn = QPushButton('终止')
+        hlayout.addWidget(self.termination_btn)
         hlayout.setSpacing(10)
 
         vlayout.addItem(hlayout)
