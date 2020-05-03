@@ -258,21 +258,21 @@ class MainWindow(QWidget):
     # 美化，icon
     def prettifyUI(self):
         icon = QIcon()
-        icon.addPixmap(QPixmap('../images/打开.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap('../imgs/打开.png'), QIcon.Normal, QIcon.Off)
         self.open_action.setIcon(icon)
-        icon.addPixmap(QPixmap('../images/保存.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap('../imgs/保存.png'), QIcon.Normal, QIcon.Off)
         self.save_action.setIcon(icon)
-        icon.addPixmap(QPixmap('../images/剪切.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap('../imgs/剪切.png'), QIcon.Normal, QIcon.Off)
         self.cut_action.setIcon(icon)
-        icon.addPixmap(QPixmap('../images/复制.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap('../imgs/复制.png'), QIcon.Normal, QIcon.Off)
         self.copy_action.setIcon(icon)
-        icon.addPixmap(QPixmap('../images/粘贴.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap('../imgs/粘贴.png'), QIcon.Normal, QIcon.Off)
         self.paste_action.setIcon(icon)
-        icon.addPixmap(QPixmap('../images/查找1.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap('../imgs/查找1.png'), QIcon.Normal, QIcon.Off)
         self.find_action.setIcon(icon)
         # 界面风格，logo
         QApplication.setStyle(QStyleFactory.keys()[2])
-        self.setWindowIcon(QIcon('../images/school_logo.png'))
+        self.setWindowIcon(QIcon('../imgs/school_logo.png'))
 
         # style_file = './style.qss'
         # qssStyle = CommonHelper.readQSS(style_file)

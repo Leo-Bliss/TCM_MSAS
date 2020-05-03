@@ -34,7 +34,7 @@ class ModelingWidget(QWidget):
     def initUI(self):
         self.resize(1400,800)
         QApplication.setStyle(QStyleFactory.keys()[2])
-        self.setWindowIcon(QIcon('../images/school_logo.png'))
+        self.setWindowIcon(QIcon('../imgs/school_logo.png'))
         self.setWindowTitle('建模分析')
         self.timer_thread = None
         self.worker_thread = None

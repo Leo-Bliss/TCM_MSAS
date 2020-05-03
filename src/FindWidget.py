@@ -68,13 +68,13 @@ class  FindWidget(QWidget):
 
         self.close_aciton.triggered.connect(self.triggeredClose)
         icon = QIcon()
-        icon.addPixmap(QPixmap('../images/查找.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap('../imgs/查找.png'), QIcon.Normal, QIcon.Off)
         self.search_action.setIcon(icon)
-        icon.addPixmap(QPixmap('../images/向下.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap('../imgs/向下.png'), QIcon.Normal, QIcon.Off)
         self.down_aciton.setIcon(icon)
-        icon.addPixmap(QPixmap('../images/向上.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap('../imgs/向上.png'), QIcon.Normal, QIcon.Off)
         self.up_aciton.setIcon(icon)
-        icon.addPixmap(QPixmap('../images/关闭.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap('../imgs/关闭.png'), QIcon.Normal, QIcon.Off)
         self.close_aciton.setIcon(icon)
 
     def triggeredClose(self):
