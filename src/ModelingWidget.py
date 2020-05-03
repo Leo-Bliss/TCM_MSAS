@@ -144,6 +144,7 @@ class ModelingWidget(QWidget):
 
     def hideProgressBar(self):
         self.brief_widget.setStatus('建模已完成...')
+        self.brief_widget.termination_btn.setEnabled(False)
         self.showVarInfo()
         self.brief_widget.appendText('-'*55)
         self.brief_widget.appendText('总耗时：{}s\n'.format(self.brief_widget.getRunTime()))
