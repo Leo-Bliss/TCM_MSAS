@@ -35,7 +35,6 @@ class Widget0(QWidget):
     def initUI(self):
         self.resize(400, 200)
         self.setWindowTitle('设置参数')
-        self.setWindowIcon(QIcon('../images/参数.png'))
         self.signal = MySignal()
         self.defuat_parameter_list = [70,2,22,1000,0.5,1,0.05]
 
@@ -169,7 +168,6 @@ class Widget1(QWidget):
     def initUI(self):
         self.resize(400, 200)
         self.setWindowTitle('设置参数')
-        self.setWindowIcon(QIcon('../images/参数.png'))
         self.signal = MySignal()
         self.defuat_parameter_list = [80, 20,0.2000,9]
 
@@ -263,7 +261,6 @@ class Widget2(QWidget):
     def initUI(self):
         self.resize(400, 200)
         self.setWindowTitle('设置参数')
-        self.setWindowIcon(QIcon('../images/参数.png'))
         self.signal = MySignal()
         self.defuat_parameter_list = [80,2,8,5,0.05,100,100]
 
@@ -386,7 +383,6 @@ class Widget3(QWidget):
     def initUI(self):
         self.resize(400, 200)
         self.setWindowTitle('设置参数')
-        self.setWindowIcon(QIcon('../images/参数.png'))
         self.signal = MySignal()
         self.defuat_parameter_list = [80,2,22,1000,0.50,1,0.05]
 
@@ -512,7 +508,6 @@ class Widget4(QWidget):
     def initUI(self):
         self.resize(400, 200)
         self.setWindowTitle('设置参数')
-        self.setWindowIcon(QIcon('../images/参数.png'))
         self.signal = MySignal()
         self.defuat_parameter_list = [1,0.001,150,10]
 
@@ -598,7 +593,6 @@ class Widget5(QWidget):
     def initUI(self):
         self.resize(400, 200)
         self.setWindowTitle('设置参数')
-        self.setWindowIcon(QIcon('../images/参数.png'))
         self.signal = MySignal()
         self.defuat_parameter_list = [10,0.1,1,10]
 
@@ -688,7 +682,6 @@ class Widget6(QWidget):
     def initUI(self):
         self.resize(400, 200)
         self.setWindowTitle('设置参数')
-        self.setWindowIcon(QIcon('../images/参数.png'))
         self.signal = MySignal()
         self.defuat_parameter_list = [80, 2, 5, 2]
 
@@ -778,7 +771,6 @@ class Widget7(QWidget):
     def initUI(self):
         self.resize(400, 200)
         self.setWindowTitle('设置参数')
-        self.setWindowIcon(QIcon('../images/参数.png'))
         self.signal = MySignal()
         self.defuat_parameter_list = [80, 2, 2, 0]
 
