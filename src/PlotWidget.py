@@ -8,7 +8,7 @@
 
 
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPushButton, QStatusBar
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPushButton
 import matplotlib.pyplot as wd_plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
