@@ -24,7 +24,7 @@ from PyQt5.QtGui import QStandardItemModel, QPixmap, QIcon
 from PyQt5.QtGui import QStandardItem, QColor, QCursor, QKeySequence
 from PyQt5.QtCore import Qt, pyqtSignal, QObject
 
-from src import SetVarsParametersWidget
+from src.SetVarsParametersWidget import SetParameterDialog
 from src.FindWidget import FindWidget
 from src.MyThreads import ReaderExcelThread, WriteExcelThread, InitVarListThread
 from src.ModelingWidget import ModelingWidget
@@ -242,15 +242,13 @@ class MainWindow(QWidget):
     def setParameter(self, id, dic):
         self.all_dict = dic
         print(self.all_dict)
-        self.modeling_widget = ModelingWidget(self.model, self.all_dict, id)
-        # 设置模态的话，主界面全屏的会出现无法回到桌面的bug
-        #self.modeling_widget.setWindowModality(Qt.ApplicationModal)
+        self.modeling_widget = ModelingWidget(self.model, self.all_dict, id,self)
         self.modeling_widget.show()
 
     # 设置算法的参数
     def initSetParametersUI(self, id, name):
         self.init_var_list_thread.quit()
-        dialog = SetVarsParametersWidget.SetParameterDialog(id, self.var_list)
+        dialog = SetParameterDialog(id, self.var_list,self)
         dialog.setWindowTitle(name)
         dialog.sendSignal.sender.connect(self.setParameter)
         dialog.exec_()

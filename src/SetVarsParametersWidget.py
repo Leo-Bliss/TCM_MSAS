@@ -55,8 +55,8 @@ class PramaeterTabWidget(QTabWidget):
 
 
 class SetParameterDialog(QDialog):
-    def __init__(self,id,var_list):
-        super(SetParameterDialog,self).__init__()
+    def __init__(self,id,var_list,parent=None):
+        super(SetParameterDialog,self).__init__(parent)
         self.initUI(id,var_list)
 
     def initUI(self,id,var_list):

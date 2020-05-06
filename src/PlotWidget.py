@@ -7,12 +7,12 @@
 # @Blog    :    https://blog.csdn.net/tb_youth
 
 
-from PyQt5.QtWidgets import QWidget, QFileDialog
+from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPushButton, QStatusBar
 import matplotlib.pyplot as wd_plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
 
-from src.MyThreads import SaveImgThread
 
 '''
 绘制图形界面
@@ -31,7 +31,6 @@ class PlotWidget(QWidget):
         self.continue_draw_btn.setToolTip('将在现在图形基础上继续绘制~')
         self.reDraw_btn = QPushButton("重新绘制")
         self.reDraw_btn.setToolTip('将清除原有图形重新绘制~')
-        self.output_btn = QPushButton("图形导出")
 
         self.wd_plt = wd_plt
         # 中文乱码处理
@@ -48,20 +47,18 @@ class PlotWidget(QWidget):
 
         # 使用pyplot里面的figure 显示窗口的时候会出现短暂的黑屏，待解决。。（暂时没有找到解决方案）
         self.canvas = FigureCanvas(self.figure)
+        self.toolbar = NavigationToolbar(self.canvas,self)
 
         hlayout = QHBoxLayout()
         hlayout.addWidget(self.continue_draw_btn)
         hlayout.addWidget(self.reDraw_btn)
-        hlayout.addWidget(self.output_btn)
         hlayout.addStretch()
         hlayout.setSpacing(20)
-        self.status_bar = QStatusBar()
-        # self.status_bar.showMessage('状态栏', 5000)
 
         vlayout = QVBoxLayout()
         vlayout.addItem(hlayout)
         vlayout.addWidget(self.canvas)
-        vlayout.addWidget(self.status_bar)
+        vlayout.addWidget(self.toolbar)
         vlayout.setStretch(0, 2)
         vlayout.setStretch(1, 9)
         vlayout.setStretch(2, 1)
@@ -71,7 +68,6 @@ class PlotWidget(QWidget):
         self.showDrawExample()
         self.reDraw_btn.clicked.connect(self.onClickedReDrawButton)
         self.continue_draw_btn.clicked.connect(self.onClickedContinueDrawButton)
-        self.output_btn.clicked.connect(self.onClickedSave)
 
     def showDrawExample(self):
         y_list, x_list = [1.22, 2.43, 5.78, 9.65, 7.24], ['a','b','c','d','e']
@@ -105,24 +101,7 @@ class PlotWidget(QWidget):
         self.canvas.draw()
         self.draw()
 
-    def onClickedSave(self):
-        self.status_bar.showMessage('保存文件', 5000)
-        file_path, _ = QFileDialog.getSaveFileName(self, '保存文件', '../data',
-                                                   'svg(*.svg);;png(*.png)')
-        if file_path == '':
-            return
-        # 文件中写入数据
-        try:
-            self.save_img_thread = SaveImgThread(file_path, self.wd_plt)
-            self.save_img_thread.start_signal.connect(self.showStatus)
-            self.save_img_thread.end_signal.connect(self.save_img_thread.quit)
-            self.save_img_thread.start()
-            self.status_bar.showMessage('保存完毕！')
-        except Exception as e:
-            print(e)
 
-    def showStatus(self, msg):
-        self.status_bar.showMessage(str(msg), 5000)
 
     def judge_num(self, num):
         try:

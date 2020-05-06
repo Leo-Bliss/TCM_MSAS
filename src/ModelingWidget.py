@@ -13,8 +13,8 @@
 '''
 
 import sys
-from PyQt5.QtWidgets import QApplication, QTabWidget, QStyleFactory
-from PyQt5.QtWidgets import QWidget, QHBoxLayout,QMessageBox
+from PyQt5.QtWidgets import QApplication, QTabWidget, QStyleFactory, QDialog
+from PyQt5.QtWidgets import  QHBoxLayout,QMessageBox
 from PyQt5.QtGui import QIcon
 
 from src.PlotDataWidget import PlotDataWidget
@@ -23,9 +23,9 @@ from src.PlotWidget import PlotWidget
 from src.BriefWidget import BriefWidget
 from src.MyThreads import TimerThread,WorkerThread
 
-class ModelingWidget(QWidget):
-    def __init__(self,model,all_dict,id):
-        super(ModelingWidget,self).__init__()
+class ModelingWidget(QDialog):
+    def __init__(self,model,all_dict,id,parent=None):
+        super(ModelingWidget,self).__init__(parent)
         self.model = model
         self.all_dict = all_dict
         self.id = id
