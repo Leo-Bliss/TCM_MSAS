@@ -50,9 +50,9 @@ class MainWindow(QWidget):
         :param
         :return:
         '''
-        self.resize(1400,900)
-        self.setCenter()
-        # self.showMaximized()
+        # self.resize(1400,900)
+        # self.setCenter()
+        self.showMaximized()
         self.setWindowTitle('江中微型统计分析系统')
         self.res_pos = []
         self.focus_pos = None
@@ -244,6 +244,7 @@ class MainWindow(QWidget):
         print(self.all_dict)
         self.modeling_widget = ModelingWidget(self.model, self.all_dict, id,self)
         self.modeling_widget.show()
+
 
     # 设置算法的参数
     def initSetParametersUI(self, id, name):
