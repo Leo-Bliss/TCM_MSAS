@@ -48,10 +48,10 @@ class PramaeterTabWidget(QTabWidget):
             9: pt.Widget9,
             10: pt.Widget10
         }
-        self.tab1 = VarsWidget.VarTabWidget(var_list)
+        self.tab1 = VarsWidget.VarTabWidget(var_list,id)
         self.tab2 = parameter_widget_dict[id](len(var_list)-1)
-        self.addTab(self.tab1,'选项卡1')
-        self.addTab(self.tab2,'选项卡2')
+        self.addTab(self.tab1,'变量设置')
+        self.addTab(self.tab2,'参数设置')
 
 
 class SetParameterDialog(QDialog):
@@ -68,7 +68,7 @@ class SetParameterDialog(QDialog):
         self.ok_button = QPushButton('开始建模')
         self.cancel_button = QPushButton('取消')
         self.tip_label = QLabel()
-        self.tip_label.setText('<font color=blue> 请设置好各选项卡中的相关参数再开始建模哦！</font>')
+        self.tip_label.setText('<font color=blue> 请设置好各选项卡中的相关参数再开始建模！</font>')
         self.tip_label.setAlignment(Qt.AlignRight)
         hlayout = QHBoxLayout()
         hlayout.addStretch(1)
@@ -94,8 +94,8 @@ class SetParameterDialog(QDialog):
         if var_dict == None:
             QMessageBox.critical(self, '错误', '您设置的变量有问题，请返回检查~', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
             return
-        parameter_dict = self.tab_widegt.tab2.getParameterDict()
-        all_dict = {'var_dict':var_dict,'parameter_dict':parameter_dict}
+        parameter_dict,parameter_name_dict = self.tab_widegt.tab2.getParameterDict()
+        all_dict = {'var_dict':var_dict,'parameter_dict':parameter_dict,'parameter_name_dict':parameter_name_dict}
         self.sendSignal.send(self.id,all_dict)
         self.close()
 

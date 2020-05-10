@@ -13,7 +13,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel,QComboBox, QCompleter, QSpinBox,QDoubleSpinBox
 from PyQt5.QtWidgets import QFormLayout,QRadioButton
-from PyQt5.QtGui import QIcon, QRegExpValidator
+from PyQt5.QtGui import  QRegExpValidator
 from PyQt5.QtCore import pyqtSignal, QObject, QRegExp
 
 
@@ -57,7 +57,7 @@ class Widget0(QWidget):
         self.combox_1.setCurrentText(str(self.defuat_parameter_list[0]))
         self.form_layout.addRow(self.label_1, self.combox_1)
 
-        self.label_2 = QLabel('主成分个数:')
+        self.label_2 = QLabel('成分个数:')
         self.spinbox_2 = QSpinBox()
         #要求： 小于成分（自变量）数
         self.spinbox_2.setRange(1, self.cnt)
@@ -157,7 +157,16 @@ class Widget0(QWidget):
             'eta': self.spinbox_6.value(),
             'sp': self.spinbox_7.value()
         }
-        return parameter_dict
+        parameter_name_dict = {
+            'q': self.label_1.text(),
+            'n_components': self.label_2.text(),
+            'ny': self.label_3.text(),
+            'iterations': self.label_4.text(),
+            'beta': self.label_5.text(),
+            'eta': self.label_6.text(),
+            'sp': self.label_7.text()
+        }
+        return parameter_dict,parameter_name_dict
 
 #1,'LAPLS'
 class Widget1(QWidget):
@@ -249,7 +258,13 @@ class Widget1(QWidget):
             'th_k': self.spinbox_3.value(),
             'lambd_k': self.spinbox_4.value()
         }
-        return parameter_dict
+        parameter_name_dict = {
+            'q': self.label_1.text(),
+            'ntest': self.label_2.text(),
+            'th_k': self.label_3.text(),
+            'lambd_k': self.label_4.text(),
+        }
+        return parameter_dict,parameter_name_dict
 
 # 2, 'RBM-PLS'
 class Widget2(QWidget):
@@ -282,7 +297,7 @@ class Widget2(QWidget):
         self.combox_1.setCurrentText(str(self.defuat_parameter_list[0]))
         self.form_layout.addRow(self.label_1, self.combox_1)
 
-        self.label_2 = QLabel('主成分个数:')
+        self.label_2 = QLabel('成分个数:')
         self.spinbox_2 = QSpinBox()
         self.spinbox_2.setRange(1, self.cnt)
         self.spinbox_2.setValue(self.defuat_parameter_list[1])
@@ -371,7 +386,16 @@ class Widget2(QWidget):
             'bs': self.spinbox_6.value(),
             'ite': self.spinbox_7.value()
         }
-        return parameter_dict
+        parameter_name_dict = {
+            'q': self.label_1.text(),
+            'n_components': self.label_2.text(),
+            'n01': self.label_3.text(),
+            'n02': self.label_4.text(),
+            'alpha': self.label_5.text(),
+            'bs': self.label_6.text(),
+            'ite': self.label_7.text()
+        }
+        return parameter_dict,parameter_name_dict
 
 # 3, 'SEA-PLS'
 class Widget3(QWidget):
@@ -405,7 +429,7 @@ class Widget3(QWidget):
         self.combox_1.setCurrentText(str(self.defuat_parameter_list[0]))
         self.form_layout.addRow(self.label_1, self.combox_1)
 
-        self.label_2 = QLabel('主成分个数:')
+        self.label_2 = QLabel('成分个数:')
         self.spinbox_2 = QSpinBox()
         self.spinbox_2.setRange(1, self.cnt)
         self.spinbox_2.setValue(self.defuat_parameter_list[1])
@@ -495,7 +519,16 @@ class Widget3(QWidget):
             'eta': self.spinbox_6.value(),
             'sp': self.spinbox_7.value()
         }
-        return parameter_dict
+        parameter_name_dict = {
+            'q': self.label_1.text(),
+            'n_components': self.label_2.text(),
+            'ny': self.label_3.text(),
+            'iterations': self.label_4.text(),
+            'beta': self.label_5.text(),
+            'eta': self.label_6.text(),
+            'sp': self.label_7.text()
+        }
+        return parameter_dict,parameter_name_dict
 
 
 #4,'PLS-S-DA'
@@ -582,7 +615,13 @@ class Widget4(QWidget):
             'n_splits': self.spinbox_4.value()
 
         }
-        return parameter_dict
+        parameter_name_dict = {
+            'h': self.label_1.text(),
+            'alpha': self.label_2.text(),
+            'maxCycles': self.label_3.text(),
+            'n_splits': self.label_4.text()
+        }
+        return parameter_dict,parameter_name_dict
 
 # 5, 'DBN-PLS'
 class Widget5(QWidget):
@@ -669,7 +708,13 @@ class Widget5(QWidget):
             'batch_size': self.spinbox_4.value()
 
         }
-        return parameter_dict
+        parameter_name_dict = {
+            'pretraining_epochs': self.label_1.text(),
+            'pretrain_lr': self.label_2.text(),
+            'k': self.label_3.text(),
+            'batch_size': self.label_4.text()
+        }
+        return parameter_dict,parameter_name_dict
 
 
 # 6, 'Mtree-PLS'
@@ -757,9 +802,14 @@ class Widget6(QWidget):
             'h': self.spinbox_2.value(),
             'max_depth': self.spinbox_3.value(),
             'min_samples_split': self.spinbox_4.value()
-
         }
-        return parameter_dict
+        parameter_name_dict = {
+            'q': self.label_1.text(),
+            'h': self.label_2.text(),
+            'max_depth': self.label_3.text(),
+            'min_samples_split': self.label_4.text()
+        }
+        return parameter_dict,parameter_name_dict
 
 # 7, 'RFPLS'
 class Widget7(QWidget):
@@ -851,8 +901,14 @@ class Widget7(QWidget):
             'n_estimators': self.spinbox_3.value(),
             'max_depth': self.spinbox_4.value() if  self.spinbox_4.value() else None
         }
-        print(self.spinbox_4.value())
-        return parameter_dict
+        parameter_name_dict = {
+            'q': self.label_1.text(),
+            'h': self.label_2.text(),
+            'n_estimators': self.label_3.text(),
+            'max_depth': self.label_4.text()
+        }
+        #print(self.spinbox_4.value())
+        return parameter_dict,parameter_name_dict
 
 
 # 8, 'PLSCF'
@@ -864,14 +920,53 @@ class Widget8(QWidget):
 
     def initUI(self):
         self.resize(400, 200)
-        layout = QFormLayout()
-        layout.addWidget(QLabel('Tip: 此算法不需要设置参数...'))
-        self.setLayout(layout)
+        self.defuat_parameter_list = [70]
+        self.form_layout = QFormLayout()
+
+        self.defuat_radio_button = QRadioButton('默认参数')
+        self.self_setting_radio_button = QRadioButton('自定义参数')
+        self.form_layout.addRow(self.defuat_radio_button, self.self_setting_radio_button)
+
+        self.label_1 = QLabel('训练集占百分比:')
+        self.combox_1 = QComboBox()
+        self.combox_1.setEditable(True)
+        list_1 = ['80','70','50', '30']
+        self.combox_1.setCompleter(QCompleter(list_1))
+        regx = QRegExp("^[0-9]{2}$")
+        validator = QRegExpValidator(regx, self.combox_1)
+        self.combox_1.setValidator(validator)
+        self.combox_1.addItems(list_1)
+        self.combox_1.setCurrentText(str(self.defuat_parameter_list[0]))
+        self.form_layout.addRow(self.label_1, self.combox_1)
+        self.initLineEdit(True)
+        self.setLayout(self.form_layout)
+
+        self.defuat_radio_button.clicked.connect(self.reSetParameter)
+        self.defuat_radio_button.setChecked(True)
+        self.self_setting_radio_button.clicked.connect(self.selfSettingParameter)
+
+    def initLineEdit(self, state):
+        self.combox_1.setEnabled(not state)
+
+
+        # 重置参数
+
+    def reSetParameter(self):
+        self.combox_1.setCurrentText(str(self.defuat_parameter_list[0]))
+        self.initLineEdit(True)
+
+    def selfSettingParameter(self):
+        self.initLineEdit(False)
+
     # 参数设置完成，发送信号并关闭设置参数对话框
     def getParameterDict(self):
         parameter_dict = {
+            'q':int(self.combox_1.currentText())/100
         }
-        return parameter_dict
+        parameter_name_dict = {
+            'q': self.label_1.text()
+        }
+        return parameter_dict,parameter_name_dict
 
 
 # 9, 'SBM-PLS'
@@ -904,7 +999,7 @@ class Widget9(QWidget):
         self.combox_1.setCurrentText(str(self.defuat_parameter_list[0]))
         self.form_layout.addRow(self.label_1, self.combox_1)
 
-        self.label_2 = QLabel('主成分个数:')
+        self.label_2 = QLabel('成分个数:')
         self.spinbox_2 = QSpinBox()
         self.spinbox_2.setRange(1, self.cnt)
         self.spinbox_2.setValue(self.defuat_parameter_list[1])
@@ -940,7 +1035,11 @@ class Widget9(QWidget):
             'q': int(self.combox_1.currentText()) / 100,
             'n_components': self.spinbox_2.value(),
         }
-        return parameter_dict
+        parameter_name_dict = {
+            'q': self.label_1.text(),
+            'n_components': self.label_2.text()
+        }
+        return parameter_dict,parameter_name_dict
 
 # 10, 'GRA-PLS'
 class Widget10(QWidget):
@@ -972,7 +1071,7 @@ class Widget10(QWidget):
         self.combox_1.setCurrentText(str(self.defuat_parameter_list[0]))
         self.form_layout.addRow(self.label_1, self.combox_1)
 
-        self.label_2 = QLabel('主成分个数:')
+        self.label_2 = QLabel('成分个数:')
         self.spinbox_2 = QSpinBox()
         self.spinbox_2.setRange(1, self.cnt)
         self.spinbox_2.setValue(self.defuat_parameter_list[1])
@@ -1031,7 +1130,13 @@ class Widget10(QWidget):
             'beta': self.spinbox_3.value(),
             'eta': self.spinbox_4.value(),
         }
-        return parameter_dict
+        parameter_name_dict = {
+            'q': self.label_1.text(),
+            'h': self.label_2.text(),
+            'beta': self.label_3.text(),
+            'eta': self.label_4.text()
+        }
+        return parameter_dict,parameter_name_dict
 
 
 if __name__=='__main__':

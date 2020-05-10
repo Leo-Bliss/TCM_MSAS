@@ -11,7 +11,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QAbstractItemView
 from PyQt5.QtWidgets import QListWidget, QLabel, QPushButton,QCheckBox
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout
-from PyQt5.QtGui import QIcon, QPixmap
+# from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import QObject, pyqtSignal
 
 
@@ -25,18 +25,24 @@ class VarTabWidget(QWidget):
     '''
     变量设置界面
     '''
-    def __init__(self, data_list):
+    def __init__(self, data_list,id):
         super(VarTabWidget, self).__init__()
+        self.depend_var_tip = '<font color=blue>此算法可以多因变量建模</font>' if id in [0,2,3,5] \
+            else '<font color=blue>此算法仅适用于单因变量建模</font>'
         self.initUI(data_list)
 
     def initUI(self, data_list):
         self.resize(800, 800)
-        self.setWindowTitle('变量设置')
+        # self.setWindowTitle('变量设置')
         self.signal = MySignal()
         self.label1 = QLabel('变量')
         self.label2 = QLabel('自变量')
         self.label3 = QLabel('因变量')
-
+        '''
+        list_widget1:全部变量列表
+        list_widget2：自变量列表
+        list_widget3：因变量列表
+        '''
         self.list_widget1 = QListWidget()
         self.list_widget2 = QListWidget()
         self.list_widget3 = QListWidget()
@@ -76,6 +82,7 @@ class VarTabWidget(QWidget):
         self.checkBox3 = QCheckBox('全选')
         top_hlayout3.addWidget(self.label3)
         top_hlayout3.addWidget(self.checkBox3)
+        top_hlayout3.addWidget(QLabel(self.depend_var_tip))
         top_hlayout3.addStretch()
         vlayout.addLayout(top_hlayout3)
         vlayout.addWidget(self.list_widget3)
@@ -111,7 +118,7 @@ class VarTabWidget(QWidget):
         self.list_widget1.setObjectName('list_widget1')
         self.list_widget2.setObjectName('list_widget2')
         self.list_widget3.setObjectName('list_widget3')
-        tip = '按住Ctrl键可用鼠标多选哦！'
+        tip = '按住Ctrl键可用鼠标实现多选！'
         self.list_widget1.setToolTip(tip)
         self.list_widget2.setToolTip(tip)
         self.list_widget3.setToolTip(tip)
@@ -212,6 +219,6 @@ class VarTabWidget(QWidget):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     data_list = ['1', '2', '3', '4', '5']
-    window = VarTabWidget(data_list)
+    window = VarTabWidget(data_list,0)
     window.show()
     sys.exit(app.exec_())
