@@ -16,6 +16,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QTabWidget, QStyleFactory, QDialog
 from PyQt5.QtWidgets import  QHBoxLayout,QMessageBox
 from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
 
 from src.PlotDataWidget import PlotDataWidget
 from src.PlotSettingWidget import PlotSettingWidget
@@ -34,6 +35,7 @@ class ModelingWidget(QDialog):
     def initUI(self):
         self.resize(1400,800)
         QApplication.setStyle(QStyleFactory.keys()[2])
+        self.setWindowFlags(Qt.Window|Qt.WindowMinimizeButtonHint|Qt.WindowMaximizeButtonHint|Qt.WindowCloseButtonHint)
         self.setWindowIcon(QIcon('../imgs/school_logo.png'))
         self.setWindowTitle('建模分析')
         self.timer_thread = None
@@ -107,6 +109,7 @@ class ModelingWidget(QDialog):
         self.brief_widget.setStatus('建模中...')
 
     def showVarInfo(self):
+        # 显示设置的变量
         var_dict = self.all_dict.get('var_dict')
         independ_var_list = var_dict.get('independ_var')
         depend_var_list = var_dict.get('depend_var')
@@ -124,6 +127,17 @@ class ModelingWidget(QDialog):
         var_info = '自变量：{}\n因变量：{}'.format(tmp_x, tmp_y)
         self.brief_widget.appendText(var_info)
 
+        self.brief_widget.appendText('-'*55)
+
+        # 显示设置的参数
+        parameter_dict = self.all_dict.get('parameter_dict')
+        parameter_name_dict = self.all_dict.get('parameter_name_dict')
+        if parameter_dict.get('q'):
+            parameter_dict['q'] = parameter_dict.get('q') * 100
+        for name,value in zip(parameter_name_dict.values(),parameter_dict.values()):
+            self.brief_widget.appendText(str(name)+str(value))
+            #print(name,value)
+
     def showMainResInfo(self,dct):
         self.brief_widget.appendText('-'*55)
         for k,v in dct.items():
@@ -134,13 +148,17 @@ class ModelingWidget(QDialog):
 
     def endRun(self):
         # 不会更好的终止方案。。。
-        if self.worker_thread:
-            self.worker_thread.terminate()
-        if self.timer_thread:
-            self.timer_thread.is_running = False
-        self.brief_widget.setStatus('已经终止建模...')
-        self.brief_widget.progressbar.close()
-        self.brief_widget.termination_btn.setEnabled(False)
+        try:
+            if self.worker_thread:
+                self.worker_thread.terminate()
+            if self.timer_thread:
+                self.timer_thread.is_running = False
+            self.brief_widget.setStatus('已经终止建模...')
+            self.brief_widget.progressbar.close()
+            self.brief_widget.termination_btn.setEnabled(False)
+        except Exception as e:
+            print(e)
+
 
     def hideProgressBar(self):
         self.brief_widget.setStatus('建模已完成...')
