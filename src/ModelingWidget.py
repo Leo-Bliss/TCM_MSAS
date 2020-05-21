@@ -20,9 +20,11 @@ from PyQt5.QtCore import Qt
 
 from src.PlotDataWidget import PlotDataWidget
 from src.PlotSettingWidget import PlotSettingWidget
+from src.ModeResWidget import ModeResWidget
 from src.PlotWidget import PlotWidget
 from src.BriefWidget import BriefWidget
 from src.MyThreads import TimerThread,WorkerThread
+from src.DataConverter import DataConverter
 
 class ModelingWidget(QDialog):
     def __init__(self,model,all_dict,id,parent=None):
@@ -33,24 +35,28 @@ class ModelingWidget(QDialog):
         self.initUI()
 
     def initUI(self):
-        self.resize(1400,800)
+        self.resize(1300,800)
         QApplication.setStyle(QStyleFactory.keys()[2])
         self.setWindowFlags(Qt.Window|Qt.WindowMinimizeButtonHint|Qt.WindowMaximizeButtonHint|Qt.WindowCloseButtonHint)
         self.setWindowIcon(QIcon('../imgs/school_logo.png'))
         self.setWindowTitle('建模分析')
         self.timer_thread = None
         self.worker_thread = None
+        self.show_data_dict = None
         hlayout = QHBoxLayout()
         self.tab_widget = QTabWidget()
 
         self.brief_widget = BriefWidget()
-        self.tab_widget.addTab(self.brief_widget, '摘要')
+        self.tab_widget.addTab(self.brief_widget, '模型摘要')
+
+        self.res_widget = ModeResWidget()
+        self.tab_widget.addTab(self.res_widget,'模型结果')
 
         self.plot_data_widget = PlotDataWidget()
-        self.tab_widget.addTab(self.plot_data_widget, '数据')
+        self.tab_widget.addTab(self.plot_data_widget, '绘图数据')
 
         self.plot_setting_widget = PlotSettingWidget()
-        self.tab_widget.addTab(self.plot_setting_widget, '图形')
+        self.tab_widget.addTab(self.plot_setting_widget, '绘图设置')
 
         self.plot_widget = PlotWidget()
         # 重新绑定信号槽
@@ -118,10 +124,12 @@ class ModelingWidget(QDialog):
         show_independ = independ_var_list if cnt1 <= 10 else independ_var_list[0:10]
         show_depend = depend_var_list if cnt2 <= 10 else depend_var_list[0:10]
         tmp_x = str(show_independ)[1:-1]
+        tmp_x = tmp_x.replace("'",'')
         #为了美观，暂时最多显示10个变量
         if cnt1 > 10:
             tmp_x += '...'
         tmp_y = str(show_depend)[1:-1]
+        tmp_y = tmp_y.replace("'",'')
         if cnt2 > 10:
             tmp_y += '...'
         var_info = '自变量：{}\n因变量：{}'.format(tmp_x, tmp_y)
@@ -141,6 +149,9 @@ class ModelingWidget(QDialog):
     def showMainResInfo(self,dct):
         self.brief_widget.appendText('-'*55)
         for k,v in dct.items():
+            if k == 'show_data_dict':
+                self.show_data_dict = v
+                break
             line = '{}：{}'.format(k,v)
             self.brief_widget.appendText(line)
         self.brief_widget.appendText('-'*55)
@@ -156,13 +167,20 @@ class ModelingWidget(QDialog):
             self.brief_widget.setStatus('已经终止建模...')
             self.brief_widget.progressbar.close()
             self.brief_widget.termination_btn.setEnabled(False)
+            #self.res_widget.hideRuningBar()
         except Exception as e:
             print(e)
 
 
     def hideProgressBar(self):
         self.brief_widget.setStatus('建模已完成...')
-        self.brief_widget.termination_btn.setEnabled(False)
+        self.brief_widget.termination_btn.setVisible(False)
+        if self.show_data_dict:
+            data_converter = DataConverter()
+            for key,value in self.show_data_dict.items():
+                data_list = data_converter.DataFrame_to_list2(value)
+                self.res_widget.hideRuningBar()
+                self.res_widget.addTableView(key,data_list)
         self.showVarInfo()
         self.brief_widget.appendText('-'*55)
         self.brief_widget.appendText('总耗时：{}s\n'.format(self.brief_widget.getRunTime()))

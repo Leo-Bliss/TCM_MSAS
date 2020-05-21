@@ -18,7 +18,7 @@ class DataConverter():
     '''
     说明：
     目前list_to_DataFrame仅支持
-    原本list得二维形态就不是DataFrame的样式
+    原本list的二维形态就不是DataFrame的样式
     '''
     def __init__(self):
         pass
@@ -37,6 +37,12 @@ class DataConverter():
         index_list = df.index.values.tolist()
         for i, item in enumerate(df.values.tolist()):
             data_list.append([index_list[i]] + item)
+        return data_list
+
+    def DataFrame_to_list2(self, df):
+        data_list = [df.columns.values.tolist()]
+        for i, item in enumerate(df.values.tolist()):
+            data_list.append(item)
         return data_list
 
     def judege_num(self,num):

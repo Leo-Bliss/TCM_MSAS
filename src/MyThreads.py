@@ -68,8 +68,13 @@ class WriteExcelThread(QThread):
     def run(self):
         self.start_signal.emit('导出准备中...')
         try:
-            data_converter = DataConverter.DataConverter()
-            data_list = data_converter.model_to_list(self.model)
+            if isinstance(self.model,QStandardItemModel):
+                data_converter = DataConverter.DataConverter()
+                data_list = data_converter.model_to_list(self.model)
+            elif isinstance(self.model,list):
+                 data_list = self.model
+            else:
+                return
             wb = workbook.Workbook()
             wb.encoding = 'utf-8'
             wa = wb.active
@@ -107,23 +112,23 @@ class InitVarListThread(QThread):
         self.end_signal.emit()
 
 
-class SaveImgThread(QThread):
-    start_signal = pyqtSignal(str)
-    end_signal = pyqtSignal()
-    def __init__(self, file_path, plt):
-        super(SaveImgThread, self).__init__()
-        self.file_path = file_path
-        self.plt = plt
-
-    def run(self):
-        self.start_signal.emit('正在导出图形...')
-        try:
-            name, type = self.file_path.rsplit('.', maxsplit=1)
-            self.plt.savefig('{}_img.{}'.format(name, type))
-        except:
-            pass
-        self.start_signal.emit('图形导出完成.')
-        self.end_signal.emit()
+# class SaveImgThread(QThread):
+#     start_signal = pyqtSignal(str)
+#     end_signal = pyqtSignal()
+#     def __init__(self, file_path, plt):
+#         super(SaveImgThread, self).__init__()
+#         self.file_path = file_path
+#         self.plt = plt
+#
+#     def run(self):
+#         self.start_signal.emit('正在导出图形...')
+#         try:
+#             name, type = self.file_path.rsplit('.', maxsplit=1)
+#             self.plt.savefig('{}_img.{}'.format(name, type))
+#         except:
+#             pass
+#         self.start_signal.emit('图形导出完成.')
+#         self.end_signal.emit()
 
 
 class TimerThread(QThread):

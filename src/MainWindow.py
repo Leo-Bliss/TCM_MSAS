@@ -63,6 +63,7 @@ class MainWindow(QWidget):
         self.file_menu = self.menu_bar.addMenu('文件')
         self.edit_menu = self.menu_bar.addMenu('编辑')
         self.model_menu = self.menu_bar.addMenu('模型')
+        self.model_menu.setEnabled(False)
         self.view_menu = self.menu_bar.addMenu('视图')
         self.help_menu = self.menu_bar.addMenu('帮助')
 
@@ -287,6 +288,7 @@ class MainWindow(QWidget):
         print('load...')
         self.model = model
         self.table_view.setModel(self.model)
+        self.model_menu.setEnabled(True)
         qApp.processEvents()
 
     def triggeredOpen(self):

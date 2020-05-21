@@ -41,7 +41,7 @@ class DataViewGoupBox(QGroupBox):
 
         # 状态栏
         self.status_bar = QStatusBar()
-        self.status_bar.showMessage('状态栏',5000)
+        # self.status_bar.showMessage('状态栏',5000)
 
         hlayout = QHBoxLayout()
         self.input_btn = QPushButton('导入')
