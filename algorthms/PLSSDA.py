@@ -347,9 +347,23 @@ class RunPLSSDA:
 
         print('all_accuracy:', all_accuracy)
         print('mean_allaccuracy:', mean_allaccuracy)
+
+        print('-' * 100)
+        print(pd.DataFrame(test_y))
+        print('-' * 100)
+        print(pd.DataFrame(pre_test_y))
+        print('-' * 100)
+
+        predict_test = pd.DataFrame()
+        predict_test['预测值'] = pd.DataFrame(pre_test_y)[0]
+        predict_test['真实值'] = pd.DataFrame(test_y)[0]
+        show_data_dict = {
+            '预测值和真实值': predict_test
+        }
         self.res_dict = {
             'all_accuracy':all_accuracy,
-            'mean_allaccuracy':mean_allaccuracy
+            'mean_allaccuracy':mean_allaccuracy,
+            'show_data_dict':show_data_dict
         }
 
 

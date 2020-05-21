@@ -182,6 +182,7 @@ class RunPLSCF:
         parameter_dict = self.all_dict.get('parameter_dict')
         self.independent_var = var_dict.get('independ_var')
         self.dependent_var = var_dict.get('depend_var')
+        self.train_size = parameter_dict.get('q')
 
 
     def run(self):
@@ -192,7 +193,7 @@ class RunPLSCF:
         X = pd.DataFrame(X,dtype=float)
         y = pd.Series(y,dtype=float)
         # 步骤2：划分训练集测试集
-        train_x, test_x, train_y, test_y = train_test_split(X.values, y.values, test_size=0.3, random_state=0)
+        train_x, test_x, train_y, test_y = train_test_split(X.values, y.values, test_size=self.train_size, random_state=0)
 
         # 训练集和测试集必须含有列标，而且列标要是字符串类型； 如果没有列标或者列标是整形，可以调用getXnameList()方法
         # xname_list_demo = getXnameList(X.shape[1])
@@ -214,9 +215,23 @@ class RunPLSCF:
         y_te_predict, y_te_RR, y_te_RMSE = plscf_model.predict(test_x, test_y)
         print("测试集", y_te_RMSE)
 
+        print('-' * 100)
+        print(test_y)
+        print('-' * 100)
+        print(y_te_predict)
+        print('-' * 100)
+        predict_test = pd.DataFrame()
+        predict_test['预测值'] = pd.DataFrame(y_te_predict)[0]
+        predict_test['真实值'] = pd.DataFrame(test_y)[0]
+        print(predict_test)
+
+        show_data_dict = {
+            '预测值和真实值': predict_test
+        }
         self.res_dict = {
             '训练集RMSE': y_RMSE,
-            '测试集RMSE': y_te_RMSE
+            '测试集RMSE': y_te_RMSE,
+            'show_data_dict':show_data_dict
         }
 
         # 获取特征子集

@@ -89,7 +89,7 @@ class RF_PLS:
                 t_ = t[:, 0:i]
             # print("===============================", t_.shape)  # 出现了两次一维(已改)
             self.model.fit(t_, f0)  # 用随机森林计算成分t对y的回归（建模）
-            f0 = f0_original - self.model.predict(t_)  # 求残差（预测）
+            f0 = f0_original - self.model.predict(t_).reshape(t_.shape[0],1)  # 求残差（预测）
             # ss[:, i - 1] = sum(sum(power(cancha, 2), 0), 1)  # 注：对不对？？？
         return w_star, t#, beta
 
@@ -162,9 +162,23 @@ class RunRFPLS:
         y_te_predict, y_te_RR, y_te_RMSE = rfpls_model.predict(test_x, test_y)
         print("测试集", y_te_RMSE)
 
+        print('-' * 100)
+        print(pd.DataFrame(test_y))
+        print('-' * 100)
+        print(pd.DataFrame(y_te_predict))
+        print('-' * 100)
+
+        predict_test = pd.DataFrame()
+        predict_test['预测值'] = y_te_predict
+        predict_test['真实值'] = test_y
+        show_data_dict = {
+            '预测值和真实值':predict_test
+        }
+        print(predict_test)
         self.res_dict = {
             '训练集RMSE': y_RMSE,
-            '测试集RMSE': y_te_RMSE
+            '测试集RMSE': y_te_RMSE,
+            'show_data_dict':show_data_dict
         }
 
     def getRes(self):

@@ -395,6 +395,8 @@ class RunDBNPLS:
         dbn_pls_model = DBN_PLS(pretraining_epochs=self.pretraining_epochs, pretrain_lr=self.pretrain_lr, k=self.k,
                                 batch_size=self.batch_size)
         y_predict, y_tr_RR, y_tr_RMSE = dbn_pls_model.train(x0, y0)
+        for real_value,predict_value in zip(y0,y_predict):
+            print(real_value,predict_value)
         # 不太确点，待修正
         self.res_dict = {
             '可决系数':y_tr_RR,

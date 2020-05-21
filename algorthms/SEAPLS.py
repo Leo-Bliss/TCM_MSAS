@@ -217,11 +217,21 @@ class RunSEAPLS:
         print("训练集", y0_tr_RMSE)
 
         # 预测 test_x
+        y0_te_true = sae_pls_model.y_te_tranformed
         y0_te_predict, y0_te_RMSE = sae_pls_model.predict()
         print("测试集", y0_te_RMSE)
+
+        true_data = pd.DataFrame(y0_te_true)
+        predict_data = pd.DataFrame(y0_te_predict)
+
+        show_data_dict = {
+            '预测值': predict_data,
+            '真实值':true_data
+        }
         self.res_dict = {
             '训练集RMSE': y0_tr_RMSE,
-            '测试集RMSE': y0_te_RMSE
+            '测试集RMSE': y0_te_RMSE,
+            'show_data_dict': show_data_dict
         }
 
 

@@ -318,9 +318,26 @@ class RunLAPLS:
         # 预测测试集
         y_te_predict, y_te_RR, y_te_RMSE = lapls_model.predict(test_x, test_y)
         print("测试集", y_te_RMSE)
+
+        print('-' * 100)
+        print(test_y)
+        print('-'*100)
+        print(y_te_predict)
+        print('-'*100)
+
+        predict_test = pd.DataFrame()
+        predict_test['预测值'] = pd.DataFrame(y_te_predict)[0]
+        predict_test['真实值'] = pd.DataFrame(test_y)[0]
+        print(predict_test)
+
+        show_data_dict = {
+            '预测值和真实值': predict_test
+        }
+
         self.res_dict = {
             '训练集RMSE': y_RMSE,
-            '测试集RMSE': y_te_RMSE
+            '测试集RMSE': y_te_RMSE,
+            'show_data_dict':show_data_dict
         }
         # 经特征选择后的X
         selected_x0 = lapls_model.getSelectedX(x0)

@@ -228,14 +228,29 @@ class RunGRAPLS:
         train_x, train_y, test_x, test_y = split_helper.splitDataSet(X, y, q=self.q)
         y0_tr_predict, y0_tr_RMSE = gra_pls_model.train(train_x, test_x, train_y, test_y)
         print("训练集", y0_tr_RMSE)
-
         # 预测 test_x
         y0_te_predict, y0_te_RMSE = gra_pls_model.predict()
 
         print("测试集", y0_te_RMSE)
+
+        print(test_y)
+        print('-' * 100)
+        print(y0_te_predict)
+        print('-' * 100)
+
+        predict_test = pd.DataFrame()
+        predict_test['预测值'] = pd.DataFrame(y0_te_predict)[0]
+        predict_test['真实值'] = pd.DataFrame(test_y)[0]
+        print(predict_test)
+
+        show_data_dict = {
+            '预测值和真实值': predict_test
+        }
+
         self.res_dict = {
             '训练集RMSE': y0_tr_RMSE,
-            '测试集RMSE': y0_te_RMSE
+            '测试集RMSE': y0_te_RMSE,
+            'show_data_dict':show_data_dict
         }
 
         print(gra_pls_model.X_te_tranformed.shape)

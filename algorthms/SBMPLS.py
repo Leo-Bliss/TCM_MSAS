@@ -221,9 +221,23 @@ class RunSBMPLS:
         print("测试集", y0_te_RMSE)
         print(sbm_pls_model.X_te_tranformed.shape)
 
+        print('-' * 100)
+        print(test_y)
+        print('-' * 100)
+        print(y0_te_predict)
+        print('-' * 100)
+
+        predict_test = pd.DataFrame()
+        predict_test['预测值'] = y0_te_predict[0]
+        predict_test['真实值'] = test_y[0]
+        print(predict_test)
+        show_data_dict = {
+            '预测值和真实值': predict_test
+        }
         self.res_dict = {
             '训练集RMSE': y0_tr_RMSE,
-            '测试集RMSE': y0_te_RMSE
+            '测试集RMSE': y0_te_RMSE,
+            'show_data_dict':show_data_dict
         }
 
 
