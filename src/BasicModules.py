@@ -61,8 +61,7 @@ class CheckboxEdit(QHBoxLayout):
 
     def getValue(self):
         try:
-            float(self.line_edit.text())
-            return float(self.line_edit.text()) if '.' in self.line_edit.text() else int(self.line_edit.text())
+            return self.getNum(self.line_edit.text())
         except:
             return self.line_edit.text()
 
