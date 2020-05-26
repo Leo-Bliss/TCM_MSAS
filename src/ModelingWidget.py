@@ -215,17 +215,15 @@ class ModelingWidget(QDialog):
         :param QCloseEvent:
         :return:
         '''
-        timer = None #self.timer_thread
-        worker = self.worker_thread
         reply = QMessageBox.question(self, "关闭确认", '是否要退出建模分析？', QMessageBox.Yes |
                                      QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
-            if timer and timer.isRunning():
-                timer.terminate()
-                timer.deleteLater()
-            if worker and worker.isRunning():
-                worker.terminate()
-                worker.deleteLater()
+            if self.timer_thread and self.timer_thread.isRunning():
+                self.timer_thread.terminate()
+                self.timer_thread.deleteLater()
+            if self.worker_thread and self.worker_thread.isRunning():
+                self.worker_thread.terminate()
+                self.worker_thread.deleteLater()
             QCloseEvent.accept()
         else:
             QCloseEvent.ignore()
