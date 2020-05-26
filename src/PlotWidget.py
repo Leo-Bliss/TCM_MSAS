@@ -128,6 +128,12 @@ class PlotWidget(QWidget):
                             alpha=self.general_parameters_dict.get('plot_marker_color_alpha', 20.00),
                             marker=self.general_parameters_dict.get('plot_line_marker', 'o'),
                             label=self.other_parameters_dict.get('lable'))
+    # 柱状图
+    def drawColumnBar(self):
+        bar_color = self.general_parameters_dict.get('plot_marker_color', 'b')
+        bar_width = self.general_parameters_dict.get('bar_width',0.2)
+        bar_alpha = self.general_parameters_dict.get('plot_marker_color_alpha', 1.00)
+        self.wd_plt.bar(self.x_list,self.y_list,width=bar_width,color=bar_color,alpha=bar_alpha)
 
     def draw(self):
         try:
@@ -152,11 +158,14 @@ class PlotWidget(QWidget):
             x_lim = self.other_parameters_dict.get('xlim', None)
             if x_lim:
                 self.wd_plt.xlim(x_lim)
+
             self.plot_type = self.general_parameters_dict.get('plot_type',0)
             if self.plot_type == 0:
                 self.drawLine()
             elif self.plot_type == 1:
                 self.drawScatter()
+            elif self.plot_type == 2:
+                self.drawColumnBar()
 
             # 调整ticks颜色，角度
             xticks_color = self.other_parameters_dict.get('xticks_color', 'k')
@@ -171,10 +180,8 @@ class PlotWidget(QWidget):
                 self.wd_plt.legend()
 
             # 标上数值
-            step_y, step_x = self.other_parameters_dict.get('point_distance')
-            if self.judge_num(step_y):
-                if not self.judge_num(step_x):
-                    step_x = 0
+            step_y, step_x = self.other_parameters_dict.get('point_distance',(None,None))
+            if step_x is not None or step_y is not None:
                 if not isinstance(self.x_list[0],str):
                     for x, y in zip(self.x_list, self.y_list):
                         self.wd_plt.text(x+step_x, y + step_y, '%s' % y, ha='center')

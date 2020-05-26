@@ -13,48 +13,6 @@ from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QGridLayout
 
 from src.BasicModules import CheckboxEdit,CheckboxSpinBox,CheckboxComBox
 
-class ScatterGoupbox:
-    def __init__(self):
-        pass
-    def initUI(self):
-        # 一般设置
-        self.line_type_label = QLabel('线条样式')
-        self.line_type_combox = QComboBox()
-        self.line_type_combox.addItems(line_type_list)
-        self.line_type_combox.setEditable(True)
-        self.line_color_lable = QLabel('线条颜色')
-        self.line_color_combox = QComboBox()
-        self.line_color_combox.addItems(color_list)
-        self.line_color_combox.setEditable(True)
-        self.line_color_combox.setCurrentIndex(2)
-        self.line_width_lable = QLabel('线条宽度')
-        self.line_width_spinbox = QSpinBox()
-        self.line_width_spinbox.setRange(1, 100)
-        ##marker
-        self.mark_type_label = QLabel('标记样式')
-        self.mark_type_combox = QComboBox()
-        self.mark_type_combox.addItems(mark_type_list)
-        self.mark_type_combox.setEditable(True)
-        self.mark_color_lable = QLabel('标记颜色')
-        self.mark_color_combox = QComboBox()
-        self.mark_color_combox.addItems(color_list)
-        self.mark_color_combox.setEditable(True)
-
-        grid_layout2 = QGridLayout()
-        grid_layout2.addWidget(self.line_type_label, 0, 0)
-        grid_layout2.addWidget(self.line_type_combox, 0, 1)
-        grid_layout2.addWidget(self.line_color_lable, 0, 2)
-        grid_layout2.addWidget(self.line_color_combox, 0, 3)
-        grid_layout2.addWidget(self.line_width_lable, 1, 0)
-        grid_layout2.addWidget(self.line_width_spinbox, 1, 1)
-        grid_layout2.addWidget(self.mark_type_label, 1, 2)
-        grid_layout2.addWidget(self.mark_type_combox, 1, 3)
-        grid_layout2.addWidget(self.mark_color_lable, 2, 0)
-        grid_layout2.addWidget(self.mark_color_combox, 2, 1)
-        grid_layout2.setHorizontalSpacing(25)
-
-        self.general_groupbox = QGroupBox('一般设置')
-        self.general_groupbox.setLayout(grid_layout2)
 
 class PlotSettingWidget(QWidget):
     def __init__(self):
@@ -63,7 +21,7 @@ class PlotSettingWidget(QWidget):
 
     def initUI(self):
         self.resize(800, 800)
-        plot_type_list = ['折线图', '散点图', '箱线图', '柱状图']
+        plot_type_list = ['折线图', '散点图', '柱状图', '箱线图']
         color_list = ['r', 'g', 'b', 'y', 'k', 'w']
         line_type_list = ['--', '-', '-.', ':']
         mark_type_list = ['*', '.', '+','o', 'x', '^', 'v', '<', '>']
@@ -109,23 +67,23 @@ class PlotSettingWidget(QWidget):
         self.color_alpha_spinbox.setRange(0,1)
         self.color_alpha_spinbox.setSingleStep(0.01)
 
-        grid_layout2 = QGridLayout()
-        grid_layout2.addWidget(self.line_type_label, 0, 0)
-        grid_layout2.addWidget(self.line_type_combox, 0, 1)
-        grid_layout2.addWidget(self.line_color_lable, 0, 2)
-        grid_layout2.addWidget(self.line_color_combox, 0, 3)
-        grid_layout2.addWidget(self.line_width_lable, 1, 0)
-        grid_layout2.addWidget(self.line_width_spinbox, 1, 1)
-        grid_layout2.addWidget(self.mark_type_label, 1, 2)
-        grid_layout2.addWidget(self.mark_type_combox, 1, 3)
-        grid_layout2.addWidget(self.mark_color_lable, 2, 0)
-        grid_layout2.addWidget(self.mark_color_combox, 2, 1)
-        grid_layout2.addWidget(self.color_alpha_label, 2, 2)
-        grid_layout2.addWidget(self.color_alpha_spinbox, 2, 3)
-        grid_layout2.setHorizontalSpacing(25)
+        self.grid_layout2 = QGridLayout()
+        self.grid_layout2.addWidget(self.line_type_label, 0, 0)
+        self.grid_layout2.addWidget(self.line_type_combox, 0, 1)
+        self.grid_layout2.addWidget(self.line_color_lable, 0, 2)
+        self.grid_layout2.addWidget(self.line_color_combox, 0, 3)
+        self.grid_layout2.addWidget(self.line_width_lable, 1, 0)
+        self.grid_layout2.addWidget(self.line_width_spinbox, 1, 1)
+        self.grid_layout2.addWidget(self.mark_type_label, 1, 2)
+        self.grid_layout2.addWidget(self.mark_type_combox, 1, 3)
+        self.grid_layout2.addWidget(self.mark_color_lable, 2, 0)
+        self.grid_layout2.addWidget(self.mark_color_combox, 2, 1)
+        self.grid_layout2.addWidget(self.color_alpha_label, 2, 2)
+        self.grid_layout2.addWidget(self.color_alpha_spinbox, 2, 3)
+        self.grid_layout2.setHorizontalSpacing(25)
 
         self.general_groupbox = QGroupBox('一般设置')
-        self.general_groupbox.setLayout(grid_layout2)
+        self.general_groupbox.setLayout(self.grid_layout2)
 
         # 通用设置
         ##title
@@ -229,6 +187,8 @@ class PlotSettingWidget(QWidget):
             self.lineGenneral()
         elif index == 1:
             self.scatterGeneral()
+        elif index == 2:
+            self.columnBarGeneral()
 
     def scatterGeneral(self):
         self.line_type_label.setVisible(False)
@@ -239,6 +199,26 @@ class PlotSettingWidget(QWidget):
         self.line_width_spinbox.setValue(20)
         self.mark_type_label.setText('散点样式')
         pass
+
+    def columnBarGeneral(self):
+        self.line_type_label.setVisible(False)
+        self.line_type_combox.setVisible(False)
+        self.line_color_lable.setVisible(False)
+        self.line_color_combox.setVisible(False)
+        self.mark_type_label.setVisible(False)
+        self.mark_type_combox.setVisible(False)
+        self.line_width_spinbox.setVisible(False)
+
+        self.line_width_lable.setText('柱形宽度')
+        self.mark_color_lable.setText('柱形颜色')
+        self.bar_width_spinbox = QDoubleSpinBox()
+        self.bar_width_spinbox.setDecimals(2)
+        self.bar_width_spinbox.setValue(0.20)
+        self.bar_width_spinbox.setRange(0, 1)
+        self.bar_width_spinbox.setSingleStep(0.01)
+        self.grid_layout2.addWidget(self.bar_width_spinbox, 1, 1)
+
+
 
     def lineGenneral(self):
         self.line_type_label.setVisible(True)
@@ -272,6 +252,10 @@ class PlotSettingWidget(QWidget):
             'plot_marker_color': self.mark_color_combox.currentText(),
             'plot_marker_color_alpha':self.color_alpha_spinbox.value()
         }
+        # 柱状图
+        if hasattr(self,'bar_width_spinbox'):
+            general_parameters_dict['bar_width'] = self.bar_width_spinbox.value()
+
         return general_parameters_dict
 
     # 其他可选参数，通用的参数
@@ -284,10 +268,18 @@ class PlotSettingWidget(QWidget):
             'xticks_color': self.xticks_color_checkbox_combox.getValue(),
             'xticks_rotation': self.xticks_rotation_checkbox_spinbox.getValue(),
             'yticks_color': self.yticks_color_checkbox_combox.getValue(),
-            'yticks_rotation': self.yticks_rotation_checkbox_spinbox.getValue(),
-            'point_distance': (
-            self.point_ydistance_checkbox_edit.getValue(), self.point_xdistance_checkbox_edit.getValue())
+            'yticks_rotation': self.yticks_rotation_checkbox_spinbox.getValue()
         }
+
+        # 数值偏移量
+        if self.point_xdistance_checkbox_edit.isChecked() or self.point_ydistance_checkbox_edit.isChecked():
+            step_x, step_y = 0, 0
+            if self.point_xdistance_checkbox_edit.isChecked():
+                step_x = self.point_xdistance_checkbox_edit.getValue()
+            if self.point_ydistance_checkbox_edit.isChecked():
+                step_y  = self.point_ydistance_checkbox_edit.getValue()
+            other_parameters_dict['point_distance'] = (step_y, step_x)
+
         if self.title_checkbox_edit.isChecked():
             other_parameters_dict['title'] = self.title_checkbox_edit.getValue()
         if self.draw_label_checkbox_edit.isChecked():
