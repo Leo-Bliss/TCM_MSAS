@@ -10,8 +10,8 @@
 查找,替换窗口
 '''
 
-from PyQt5.QtWidgets import QApplication,QWidget,QToolBar,QAction,QPushButton
-from PyQt5.QtWidgets import QVBoxLayout,QSizePolicy,QLineEdit,QHBoxLayout
+from PyQt5.QtWidgets import QApplication, QWidget, QToolBar, QAction, QPushButton, QGridLayout
+from PyQt5.QtWidgets import QSizePolicy,QLineEdit,QHBoxLayout
 from PyQt5.QtGui import QPixmap,QIcon,QKeySequence
 from PyQt5.QtCore import Qt
 
@@ -27,8 +27,10 @@ class  FindWidget(QWidget):
         self.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
 
         self.line_edit_find = QLineEdit()
+        self.line_edit_find.setClearButtonEnabled(True)
         self.line_edit_find.setPlaceholderText('find')
         self.line_edit_replace = QLineEdit()
+        self.line_edit_replace.setClearButtonEnabled(True)
         self.line_edit_replace.setPlaceholderText('replace')
 
         self.tool_bar = QToolBar()
@@ -44,29 +46,23 @@ class  FindWidget(QWidget):
 
         self.repalce_button = QPushButton('Replace')
         self.repalceAll_button = QPushButton('ReplaceAll')
+        self.search_button = QPushButton()
 
-        hlayout1 = QHBoxLayout()
-        hlayout1.addWidget(self.line_edit_find)
-        hlayout1.addWidget(self.tool_bar)
-        hlayout1.setStretch(0,5)
-        hlayout1.setStretch(1,2)
-
-        hlayout2 = QHBoxLayout()
-        hlayout2.addWidget(self.line_edit_replace)
-        hlayout2.addWidget(self.repalce_button)
-        hlayout2.addWidget(self.repalceAll_button)
-        hlayout2.setStretch(0, 5)
-        hlayout2.setStretch(1, 1)
-        hlayout2.setStretch(2, 1)
-        hlayout2.setSpacing(5)
-
-        layout = QVBoxLayout()
-        layout.addItem(hlayout1)
-        layout.addItem(hlayout2)
-        layout.setSpacing(0)
-        self.setLayout(layout)
+        gridlayout = QGridLayout()
+        gridlayout.addWidget(self.line_edit_find,0,0,1,8)
+        gridlayout.addWidget(self.tool_bar,0,9)
+        gridlayout.addWidget(self.line_edit_replace,1,0,1,8)
+        hlayout = QHBoxLayout()
+        hlayout.addWidget(self.repalce_button)
+        hlayout.addWidget(self.repalceAll_button)
+        gridlayout.addItem(hlayout,1,9)
+        hlayout.setSpacing(5)
+        gridlayout.setVerticalSpacing(1)
+        gridlayout.setHorizontalSpacing(5)
+        self.setLayout(gridlayout)
 
         self.close_aciton.triggered.connect(self.triggeredClose)
+
         icon = QIcon()
         icon.addPixmap(QPixmap('../imgs/查找.png'), QIcon.Normal, QIcon.Off)
         self.search_action.setIcon(icon)
