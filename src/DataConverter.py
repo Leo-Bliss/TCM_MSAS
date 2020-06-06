@@ -53,6 +53,8 @@ class DataConverter():
             return False
 
     def model_to_list(self, model):
+        if not hasattr(model,'rowCount'):
+            return None
         rows = model.rowCount()
         columns = model.columnCount()
         data_list = []
