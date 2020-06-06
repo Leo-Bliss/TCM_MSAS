@@ -248,8 +248,8 @@ class RunGRAPLS:
         }
 
         self.res_dict = {
-            '训练集RMSE': y0_tr_RMSE,
-            '测试集RMSE': y0_te_RMSE,
+            '训练集RMSE': y0_tr_RMSE[0,0],
+            '测试集RMSE': y0_te_RMSE[0,0],
             'show_data_dict':show_data_dict
         }
 

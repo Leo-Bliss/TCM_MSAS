@@ -349,41 +349,6 @@ class RunLAPLS:
 
 # 主函数
 if __name__ == '__main__':
-    # x0, y0 = loadDataSet01('data/TCMdata.txt')#单因变量与多因变量
-    # print(x0)
-    # df = pd.read_excel("../data/data02.xlsx")
-    # x0 = np.mat(df[['x1','x2','x3','x4','x5','x6','x7','x8','x9']])
-    # y0 = np.mat(df[['y']])
-    #
-    # # 划分训练集测试集
-    # train_x, train_y, test_x, test_y = splitDataSet(x0, y0, q=0.8)
-    #
-    # # 建模
-    # """
-    # LAPLS(ntest=20, th_k=0.2, lambd_k=9)
-    # ntest = 20
-    # th_k = 0.2  # th_k取值得大于0.1，建议精度至4个小数点（最佳取值th_k = 0.2）--默认值0.2
-    # lambd_k = 9  # lambd_k得大于7，最佳取值lambd_k=9(默认值)
-    # """
-    # lapls_model = LAPLS(ntest=20, th_k=0.2, lambd_k=9)
-    # y_predict, y_RR, y_RMSE = lapls_model.train(train_x, train_y)  # 训练
-    # _coef = lapls_model._coef
-    # print(y_RMSE)
-    # print("回归系数", _coef)
-    #
-    # # 预测训练集
-    # y_predict, y_RR, y_RMSE = lapls_model.predict(train_x, train_y)
-    # print("训练集", y_RMSE)
-    #
-    # # 预测测试集
-    # y_te_predict, y_te_RR, y_te_RMSE = lapls_model.predict(test_x, test_y)
-    # print("测试集", y_te_RMSE)
-    #
-    # # 经特征选择后的X
-    # selected_x0 = lapls_model.getSelectedX(x0)
-    # print(selected_x0)
-
-    #df = pd.read_excel("../data/data02.xlsx")
     df = pd.read_csv("../data/TCMdata.csv")
     header = df.columns.values.tolist()
     var_dict = {
@@ -402,20 +367,3 @@ if __name__ == '__main__':
     }
     r = RunLAPLS(df, all_dict)
     r.run()
-
-    # fig = plt.figure()
-    # ax = fig.add_subplot(111)
-    # # xx = arange(0, 10.0, 0.02)
-    # ax.plot(y_predict, 'r:', markerfacecolor='blue', marker='o')
-    # plt.annotate('y_predict', xy=(6, 0.090), xytext=(4, 0.10),
-    #              arrowprops=dict(facecolor='black', shrink=0.05))
-    # # plt.title('y_predict')
-    #
-    # # ax = fig.add_subplot(112)
-    # ax.plot(y0, markerfacecolor='red', marker='h')
-    # # plt.title('y0')
-    # plt.annotate('y0', xy=(7.2, 0.058), xytext=(8, 0.05),
-    #              arrowprops=dict(facecolor='black', shrink=0.05))
-    # plt.grid(True)
-    # plt.show()
-    # parameter_Errors(th_k, lambd_k)

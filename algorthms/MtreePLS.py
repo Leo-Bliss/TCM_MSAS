@@ -552,16 +552,8 @@ class RunMtreePLS:
         return self.res_dict
 
 if __name__ == '__main__':
-    # 步骤1：读取数据
-    # 1.1 blogData_test：1个因变量
     df_xy = pd.read_csv('../data/blogData_test1.csv')
-    # print(df_xy)
-    # print(df_xy.shape)
     xname_list = df_xy.columns.values.tolist()[0:df_xy.shape[1] - 1]
-    #
-    # X = df_xy[xname_list]
-    # print(X.shape)
-    # y = df_xy['y']
     var_dict = {
         'independ_var':  xname_list,
         'depend_var': ['y']
@@ -578,25 +570,3 @@ if __name__ == '__main__':
     }
     r = RunMtreePLS(df_xy, all_dict)
     r.run()
-
-    # # 步骤2：划分训练集测试集
-    # train_x, train_y, test_x, test_y = splitDataSet(X.values, y.values.reshape(X.shape[0], 1), q=0.8)
-    #
-    # # 步骤:3：建模
-    # """
-    # MTree_PLS(h, max_depth=5, min_samples_split=2)
-    # h = 10  # 成分个数，默认为10，其应小于等于样本的维度，从前台传进来应注意
-    # max_depth = 5  # 树的最大深度， 默认None，节点被扩展，直到所有叶子都是纯的（可自行设置）
-    # min_samples_split = 2  # 最小分割样本数，子空间样本数大于等于2才进行分割，（默认2，可自行设置，但不宜过大）
-    # """
-    # h = 10
-    # print(X.shape[1])
-    # assert h < X.shape[1], '成分个数h不能大于样本的维度'  # 传进来的成分个数大于样本的维度时，抛出异常
-    # mtpls_model = MTree_PLS(h, max_depth=5, min_samples_split=2)
-    # y1_predict, y_RR, y_RMSE = mtpls_model.train(train_x, train_y)  # 训练
-    # print(y_RMSE)
-    #
-    # # 预测测试集
-    # y_te_predict, y_te_RR, y_te_RMSE = mtpls_model.predict(test_x, test_y)
-    # print("测试集", y_te_RMSE)
-

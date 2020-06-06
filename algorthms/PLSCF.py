@@ -265,29 +265,3 @@ if __name__ == '__main__':
     }
     r = RunPLSCF(df_xy, all_dict)
     r.run()
-
-    # # 步骤2：划分训练集测试集
-    # train_x, test_x, train_y, test_y = train_test_split(X.values, y.values, test_size=0.3, random_state=0)
-    #
-    # # 训练集和测试集必须含有列标，而且列标要是字符串类型； 如果没有列标或者列标是整形，可以调用getXnameList()方法
-    # # xname_list_demo = getXnameList(X.shape[1])
-    # train_x = pd.DataFrame(train_x, columns=xname_list)
-    # test_x = pd.DataFrame(test_x, columns=xname_list)
-    #
-    # # 步骤:3：建模
-    # """
-    # PLSCF(n_components=1)
-    # n_components：成分个数，默认1，不需要从前台传，因为特征选择之后不知道有多少特征，很容易出问题
-    # """
-    # plscf_model = PLSCF(n_components=1)
-    # y1_predict, y_RR, y_RMSE = plscf_model.train(train_x, train_y)  # 训练
-    # print(y_RMSE)
-    #
-    # # 预测测试集
-    # y_te_predict, y_te_RR, y_te_RMSE = plscf_model.predict(test_x, test_y)
-    # print("测试集", y_te_RMSE)
-    #
-    # # 获取特征子集
-    # sub_X = plscf_model.getSubX(X)
-    #
-

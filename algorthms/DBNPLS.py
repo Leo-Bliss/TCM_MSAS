@@ -415,12 +415,8 @@ class RunDBNPLS:
 
 
 if __name__ == '__main__':
-    # 读取数据集
-    # x0, y0 = loadDataSet('data\CBM.txt')
     df = pd.read_excel('../data/cbm.xlsx')
     headers = df.columns.values.tolist()
-    # x0 = np.mat(df[headers[0:16]])
-    # y0 = np.mat(df[headers[16:18]])
     var_dict = {
         'independ_var': headers[0:16],
         'depend_var': headers[16:18]
@@ -446,11 +442,3 @@ if __name__ == '__main__':
     pretrain_lr：学习率，默认为0.1，可自行设置
     batch_size：默认为10，可自行设置
     """
-    # dbn_pls_model = DBN_PLS(pretraining_epochs=10, pretrain_lr=0.1, k=1, batch_size=10)
-    # y_predict, y_tr_RR, y_tr_RMSE = dbn_pls_model.train(x0, y0)
-    #
-    # print(u"可决系数:", y_tr_RR)
-    # print(u"均方根误差:", y_tr_RMSE)
-    # print(u"回归系数：")
-    # print(dbn_pls_model.ch0)
-    # print(dbn_pls_model._coef)
