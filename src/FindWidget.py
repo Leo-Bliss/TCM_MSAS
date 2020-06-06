@@ -45,7 +45,9 @@ class  FindWidget(QWidget):
         self.tool_bar.addAction(self.close_aciton)
 
         self.repalce_button = QPushButton('Replace')
+        self.repalce_button.setToolTip('替换当前匹配项')
         self.repalceAll_button = QPushButton('ReplaceAll')
+        self.repalceAll_button.setToolTip('替换所有匹配项')
         self.search_button = QPushButton()
 
         gridlayout = QGridLayout()

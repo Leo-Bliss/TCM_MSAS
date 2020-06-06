@@ -212,7 +212,9 @@ class VarTabWidget(QWidget):
         depend_var = [self.list_widget3.item(i).text() for i in range(count2)]
         if len(independ_var)==0 or len(depend_var)==0:
             return None
-        var_dict = {'independ_var':independ_var, 'depend_var':depend_var}
+        var_dict = {
+            'independ_var':independ_var,
+            'depend_var':depend_var}
         return var_dict
 
 
