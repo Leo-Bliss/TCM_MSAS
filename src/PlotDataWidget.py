@@ -16,8 +16,9 @@ class PlotDataWidget(QWidget):
 
     def initUI(self):
         self.resize(800, 800)
-        self.group_box_y = DataViewGoupBox('Y(选择绘图数据)')
-        self.group_box_x = DataViewGoupBox('X(选择X轴标签)')
+        y_list, x_list = [1.22, 2.43, 5.78, 9.65, 7.24], ['a', 'b', 'c', 'd', 'e']
+        self.group_box_y = DataViewGoupBox('Y(选择绘图数据)',y_list)
+        self.group_box_x = DataViewGoupBox('X(选择X轴刻度标签)',x_list)
 
         layout = QVBoxLayout()
         layout.addWidget(self.group_box_y)

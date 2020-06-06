@@ -14,7 +14,7 @@ from PyQt5.QtWidgets import qApp, QGroupBox, QPushButton, QTableView
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWidgets import QStatusBar
 from PyQt5.QtWidgets import QVBoxLayout,QHBoxLayout
-from PyQt5.QtGui import QStandardItemModel
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
 from src.MyThreads import ReaderExcelThread,WriteExcelThread
 
@@ -28,21 +28,16 @@ from src.MyThreads import ReaderExcelThread,WriteExcelThread
 
 
 class DataViewGoupBox(QGroupBox):
-    def __init__(self,name):
+    def __init__(self,name,data_list):
         super(DataViewGoupBox, self).__init__(name)
         self.initUI()
+        self.initModel(data_list)
 
     def initUI(self):
         self.resize(800,800)
-        # table_view
-        self.model = QStandardItemModel(22, 15)
         self.table_view = QTableView()
-        self.table_view.setModel(self.model)
-
         # 状态栏
         self.status_bar = QStatusBar()
-        # self.status_bar.showMessage('状态栏',5000)
-
         hlayout = QHBoxLayout()
         self.input_btn = QPushButton('导入')
         self.output_btn = QPushButton('导出')
@@ -58,6 +53,13 @@ class DataViewGoupBox(QGroupBox):
         self.setLayout(layout)
         self.connectSignal()
 
+    def initModel(self,data_list):
+        self.model = QStandardItemModel(22, 15)
+        if data_list:
+            for i, data in enumerate(data_list):
+                item = QStandardItem(str(data))
+                self.model.setItem(i, 0, item)
+        self.table_view.setModel(self.model)
 
     # 关联信号
     def connectSignal(self):
@@ -81,31 +83,23 @@ class DataViewGoupBox(QGroupBox):
         file_name, _ = QFileDialog.getOpenFileName(self, '打开文件', '../data',
                                                    'AnyFile(*.*);;xlsx(*.xlsx);;csv(*.csv);;xls(*.xls)')
         if file_name:
-            try:
-                # 这里线程实例化一定要实例化成员变量，否则线程容易销毁
-                self.thread = ReaderExcelThread(file_name)
-                self.thread.standarModel_signal.connect(self.loadData)
-                self.thread.progressRate_signal.connect(self.showStatus)
-                self.thread.end_signal.connect(self.thread.quit)
-                self.thread.start()
-            except Exception as e:
-                print(e)
-                pass
+            self.thread = ReaderExcelThread(file_name)
+            self.thread.standarModel_signal.connect(self.loadData)
+            self.thread.progressRate_signal.connect(self.showStatus)
+            self.thread.end_signal.connect(self.thread.quit)
+            self.thread.start()
+
 
     def triggeredSave(self):
         self.status_bar.showMessage('保存文件', 5000)
         file_path, _ = QFileDialog.getSaveFileName(self, '保存文件', '../data',
                                                    'xlsx(*.xlsx);;xls(*.xls);;csv(*.csv)')
-        if file_path == '':
-            return
-        # 文件中写入数据
-        try:
+        if file_path:
             self.write_thread = WriteExcelThread(file_path, self.model)
             self.write_thread.start_signal.connect(self.showStatus)
             self.write_thread.end_signal.connect(self.write_thread.quit)
             self.write_thread.start()
-        except Exception as e:
-            print(e)
+
 
     #得到表格中相应的数据类型
     def getCell(self,data):
