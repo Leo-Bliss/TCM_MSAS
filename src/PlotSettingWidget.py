@@ -6,12 +6,11 @@
 #@SoftWare:    PyCharm
 #@Blog    :    https://blog.csdn.net/tb_youth
 import sys
-
 from PyQt5.QtWidgets import QWidget, QApplication, QDoubleSpinBox
 from PyQt5.QtWidgets import QGroupBox, QLabel, QComboBox, QSpinBox, QCheckBox
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QGridLayout
 
-from src.BasicModules import CheckboxEdit,CheckboxSpinBox,CheckboxComBox
+from src.BasicModules import CheckboxEdit,CheckboxSpinBox,CheckboxComBox,LineEditButton
 
 
 class PlotSettingWidget(QWidget):
@@ -43,10 +42,8 @@ class PlotSettingWidget(QWidget):
         self.line_type_combox.addItems(line_type_list)
         self.line_type_combox.setEditable(True)
         self.line_color_lable = QLabel('线条颜色')
-        self.line_color_combox = QComboBox()
-        self.line_color_combox.addItems(color_list)
-        self.line_color_combox.setEditable(True)
-        self.line_color_combox.setCurrentIndex(2)
+        self.line_color_linEdit = LineEditButton('#0000ff')
+
         self.line_width_lable = QLabel('线条宽度')
         self.line_width_spinbox = QSpinBox()
         self.line_width_spinbox.setRange(1, 100)
@@ -56,9 +53,7 @@ class PlotSettingWidget(QWidget):
         self.mark_type_combox.addItems(mark_type_list)
         self.mark_type_combox.setEditable(True)
         self.mark_color_lable = QLabel('标记颜色')
-        self.mark_color_combox = QComboBox()
-        self.mark_color_combox.addItems(color_list)
-        self.mark_color_combox.setEditable(True)
+        self.mark_color_lineEdit = LineEditButton('#ff0000')
 
         self.color_alpha_label = QLabel('图形透明度')
         self.color_alpha_spinbox = QDoubleSpinBox()
@@ -71,13 +66,13 @@ class PlotSettingWidget(QWidget):
         self.grid_layout2.addWidget(self.line_type_label, 0, 0)
         self.grid_layout2.addWidget(self.line_type_combox, 0, 1)
         self.grid_layout2.addWidget(self.line_color_lable, 0, 2)
-        self.grid_layout2.addWidget(self.line_color_combox, 0, 3)
+        self.grid_layout2.addItem(self.line_color_linEdit, 0, 3)
         self.grid_layout2.addWidget(self.line_width_lable, 1, 0)
         self.grid_layout2.addWidget(self.line_width_spinbox, 1, 1)
         self.grid_layout2.addWidget(self.mark_type_label, 1, 2)
         self.grid_layout2.addWidget(self.mark_type_combox, 1, 3)
         self.grid_layout2.addWidget(self.mark_color_lable, 2, 0)
-        self.grid_layout2.addWidget(self.mark_color_combox, 2, 1)
+        self.grid_layout2.addItem(self.mark_color_lineEdit, 2, 1)
         self.grid_layout2.addWidget(self.color_alpha_label, 2, 2)
         self.grid_layout2.addWidget(self.color_alpha_spinbox, 2, 3)
         self.grid_layout2.setHorizontalSpacing(25)
@@ -87,13 +82,16 @@ class PlotSettingWidget(QWidget):
 
         # 通用设置
         ##title
-        self.title_checkbox_edit = CheckboxEdit('设置图形标题')
-        self.title_groupbox = QGroupBox('标题（选填）')
+        self.title_checkbox_edit = CheckboxEdit('设置图形标题','绘图示例效果图')
+        self.title_checkbox_edit.checkbox.setChecked(True)
+        self.title_groupbox = QGroupBox('标题（可选）')
         self.title_groupbox.setLayout(self.title_checkbox_edit)
 
         ##label
-        self.draw_label_checkbox_edit = CheckboxEdit('设置图形标签')
-        self.label_groupbox = QGroupBox('标签（选填）')
+        self.draw_label_checkbox_edit = CheckboxEdit('设置图形标签','示例')
+        self.draw_label_checkbox_edit.checkbox.setChecked(True)
+
+        self.label_groupbox = QGroupBox('标签（可选）')
         self.label_groupbox.setLayout(self.draw_label_checkbox_edit)
 
         ##ylim
@@ -110,8 +108,11 @@ class PlotSettingWidget(QWidget):
         grid_layout3.addItem(self.x_lim_checkbox_edit, 0, 2, 1, 2)
 
         ##x,y轴标签
-        self.x_lable_checkbox_edit = CheckboxEdit('x轴标签 ')
-        self.y_lable_checkbox_edit = CheckboxEdit('y轴标签 ')
+        self.x_lable_checkbox_edit = CheckboxEdit('x轴标签 ','x')
+        self.x_lable_checkbox_edit.checkbox.setChecked(True)
+        self.y_lable_checkbox_edit = CheckboxEdit('y轴标签 ','y')
+        self.y_lable_checkbox_edit.checkbox.setChecked(True)
+
 
         grid_layout3.addItem(self.x_lable_checkbox_edit, 2, 0, 1, 2)
         grid_layout3.addItem(self.y_lable_checkbox_edit, 2, 2, 1, 2)
@@ -119,7 +120,7 @@ class PlotSettingWidget(QWidget):
         grid_layout3.addWidget(self.show_x_grid, 3, 2)
         grid_layout3.setSpacing(10)
 
-        self.axis_groupbox = QGroupBox('坐标轴设置（选填）')
+        self.axis_groupbox = QGroupBox('坐标轴设置（可选）')
         self.axis_groupbox.setLayout(grid_layout3)
 
         ##标上数值 :偏移量可能是float，int,简化处理使用lineEdit
@@ -130,7 +131,7 @@ class PlotSettingWidget(QWidget):
         hlayout = QHBoxLayout()
         hlayout.addItem(self.point_ydistance_checkbox_edit)
         hlayout.addItem(self.point_xdistance_checkbox_edit)
-        self.data_groupbox = QGroupBox('标上数值（选填）')
+        self.data_groupbox = QGroupBox('标上数值（可选）')
         self.data_groupbox.setLayout(hlayout)
 
 
@@ -152,7 +153,6 @@ class PlotSettingWidget(QWidget):
         self.gridline_color_checkbox_combox.setDefualtValue(4)
         self.gridline_style_checkbox_combox = CheckboxComBox('网格线样式')
         self.gridline_style_checkbox_combox.setItems(line_type_list)
-        # self.gridline_style_checkbox_combox.setDefualtValue(1)
 
         grid_layout4 = QGridLayout()
         grid_layout4.addItem(self.xticks_color_checkbox_combox, 0, 0, 1, 2)
@@ -165,7 +165,7 @@ class PlotSettingWidget(QWidget):
         self.more_groupbox = QGroupBox()
         self.more_groupbox.setLayout(grid_layout4)
         self.more_groupbox.hide()
-        self.more_checkbox = QCheckBox("展开更多选项（选填）")
+        self.more_checkbox = QCheckBox("展开更多选项（可选）")
 
         layout = QVBoxLayout()
         layout.addWidget(self.plot_type_groupbox)
@@ -194,7 +194,7 @@ class PlotSettingWidget(QWidget):
         self.line_type_label.setVisible(False)
         self.line_type_combox.setVisible(False)
         self.line_color_lable.setVisible(False)
-        self.line_color_combox.setVisible(False)
+        self.line_color_linEdit.hideWidget()
         self.line_width_lable.setText('散点大小')
         self.line_width_spinbox.setValue(20)
         self.mark_type_label.setText('散点样式')
@@ -204,11 +204,10 @@ class PlotSettingWidget(QWidget):
         self.line_type_label.setVisible(False)
         self.line_type_combox.setVisible(False)
         self.line_color_lable.setVisible(False)
-        self.line_color_combox.setVisible(False)
+        self.line_color_linEdit.hideWidget()
         self.mark_type_label.setVisible(False)
         self.mark_type_combox.setVisible(False)
         self.line_width_spinbox.setVisible(False)
-
         self.line_width_lable.setText('柱形宽度')
         self.mark_color_lable.setText('柱形颜色')
         self.bar_width_spinbox = QDoubleSpinBox()
@@ -224,10 +223,13 @@ class PlotSettingWidget(QWidget):
         self.line_type_label.setVisible(True)
         self.line_type_combox.setVisible(True)
         self.line_color_lable.setVisible(True)
-        self.line_color_combox.setVisible(True)
         self.line_width_lable.setText('线条宽度')
         self.line_width_spinbox.setValue(1)
         self.mark_type_label.setText('标记样式')
+        self.mark_type_label.setVisible(True)
+        self.mark_type_combox.setVisible(True)
+        self.line_color_lable.setVisible(True)
+        self.line_color_linEdit.showWidget()
         pass
 
 
@@ -246,10 +248,10 @@ class PlotSettingWidget(QWidget):
         general_parameters_dict = {
             'plot_type': self.plot_type_combox.currentIndex(),
             'plot_line_style': self.line_type_combox.currentText(),
-            'plot_line_color': self.line_color_combox.currentText(),
+            'plot_line_color': self.line_color_linEdit.getText(),
             'plot_line_width': self.line_width_spinbox.value(),
             'plot_line_marker': self.mark_type_combox.currentText(),
-            'plot_marker_color': self.mark_color_combox.currentText(),
+            'plot_marker_color': self.mark_color_lineEdit.getText(),
             'plot_marker_color_alpha':self.color_alpha_spinbox.value()
         }
         # 柱状图
@@ -278,6 +280,10 @@ class PlotSettingWidget(QWidget):
                 step_x = self.point_xdistance_checkbox_edit.getValue()
             if self.point_ydistance_checkbox_edit.isChecked():
                 step_y  = self.point_ydistance_checkbox_edit.getValue()
+            if step_x == '':
+                step_x = 0
+            if step_y == '':
+                step_y = 0
             other_parameters_dict['point_distance'] = (step_y, step_x)
 
         if self.title_checkbox_edit.isChecked():
@@ -299,8 +305,7 @@ class PlotSettingWidget(QWidget):
 
     # 获取用户设置的参数
     def getParameters(self):
-        return self.getGeneralParameters(),self.getOtherParameters() 
-
+        return self.getGeneralParameters(),self.getOtherParameters()
 
 
 if __name__ == '__main__':
