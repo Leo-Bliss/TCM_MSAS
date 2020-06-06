@@ -11,6 +11,7 @@ from PyQt5.QtGui import QStandardItemModel
 from PyQt5.QtGui import QStandardItem
 from PyQt5.QtCore import QThread, pyqtSignal
 from openpyxl import workbook
+import csv
 from src import DataConverter, ExcelHelper
 
 from algorthms import DSAPLS, LAPLS, RBMPLS, SEAPLS, PLSSDA, DBNPLS
@@ -67,26 +68,42 @@ class WriteExcelThread(QThread):
 
     def run(self):
         self.start_signal.emit('导出准备中...')
-        try:
-            if isinstance(self.model,QStandardItemModel):
-                data_converter = DataConverter.DataConverter()
-                data_list = data_converter.model_to_list(self.model)
-            elif isinstance(self.model,list):
-                 data_list = self.model
-            else:
-                return
-            wb = workbook.Workbook()
-            wb.encoding = 'utf-8'
-            wa = wb.active
+        if isinstance(self.model, QStandardItemModel):
+            data_converter = DataConverter.DataConverter()
+            data_list = data_converter.model_to_list(self.model)
+        elif isinstance(self.model, list):
+            data_list = self.model
+        else:
+            return
+        file_type = self.file_path.rsplit('.')[0]
+        if file_type == 'xlsx':
+            self.write_xlsx(data_list)
+        else:
+            self.write_csv(data_list)
+
+
+    def write_xlsx(self,data_list):
+        wb = workbook.Workbook()
+        wb.encoding = 'utf-8'
+        wa = wb.active
+        cnt = len(data_list)
+        for i, item in enumerate(data_list):
+            wa.append(item)
+            self.start_signal.emit('导出进度:{}%'.format(int(i / cnt * 100)))
+        wb.save(self.file_path)
+        self.start_signal.emit('导出进度:100%')
+        self.end_signal.emit()
+
+    def write_csv(self,data_list):
+        with open(self.file_path,'w',encoding='utf-8',newline='' "") as  file:
+            writer = csv.writer(file)
             cnt = len(data_list)
-            for i, item in enumerate(data_list):
-                wa.append(item)
+            for i,row in enumerate(data_list):
+                row_list = str(row).replace("'",'')[1:-1].split(',')
+                writer.writerow(row_list)
                 self.start_signal.emit('导出进度:{}%'.format(int(i / cnt * 100)))
-            wb.save(self.file_path)
             self.start_signal.emit('导出进度:100%')
             self.end_signal.emit()
-        except Exception as e:
-            print(e)
 
 
 class InitVarListThread(QThread):
@@ -111,24 +128,6 @@ class InitVarListThread(QThread):
             break
         self.end_signal.emit()
 
-
-# class SaveImgThread(QThread):
-#     start_signal = pyqtSignal(str)
-#     end_signal = pyqtSignal()
-#     def __init__(self, file_path, plt):
-#         super(SaveImgThread, self).__init__()
-#         self.file_path = file_path
-#         self.plt = plt
-#
-#     def run(self):
-#         self.start_signal.emit('正在导出图形...')
-#         try:
-#             name, type = self.file_path.rsplit('.', maxsplit=1)
-#             self.plt.savefig('{}_img.{}'.format(name, type))
-#         except:
-#             pass
-#         self.start_signal.emit('图形导出完成.')
-#         self.end_signal.emit()
 
 
 class TimerThread(QThread):
@@ -184,6 +183,8 @@ class WorkerThread(QThread):
         self.start_signal.emit()
         data_converter = DataConverter.DataConverter()
         self.data_list = data_converter.model_to_list(self.model)
+        if not self.data_list:
+            return
         self.df = data_converter.list_to_DataFrame(self.data_list)
         alg = alg_dict[self.id](self.df, self.all_dict)
         alg.run()
