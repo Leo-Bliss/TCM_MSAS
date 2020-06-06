@@ -63,7 +63,6 @@ class MainWindow(QWidget):
         self.file_menu = self.menu_bar.addMenu('文件')
         self.edit_menu = self.menu_bar.addMenu('编辑')
         self.model_menu = self.menu_bar.addMenu('模型')
-        self.model_menu.setEnabled(False)
         self.view_menu = self.menu_bar.addMenu('视图')
         self.help_menu = self.menu_bar.addMenu('帮助')
 
@@ -288,7 +287,6 @@ class MainWindow(QWidget):
         print('load...')
         self.model = model
         self.table_view.setModel(self.model)
-        self.model_menu.setEnabled(True)
         qApp.processEvents()
 
     def triggeredOpen(self):
@@ -296,16 +294,14 @@ class MainWindow(QWidget):
         file_name, _ = QFileDialog.getOpenFileName(self, '打开文件', '../data',
                                                    'AnyFile(*.*);;xlsx(*.xlsx);;csv(*.csv);;xls(*.xls)')
         if file_name:
-            try:
-                # 这里线程实例化一定要实例化成员变量，否则线程容易销毁
-                self.thread = ReaderExcelThread(file_name)
-                self.thread.standarModel_signal.connect(self.loadData)
-                self.thread.progressRate_signal.connect(self.showStatus)
-                self.thread.end_signal.connect(self.thread.quit)
-                self.thread.start()
-            except Exception as e:
-                print(e)
-                pass
+            # 这里线程实例化一定要实例化成员变量，否则线程容易销毁
+            self.thread = ReaderExcelThread(file_name)
+            self.thread.standarModel_signal.connect(self.loadData)
+            self.thread.progressRate_signal.connect(self.showStatus)
+            self.thread.end_signal.connect(self.thread.quit)
+            self.thread.start()
+
+
 
     def triggeredSave(self):
         self.status_bar.showMessage('保存文件', 5000)
@@ -315,18 +311,14 @@ class MainWindow(QWidget):
         ;;csv(*.csv);;xls(*.xls)这两种到时再处理
         '''
         file_path, _ = QFileDialog.getSaveFileName(self, '保存文件', '../data',
-                                                   'xlsx(*.xlsx)')
-        if file_path == '':
-            return
-        # 文件中写入数据
-        try:
+                                                   'xlsx(*.xlsx);;csv(*.csv)')
+        if file_path:
             self.write_thread = WriteExcelThread(file_path, self.model)
             self.write_thread.start_signal.connect(self.showStatus)
             self.write_thread.end_signal.connect(self.write_thread.quit)
             self.write_thread.start()
             self.status_bar.showMessage('保存完毕！')
-        except Exception as e:
-            print(e)
+
 
     # 状态栏与工具栏的显示和隐藏
     def triggeredView(self, state):
@@ -376,28 +368,24 @@ class MainWindow(QWidget):
         cnt = len(self.res_pos)
         if cnt == 0 or self.focus_pos == cnt - 1:
             return
-        try:
-            self.table_view.closePersistentEditor(
-                self.model.index(self.res_pos[self.focus_pos][0], self.res_pos[self.focus_pos][1]))
-            x, y = self.res_pos[self.focus_pos + 1]
-            self.positionFocus(x, y)
-            self.focus_pos += 1
-        except Exception as e:
-            print(e)
+        self.table_view.closePersistentEditor(
+            self.model.index(self.res_pos[self.focus_pos][0], self.res_pos[self.focus_pos][1]))
+        x, y = self.res_pos[self.focus_pos + 1]
+        self.positionFocus(x, y)
+        self.focus_pos += 1
+
 
     # 向上跳转
     def upAcitonLocation(self):
         cnt = len(self.res_pos)
         if cnt == 0 or self.focus_pos == 0:
             return
-        try:
-            self.table_view.closePersistentEditor(
-                self.model.index(self.res_pos[self.focus_pos][0], self.res_pos[self.focus_pos][1]))
-            x, y = self.res_pos[self.focus_pos - 1]
-            self.positionFocus(x, y)
-            self.focus_pos -= 1
-        except Exception as e:
-            print(e)
+        self.table_view.closePersistentEditor(
+            self.model.index(self.res_pos[self.focus_pos][0], self.res_pos[self.focus_pos][1]))
+        x, y = self.res_pos[self.focus_pos - 1]
+        self.positionFocus(x, y)
+        self.focus_pos -= 1
+
 
     # 查找框隐藏
     def triggeredHideFind(self):
@@ -421,23 +409,20 @@ class MainWindow(QWidget):
         text = self.find_action_widget.line_edit_replace.text()
         if self.res_pos is None or cnt == 0:
             return
-        try:
-            x, y = self.res_pos[self.focus_pos]
-            self.model.setItem(x, y, QStandardItem(text))
-        except Exception as e:
-            print(e)
+        x, y = self.res_pos[self.focus_pos]
+        self.model.setItem(x, y, QStandardItem(text))
+
 
     # 全部匹配cell替换
     def onClickReplaceAll(self):
         cnt = len(self.res_pos)
         if self.res_pos is None or cnt == 0:
             return
-        try:
-            text = self.find_action_widget.line_edit_replace.text()
-            for x, y in self.res_pos:
-                self.model.setItem(x, y, QStandardItem(text))
-        except Exception as e:
-            print(e)
+
+        text = self.find_action_widget.line_edit_replace.text()
+        for x, y in self.res_pos:
+            self.model.setItem(x, y, QStandardItem(text))
+
 
     # 1:当前行的下方添加一行,1:当前行的上方添加一行
     def addRow(self, i):

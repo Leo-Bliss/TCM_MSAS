@@ -71,8 +71,10 @@ class ModelingWidget(QDialog):
         hlayout.setStretch(1,7)
         self.setLayout(hlayout)
         # 开始运行模型
-        self.work()
-
+        try:
+            self.work()
+        except:
+            pass
 
     #运行相应的模型
     def work(self):
