@@ -78,8 +78,10 @@ class WriteExcelThread(QThread):
         file_type = self.file_path.rsplit('.')[0]
         if file_type == 'xlsx':
             self.write_xlsx(data_list)
-        else:
+        elif file_type == 'csv':
             self.write_csv(data_list)
+        else:
+            return
 
 
     def write_xlsx(self,data_list):

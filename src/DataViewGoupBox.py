@@ -93,7 +93,7 @@ class DataViewGoupBox(QGroupBox):
     def triggeredSave(self):
         self.status_bar.showMessage('保存文件', 5000)
         file_path, _ = QFileDialog.getSaveFileName(self, '保存文件', '../data',
-                                                   'xlsx(*.xlsx);;xls(*.xls);;csv(*.csv)')
+                                                   'xlsx(*.xlsx);;xls(*.xls)')
         if file_path:
             self.write_thread = WriteExcelThread(file_path, self.model)
             self.write_thread.start_signal.connect(self.showStatus)
