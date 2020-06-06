@@ -9,21 +9,23 @@
 '''
 自定义的基础组件
 '''
-from PyQt5.QtWidgets import QHBoxLayout, QCheckBox, QLineEdit, QSpinBox, QComboBox
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QHBoxLayout, QCheckBox, QLineEdit,\
+    QSpinBox, QComboBox, QPushButton, QColorDialog, QWidget
 
 
 class CheckboxEdit(QHBoxLayout):
     '''
-    自定义组件：QcheckBox + QLineEdit
+    自定义组件：QCheckBox + QLineEdit
     '''
 
-    def __init__(self, name):
+    def __init__(self, name,text=''):
         super(CheckboxEdit, self).__init__()
         self.checkbox = QCheckBox(name)
-        self.initUI()
+        self.initUI(text)
 
-    def initUI(self):
-        self.line_edit = QLineEdit('')
+    def initUI(self,text):
+        self.line_edit = QLineEdit(text)
         self.line_edit.setVisible(self.checkbox.isChecked())
         self.addWidget(self.checkbox)
         self.addWidget(self.line_edit)
@@ -45,7 +47,7 @@ class CheckboxEdit(QHBoxLayout):
             float(num)
             return float(num) if '.' in num else int(num)
         except:
-            return 0
+            return None
 
     #输入的是一个范围
     def getRange(self):
@@ -60,10 +62,8 @@ class CheckboxEdit(QHBoxLayout):
         self.line_edit.setText(str(value))
 
     def getValue(self):
-        try:
-            return self.getNum(self.line_edit.text())
-        except:
-            return self.line_edit.text()
+        num = self.getNum(self.line_edit.text())
+        return num if num is not None else self.line_edit.text()
 
     def isChecked(self):
         return self.checkbox.isChecked()
@@ -71,7 +71,7 @@ class CheckboxEdit(QHBoxLayout):
 
 class CheckboxSpinBox(QHBoxLayout):
     '''
-        自定义组件：QcheckBox + QSpinBox
+        自定义组件：QCheckBox + QSpinBox
     '''
 
     def __init__(self, name):
@@ -109,7 +109,7 @@ class CheckboxSpinBox(QHBoxLayout):
 
 class CheckboxComBox(QHBoxLayout):
     '''
-        自定义组件：QcheckBox + QComBox
+        自定义组件：QCheckBox + QComBox
     '''
 
     def __init__(self, name):
@@ -129,7 +129,6 @@ class CheckboxComBox(QHBoxLayout):
         self.checkbox.setToolTip('勾选前方选项即可编辑')
         self.checkbox.stateChanged.connect(self.changeCheckboxStatus)
     def changeCheckboxStatus(self):
-        # self.combox.setEnabled(self.checkbox.isChecked())
         self.combox.setVisible(self.checkbox.isChecked())
 
 
@@ -144,3 +143,62 @@ class CheckboxComBox(QHBoxLayout):
 
     def setDefualtValue(self, index):
         self.combox.setCurrentIndex(index)
+
+class LineEditButton(QHBoxLayout):
+    '''
+    自定义组件，QLineEdit +  QPushuButton
+    主要用于颜色选择，单击按钮弹出颜色选择对话框
+    '''
+
+    def __init__(self,init_color='#59a869'):
+        super(LineEditButton,self).__init__()
+        self.initUI()
+
+        self.initColor(init_color)
+
+    def initUI(self):
+        self.line_edit = QLineEdit()
+        self.button = QPushButton()
+        self.button.setToolTip('单击选择颜色')
+        self.button.setFixedSize(12,12)
+        self.addWidget(self.line_edit)
+        self.addWidget(self.button)
+        self.setSpacing(5)
+        self.setStretch(0,4)
+        self.setStretch(1,1)
+        self.button.clicked.connect(self.onClickedBtn)
+
+    def onClickedBtn(self):
+        color = QColorDialog().getColor()
+        color_style = 'background-color:{};border-radius:2px;'.format(color.name())
+        self.button.setStyleSheet(color_style)
+        self.line_edit.setText(color.name())
+
+    def initColor(self,color):
+        self.line_edit.setText(color)
+        color_style = 'background-color:{};border-radius:2px;'.format(color)
+        self.button.setStyleSheet(color_style)
+
+    def getText(self):
+        return self.line_edit.text()
+
+    def hideWidget(self):
+        self.line_edit.hide()
+        self.button.hide()
+
+    def showWidget(self):
+        self.line_edit.show()
+        self.button.show()
+
+
+
+if __name__=='__main__':
+    import sys
+    from PyQt5.QtWidgets import QApplication,QWidget
+    app = QApplication(sys.argv)
+    window = QWidget()
+    window.setLayout(LineEditButton())
+    window.show()
+    sys.exit(app.exec_())
+
+
