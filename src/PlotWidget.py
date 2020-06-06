@@ -7,7 +7,7 @@
 # @Blog    :    https://blog.csdn.net/tb_youth
 
 
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QMessageBox
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QPushButton
 import matplotlib.pyplot as wd_plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -80,8 +80,8 @@ class PlotWidget(QWidget):
             'plot_marker_color_alpha': 1
         }
         other_parameters_dict = {
-            'title':'绘图示例',
-            'lable':'示例1',
+            'title':'绘图示例效果图',
+            'lable':'示例',
             'xlabel':'x',
             'ylabel':'y',
             'point_distance':(0.15,0)
@@ -94,13 +94,30 @@ class PlotWidget(QWidget):
         self.general_parameters_dict, self.other_parameters_dict = general_parameters_dict, other_parameters_dict
 
     def onClickedContinueDrawButton(self):
-        self.draw()
+        if self.checkPlotData():
+            self.draw()
 
     def onClickedReDrawButton(self):
-        self.figure.clear()
-        self.canvas.draw()
-        self.draw()
+        if self.checkPlotData():
+            self.figure.clear()
+            self.canvas.draw()
+            self.draw()
 
+
+    def checkPlotData(self):
+        len_y_list = len(self.y_list)
+        len_x_list = len(self.x_list)
+        if  len_y_list == 0:
+            QMessageBox.information(self, "关于", '您还未选择绘图数据！\n\n请到绘图数据选项卡用鼠标中选择绘图数据。')
+            return None
+
+        if  len_x_list and len_x_list != len_y_list:
+            reply = QMessageBox.question(self,'绘图确认','您选择的自定义X轴刻度标签个数和所选绘图数据长度不一致,'
+                                           '确认绘制将采用系统默认X轴刻度标签。\n确认？',QMessageBox.Yes |
+                                     QMessageBox.No, QMessageBox.No)
+
+            return 1024 if reply == QMessageBox.Yes else None
+        return 1024
 
 
     def judge_num(self, num):
@@ -136,76 +153,73 @@ class PlotWidget(QWidget):
         self.wd_plt.bar(self.x_list,self.y_list,width=bar_width,color=bar_color,alpha=bar_alpha)
 
     def draw(self):
-        try:
-            # 这里开始按照matlibplot的方式绘图
-            # 垂直网格线
-            if self.other_parameters_dict.get('show_y_gridline', None):
-                self.wd_plt.grid(axis='y', color=self.other_parameters_dict.get('gridline_color', 'r'),
-                                 linestyle=self.other_parameters_dict.get('gridline_style', '-'), linewidth=1)
+        # 这里开始按照matlibplot的方式绘图
+        # 垂直网格线
+        if self.other_parameters_dict.get('show_y_gridline', None):
+            self.wd_plt.grid(axis='y', color=self.other_parameters_dict.get('gridline_color', 'r'),
+                             linestyle=self.other_parameters_dict.get('gridline_style', '-'), linewidth=1)
 
-            # 水平网格项
-            if self.other_parameters_dict.get('show_x_gridline', None):
-                self.wd_plt.grid(axis='x', color=self.other_parameters_dict.get('gridline_color', 'r'),
-                                 linestyle=self.other_parameters_dict.get('gridline_style'), linewidth=1)
-            # init_xticks
-            if len(self.x_list) != len(self.y_list):
-                self.x_list = list(range(1, len(self.y_list) + 1))
+        # 水平网格项
+        if self.other_parameters_dict.get('show_x_gridline', None):
+            self.wd_plt.grid(axis='x', color=self.other_parameters_dict.get('gridline_color', 'r'),
+                             linestyle=self.other_parameters_dict.get('gridline_style'), linewidth=1)
+        # init_xticks
+        if len(self.x_list) != len(self.y_list):
+            self.x_list = list(range(1, len(self.y_list) + 1))
 
-            # xlim,ylim
-            y_lim = self.other_parameters_dict.get('ylim', None)
-            if y_lim:
-                self.wd_plt.ylim(y_lim)
-            x_lim = self.other_parameters_dict.get('xlim', None)
-            if x_lim:
-                self.wd_plt.xlim(x_lim)
+        # xlim,ylim
+        y_lim = self.other_parameters_dict.get('ylim', None)
+        if y_lim:
+            self.wd_plt.ylim(y_lim)
+        x_lim = self.other_parameters_dict.get('xlim', None)
+        if x_lim:
+            self.wd_plt.xlim(x_lim)
 
-            self.plot_type = self.general_parameters_dict.get('plot_type',0)
-            if self.plot_type == 0:
-                self.drawLine()
-            elif self.plot_type == 1:
-                self.drawScatter()
-            elif self.plot_type == 2:
-                self.drawColumnBar()
+        self.plot_type = self.general_parameters_dict.get('plot_type', 0)
+        if self.plot_type == 0:
+            self.drawLine()
+        elif self.plot_type == 1:
+            self.drawScatter()
+        elif self.plot_type == 2:
+            self.drawColumnBar()
 
-            # 调整ticks颜色，角度
-            xticks_color = self.other_parameters_dict.get('xticks_color', 'k')
-            xticks_rotation = self.other_parameters_dict.get('xticks_rotation',0)
-            yticks_color = self.other_parameters_dict.get('yticks_color', 'k')
-            yticks_rotation = self.other_parameters_dict.get('yticks_rotation',0)
-            self.wd_plt.xticks(color=xticks_color, rotation=xticks_rotation)
-            self.wd_plt.yticks(color=yticks_color, rotation=yticks_rotation)
+        # 调整ticks颜色，角度
+        xticks_color = self.other_parameters_dict.get('xticks_color', 'k')
+        xticks_rotation = self.other_parameters_dict.get('xticks_rotation', 0)
+        yticks_color = self.other_parameters_dict.get('yticks_color', 'k')
+        yticks_rotation = self.other_parameters_dict.get('yticks_rotation', 0)
+        self.wd_plt.xticks(color=xticks_color, rotation=xticks_rotation)
+        self.wd_plt.yticks(color=yticks_color, rotation=yticks_rotation)
 
-            # 图形label显示
-            if self.other_parameters_dict.get('lable', None):
-                self.wd_plt.legend()
+        # 图形label显示
+        if self.other_parameters_dict.get('lable', None):
+            self.wd_plt.legend()
 
-            # 标上数值
-            step_y, step_x = self.other_parameters_dict.get('point_distance',(None,None))
-            if step_x is not None or step_y is not None:
-                if not isinstance(self.x_list[0],str):
-                    for x, y in zip(self.x_list, self.y_list):
-                        self.wd_plt.text(x+step_x, y + step_y, '%s' % y, ha='center')
-                else:
-                    for x, y in zip(self.x_list, self.y_list):
-                        self.wd_plt.text(x, y + step_y, '%s' % y, ha='center')
+        # 标上数值
+        step_y, step_x = self.other_parameters_dict.get('point_distance', (None, None))
+        if step_x is not None or step_y is not None:
+            if not isinstance(self.x_list[0], str):
+                for x, y in zip(self.x_list, self.y_list):
+                    self.wd_plt.text(x + step_x, y + step_y, '%s' % y, ha='center')
+            else:
+                for x, y in zip(self.x_list, self.y_list):
+                    self.wd_plt.text(x, y + step_y, '%s' % y, ha='center')
 
-            # 设置标题
-            tilte = self.other_parameters_dict.get('title', None)
-            if tilte:
-                self.wd_plt.title(tilte, fontsize=12)
+        # 设置标题
+        tilte = self.other_parameters_dict.get('title', None)
+        if tilte:
+            self.wd_plt.title(tilte, fontsize=12)
 
-            # x,y轴label
-            x_label = self.other_parameters_dict.get('xlabel', None)
-            y_label = self.other_parameters_dict.get('ylabel', None)
-            if x_label:
-                self.wd_plt.xlabel(x_label, fontsize=15)
-            if y_label:
-                self.wd_plt.ylabel(y_label, fontsize=15)
+        # x,y轴label
+        x_label = self.other_parameters_dict.get('xlabel', None)
+        y_label = self.other_parameters_dict.get('ylabel', None)
+        if x_label:
+            self.wd_plt.xlabel(x_label, fontsize=15)
+        if y_label:
+            self.wd_plt.ylabel(y_label, fontsize=15)
 
-            # 按照matlibplot的方式绘制之后，在窗口上绘制
-            self.canvas.draw()
-        except Exception as e:
-            print(e)
+        # 按照matlibplot的方式绘制之后，在窗口上绘制
+        self.canvas.draw()
 
 
 if __name__ == '__main__':
