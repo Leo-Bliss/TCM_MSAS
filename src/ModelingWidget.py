@@ -71,10 +71,8 @@ class ModelingWidget(QDialog):
         hlayout.setStretch(1,7)
         self.setLayout(hlayout)
         # 开始运行模型
-        try:
-            self.work()
-        except:
-            pass
+        self.work()
+
 
     #运行相应的模型
     def work(self):
@@ -156,20 +154,15 @@ class ModelingWidget(QDialog):
             self.brief_widget.appendText(line)
         self.brief_widget.appendText('-'*55)
 
-
     def endRun(self):
-        # 不会更好的终止方案。。。
-        try:
-            if self.worker_thread:
-                self.worker_thread.terminate()
-            if self.timer_thread:
-                self.timer_thread.is_running = False
-            self.brief_widget.setStatus('已经终止建模...')
-            self.brief_widget.progressbar.close()
-            self.brief_widget.termination_btn.setEnabled(False)
-            #self.res_widget.hideRuningBar()
-        except Exception as e:
-            print(e)
+        if self.worker_thread:
+            self.worker_thread.terminate()
+        if self.timer_thread:
+            self.timer_thread.is_running = False
+        self.brief_widget.setStatus('已经终止建模...')
+        self.brief_widget.progressbar.close()
+        self.brief_widget.termination_btn.setEnabled(False)
+
 
 
     def hideProgressBar(self):
