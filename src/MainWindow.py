@@ -84,17 +84,21 @@ class MainWindow(QWidget):
         self.clear_all_action = QAction('清空(Q)')
 
         # 模型菜单下的子菜单
+        ## 数据预处理模型
         self.dsa_pls_action = self.model_menu.addAction('DSA-PLS')
         self.sbm_pls_action = self.model_menu.addAction('SBMPLS')
         self.model_menu.addSeparator()
+        ## 特征选择模型
         self.pls_cf_action = self.model_menu.addAction('PLSCF')
         self.la_pls_action = self.model_menu.addAction('LAPLS')
         self.gra_pls_action = self.model_menu.addAction('GRA-PLS')
         self.model_menu.addSeparator()
+        ## 非线性特征提取模型
         self.rbm_pls_action = self.model_menu.addAction('RBM-PLS')
         self.sea_pls_action = self.model_menu.addAction('SEA-PLS')
         self.dbn_pls_action = self.model_menu.addAction('DBN-PLS')
         self.model_menu.addSeparator()
+        ## 非线性回归模型
         self.mtree_pls_action = self.model_menu.addAction('Mtree-PLS')
         self.rf_pls_action = self.model_menu.addAction('RF-PLS')
         self.pls_s_da_action = self.model_menu.addAction('PLS-S-DA')
@@ -216,7 +220,7 @@ class MainWindow(QWidget):
         self.delColumn_action.triggered.connect(
             lambda: self.model.removeColumn(self.table_view.currentIndex().column()))
         self.customContextMenuRequested.connect(self.rightMenuShow)
-        # 算法模型
+        # 算法模型单击触发事件
         self.dsa_pls_action.triggered.connect(lambda: self.commonTriggered(0, 'DSA-PLS'))
         self.la_pls_action.triggered.connect(lambda: self.commonTriggered(1, 'LAPLS'))
         self.rbm_pls_action.triggered.connect(lambda: self.commonTriggered(2, 'RBM-PLS'))
@@ -228,6 +232,22 @@ class MainWindow(QWidget):
         self.pls_cf_action.triggered.connect(lambda: self.commonTriggered(8, 'PLS-CF'))
         self.sbm_pls_action.triggered.connect(lambda: self.commonTriggered(9, 'SBMPLS'))
         self.gra_pls_action.triggered.connect(lambda: self.commonTriggered(10, 'GRA-PLS'))
+
+        #鼠标划过显示算法模型类型
+        self.dsa_pls_action.hovered.connect(lambda: self.status_bar.showMessage('数据预处理模型', 1000))
+        self.sbm_pls_action.hovered.connect(lambda: self.status_bar.showMessage('数据预处理模型', 1000))
+
+        self.pls_cf_action.hovered.connect(lambda: self.status_bar.showMessage('特征选择模型', 1000))
+        self.la_pls_action.hovered.connect(lambda: self.status_bar.showMessage('特征选择模型', 1000))
+        self.gra_pls_action.hovered.connect(lambda: self.status_bar.showMessage('特征选择模型', 1000))
+
+        self.rbm_pls_action.hovered.connect(lambda: self.status_bar.showMessage('非线性特征提取模型', 1000))
+        self.sea_pls_action.hovered.connect(lambda: self.status_bar.showMessage('非线性特征提取模型', 1000))
+        self.dbn_pls_action.hovered.connect(lambda: self.status_bar.showMessage('非线性特征提取模型', 1000))
+
+        self.mtree_pls_action.hovered.connect(lambda: self.status_bar.showMessage('非线性回归模型', 1000))
+        self.rf_pls_action.hovered.connect(lambda: self.status_bar.showMessage('非线性回归模型', 1000))
+        self.pls_s_da_action.hovered.connect(lambda: self.status_bar.showMessage('非线性回归模型', 1000))
 
     def initVarList(self, var_list):
         self.var_list = var_list
@@ -241,7 +261,7 @@ class MainWindow(QWidget):
 
     def setParameter(self, id, dic):
         self.all_dict = dic
-        print(self.all_dict)
+        # print(self.all_dict)
         self.modeling_widget = ModelingWidget(self.model, self.all_dict, id,self)
         self.modeling_widget.show()
 
@@ -273,10 +293,6 @@ class MainWindow(QWidget):
         QApplication.setStyle(QStyleFactory.keys()[2])
         self.setWindowIcon(QIcon('../imgs/school_logo.png'))
 
-        # style_file = './style.qss'
-        # qssStyle = CommonHelper.readQSS(style_file)
-        # # print(qssStyle)
-        # self.setStyleSheet(qssStyle)
 
     # 显示状态栏消息
     def showStatus(self, msg):
@@ -284,7 +300,7 @@ class MainWindow(QWidget):
 
     # 接收线程加载的数据
     def loadData(self, model):
-        print('load...')
+        # print('load...')
         self.model = model
         self.table_view.setModel(self.model)
         qApp.processEvents()
@@ -305,11 +321,6 @@ class MainWindow(QWidget):
 
     def triggeredSave(self):
         self.status_bar.showMessage('保存文件', 5000)
-        '''
-        由于导出接口的原因，暂时只支持xlsx格式导出；
-        否则容易出现乱码问题。
-        ;;csv(*.csv);;xls(*.xls)这两种到时再处理
-        '''
         file_path, _ = QFileDialog.getSaveFileName(self, '保存文件', '../data',
                                                    'xlsx(*.xlsx);;csv(*.csv)')
         if file_path:
