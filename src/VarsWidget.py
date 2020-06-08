@@ -169,14 +169,12 @@ class VarTabWidget(QWidget):
         self.sendData(sender,reciever)
 
     def sendData(self, sender, reciever):
-        try:
-            item_list = sender.selectedItems()
-            for item in item_list:
-                reciever.addItem(item.text())
-                sender.takeItem(sender.row(item))
-                self.initCheckBox()
-        except Exception as e:
-            print(e)
+        item_list = sender.selectedItems()
+        for item in item_list:
+            reciever.addItem(item.text())
+            sender.takeItem(sender.row(item))
+            self.initCheckBox()
+
 
     def checkBoxStatus(self):
         sender = self.sender()
@@ -191,7 +189,7 @@ class VarTabWidget(QWidget):
             else:
                 self.list_widget2.clearSelection()
         else:
-            if self.checkBox1.isChecked():
+            if self.checkBox3.isChecked():
                 self.list_widget3.selectAll()
             else:
                 self.list_widget3.clearSelection()
