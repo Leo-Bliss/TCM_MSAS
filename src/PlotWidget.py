@@ -108,11 +108,11 @@ class PlotWidget(QWidget):
         len_y_list = len(self.y_list)
         len_x_list = len(self.x_list)
         if  len_y_list == 0:
-            QMessageBox.information(self, "关于", '您还未选择绘图数据！\n\n请到绘图数据选项卡用鼠标中选择绘图数据。')
+            QMessageBox.information(self, "关于", '您还未选择绘图数据！\n\n请到 绘图数据选项卡 用鼠标 选择绘图数据。')
             return None
 
         if  len_x_list and len_x_list != len_y_list:
-            reply = QMessageBox.question(self,'绘图确认','您选择的自定义X轴刻度标签个数和所选绘图数据长度不一致,'
+            reply = QMessageBox.question(self,'绘图确认','您选择的自定义X轴刻度标签个数 和 所选绘图数据长度 不一致,'
                                            '确认绘制将采用系统默认X轴刻度标签。\n确认？',QMessageBox.Yes |
                                      QMessageBox.No, QMessageBox.No)
 

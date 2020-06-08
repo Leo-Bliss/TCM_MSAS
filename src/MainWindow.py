@@ -124,7 +124,9 @@ class MainWindow(QWidget):
         self.view_menu.addAction(self.statu_view)
 
         # 帮助菜单下的子菜单
+        self.help_action = self.help_menu.addAction('帮助')
         self.about_action = self.help_menu.addAction('关于')
+        self.update_action = self.help_menu.addAction('检查更新')
 
         # 工具栏
         self.tool_bar = QToolBar()
