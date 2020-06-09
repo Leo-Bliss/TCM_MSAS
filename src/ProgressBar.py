@@ -17,10 +17,12 @@ from PyQt5.QtWidgets import QWidget
 
 
 class CircleProgressBar(QWidget):
-
-    Color = QColor(24, 189, 155)  # 圆圈颜色
-    Clockwise = True  # 顺时针还是逆时针
-    Delta = 36  #角度步长，可以调节转速
+    # 圆圈颜色
+    Color = QColor(24, 189, 155)
+    # 顺时针
+    Clockwise = True
+    # 角度步长，可以调节转速
+    Delta = 36
 
     def __init__(self, *args, color=None, clockwise=True, **kwargs):
         super(CircleProgressBar, self).__init__(*args, **kwargs)

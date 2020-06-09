@@ -9,9 +9,8 @@
 '''
 自定义的基础组件
 '''
-from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QHBoxLayout, QCheckBox, QLineEdit,\
-    QSpinBox, QComboBox, QPushButton, QColorDialog, QWidget
+    QSpinBox, QComboBox, QPushButton, QColorDialog
 
 
 class CheckboxEdit(QHBoxLayout):

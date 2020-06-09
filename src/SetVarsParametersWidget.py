@@ -93,7 +93,7 @@ class SetParameterDialog(QDialog):
         var_dict = self.tab_widegt.tab1.getVarDict()
         # 非法操作处理：变量未设置时
         if var_dict == None:
-            QMessageBox.critical(self, '错误', '您设置的变量有问题，请返回检查~', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            QMessageBox.critical(self, '错误', '您设置的变量有问题，请返回检查!', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
             return
         self.ok_button.setEnabled(False)
         parameter_dict,parameter_name_dict = self.tab_widegt.tab2.getParameterDict()

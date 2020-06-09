@@ -28,9 +28,9 @@ class PlotWidget(QWidget):
         self.resize(1200, 800)
         self.setWindowTitle('建模分析')
         self.continue_draw_btn = QPushButton("继续绘制")
-        self.continue_draw_btn.setToolTip('将在现在图形基础上继续绘制~')
+        self.continue_draw_btn.setToolTip('将在现在图形基础上继续绘制')
         self.reDraw_btn = QPushButton("重新绘制")
-        self.reDraw_btn.setToolTip('将清除原有图形重新绘制~')
+        self.reDraw_btn.setToolTip('将清除原有图形重新绘制')
 
         self.wd_plt = wd_plt
         # 中文乱码处理
