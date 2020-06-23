@@ -20,7 +20,7 @@ class PlotSettingWidget(QWidget):
 
     def initUI(self):
         self.resize(800, 800)
-        plot_type_list = ['折线图', '散点图', '柱状图', '箱线图']
+        plot_type_list = ['折线图', '散点图', '柱状图']
         color_list = ['r', 'g', 'b', 'y', 'k', 'w']
         line_type_list = ['--', '-', '-.', ':']
         mark_type_list = ['*', '.', '+','o', 'x', '^', 'v', '<', '>']
@@ -197,6 +197,7 @@ class PlotSettingWidget(QWidget):
         self.line_color_linEdit.hideWidget()
         self.line_width_lable.setText('散点大小')
         self.line_width_spinbox.setValue(20)
+        self.mark_color_lable.setText('散点颜色')
         self.mark_type_label.setText('散点样式')
         pass
 
@@ -223,6 +224,7 @@ class PlotSettingWidget(QWidget):
         self.line_type_label.setVisible(True)
         self.line_type_combox.setVisible(True)
         self.line_color_lable.setVisible(True)
+        self.mark_color_lable.setText('标记颜色')
         self.line_width_lable.setText('线条宽度')
         self.line_width_spinbox.setValue(1)
         self.mark_type_label.setText('标记样式')
