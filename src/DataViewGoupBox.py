@@ -18,13 +18,7 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
 from src.MyThreads import ReaderExcelThread,WriteExcelThread
 
-'''
-这里的表格数据不支持自定义的增删改（之前写了，快捷键操作出现bug），
-而且这里支持的话也是没有意义的，
-现在及时醒悟：
-生活已经那么难了，何必为难自己，
-多花点时间做有意义的事情！
-'''
+
 
 
 class DataViewGoupBox(QGroupBox):
