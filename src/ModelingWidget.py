@@ -71,10 +71,8 @@ class ModelingWidget(QDialog):
         hlayout.setStretch(1,7)
         self.setLayout(hlayout)
         # 开始运行模型
-        try:
-            self.work()
-        except:
-            pass
+        self.work()
+
 
     #运行相应的模型
     def work(self):
@@ -93,8 +91,6 @@ class ModelingWidget(QDialog):
         self.brief_widget.showTimer(mgs)
 
     def showProgressBar(self):
-        self.brief_widget.progressbar.show()
-        self.brief_widget.status_bar.show()
         alg_dict = {
             0: 'DSA-PLS',
             1: 'LAPLS',
@@ -170,11 +166,11 @@ class ModelingWidget(QDialog):
     def hideProgressBar(self):
         self.brief_widget.setStatus('建模已完成...')
         self.brief_widget.termination_btn.setVisible(False)
+        self.res_widget.hideRuningBar()
         if self.show_data_dict:
             data_converter = DataConverter()
             for key,value in self.show_data_dict.items():
                 data_list = data_converter.DataFrame_to_list2(value)
-                self.res_widget.hideRuningBar()
                 self.res_widget.addTableView(key,data_list)
         self.showVarInfo()
         self.brief_widget.appendText('-'*55)
