@@ -20,7 +20,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QMenu, qApp, QShortcut
 from PyQt5.QtWidgets import QTableView, QFileDialog, QStyleFactory
 from PyQt5.QtWidgets import QMenuBar, QToolBar, QStatusBar, QAction
 from PyQt5.QtWidgets import QVBoxLayout
-from PyQt5.QtGui import QStandardItemModel, QPixmap, QIcon
+from PyQt5.QtGui import QStandardItemModel, QPixmap, QIcon,QFont
 from PyQt5.QtGui import QStandardItem, QColor, QCursor, QKeySequence
 from PyQt5.QtCore import Qt, pyqtSignal, QObject
 
@@ -60,6 +60,10 @@ class MainWindow(QWidget):
 
         # 菜单栏
         self.menu_bar = QMenuBar()
+        font = QFont()
+        font.setPointSizeF(10)
+        self.menu_bar.setFont(font)
+
         self.file_menu = self.menu_bar.addMenu('文件')
         self.edit_menu = self.menu_bar.addMenu('编辑')
         self.model_menu = self.menu_bar.addMenu('模型')
@@ -360,21 +364,19 @@ class MainWindow(QWidget):
         self.res_pos = []
         flag = 0
         rows, columns = self.model.rowCount(), self.model.columnCount()
-        try:
-            for row in range(rows):
-                for column in range(columns):
-                    if text == self.model.index(row, column).data():
-                        self.res_pos.append((row, column))
-                        item = self.model.item(row, column)
-                        item.setBackground(QColor(255, 255, 0))
-                        item.setForeground(QColor(255, 0, 0))
-                        # 转到到第一个匹配值的位置，并处于可编辑状态
-                        if not flag:
-                            flag = 1
-                            self.positionFocus(row, column)
-                            self.focus_pos = 0
-        except Exception as e:
-            print(e)
+        for row in range(rows):
+            for column in range(columns):
+                if text == self.model.index(row, column).data():
+                    self.res_pos.append((row, column))
+                    item = self.model.item(row, column)
+                    item.setBackground(QColor(255, 255, 0))
+                    item.setForeground(QColor(255, 0, 0))
+                    # 转到到第一个匹配值的位置，并处于可编辑状态
+                    if not flag:
+                        flag = 1
+                        self.positionFocus(row, column)
+                        self.focus_pos = 0
+
 
     # 向下跳转
     def downAcitonLocation(self):
