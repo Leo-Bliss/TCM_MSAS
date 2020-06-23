@@ -38,7 +38,7 @@ class  FindWidget(QWidget):
         self.search_action.setShortcut(QKeySequence(QKeySequence(Qt.Key_Return)))
         self.up_aciton = QAction('向上')
         self.down_aciton = QAction('向下')
-        self.close_aciton= QAction('关闭')
+        self.close_aciton= QAction('关闭(ESC)')
         self.tool_bar.addAction(self.search_action)
         self.tool_bar.addAction(self.down_aciton)
         self.tool_bar.addAction(self.up_aciton)
