@@ -28,7 +28,7 @@ from src.SetVarsParametersWidget import SetParameterDialog
 from src.FindWidget import FindWidget
 from src.MyThreads import ReaderExcelThread, WriteExcelThread, InitVarListThread
 from src.ModelingWidget import ModelingWidget
-
+from src import  IconQrc
 
 # 自定义的信号类，用于窗口通信
 class MySignal(QObject):
@@ -53,7 +53,7 @@ class MainWindow(QWidget):
         # self.resize(1400,900)
         # self.setCenter()
         self.showMaximized()
-        self.setWindowTitle('江中微型统计分析系统')
+        self.setWindowTitle('微型统计分析系统')
         self.res_pos = []
         self.focus_pos = None
         self.signal = MySignal()
@@ -283,17 +283,17 @@ class MainWindow(QWidget):
     # 美化，icon
     def prettifyUI(self):
         icon = QIcon()
-        icon.addPixmap(QPixmap('../imgs/打开.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap(':/imgs/打开.png'), QIcon.Normal, QIcon.Off)
         self.open_action.setIcon(icon)
-        icon.addPixmap(QPixmap('../imgs/保存.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap(':/imgs/保存.png'), QIcon.Normal, QIcon.Off)
         self.save_action.setIcon(icon)
-        icon.addPixmap(QPixmap('../imgs/剪切.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap(':/imgs/剪切.png'), QIcon.Normal, QIcon.Off)
         self.cut_action.setIcon(icon)
-        icon.addPixmap(QPixmap('../imgs/复制.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap(':/imgs/复制.png'), QIcon.Normal, QIcon.Off)
         self.copy_action.setIcon(icon)
-        icon.addPixmap(QPixmap('../imgs/粘贴.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap(':/imgs/粘贴.png'), QIcon.Normal, QIcon.Off)
         self.paste_action.setIcon(icon)
-        icon.addPixmap(QPixmap('../imgs/查找1.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap(':/imgs/查找1.png'), QIcon.Normal, QIcon.Off)
         self.find_action.setIcon(icon)
         # 界面风格，logo
         QApplication.setStyle(QStyleFactory.keys()[2])

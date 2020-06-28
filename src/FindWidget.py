@@ -14,6 +14,8 @@ from PyQt5.QtWidgets import QApplication, QWidget, QToolBar, QAction, QPushButto
 from PyQt5.QtWidgets import QSizePolicy,QLineEdit,QHBoxLayout
 from PyQt5.QtGui import QPixmap,QIcon,QKeySequence
 from PyQt5.QtCore import Qt
+from src import  IconQrc
+
 
 
 class  FindWidget(QWidget):
@@ -66,13 +68,13 @@ class  FindWidget(QWidget):
         self.close_aciton.triggered.connect(self.triggeredClose)
 
         icon = QIcon()
-        icon.addPixmap(QPixmap('../imgs/查找.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap(':/imgs/查找.png'), QIcon.Normal, QIcon.Off)
         self.search_action.setIcon(icon)
-        icon.addPixmap(QPixmap('../imgs/向下.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap(':/imgs/向下.png'), QIcon.Normal, QIcon.Off)
         self.down_aciton.setIcon(icon)
-        icon.addPixmap(QPixmap('../imgs/向上.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap(':/imgs/向上.png'), QIcon.Normal, QIcon.Off)
         self.up_aciton.setIcon(icon)
-        icon.addPixmap(QPixmap('../imgs/关闭.png'), QIcon.Normal, QIcon.Off)
+        icon.addPixmap(QPixmap(':/imgs/关闭.png'), QIcon.Normal, QIcon.Off)
         self.close_aciton.setIcon(icon)
 
     def triggeredClose(self):
