@@ -62,7 +62,6 @@ class SetParameterDialog(QDialog):
     def initUI(self,id,var_list):
         self.setWindowTitle('参数设置')
         self.setWindowFlags(Qt.Window|Qt.WindowCloseButtonHint)
-        self.setWindowIcon(QIcon('../imgs/school_logo.png'))
         self.resize(600,500)
         self.id = id
         self.tab_widegt = PramaeterTabWidget(self.id,var_list)

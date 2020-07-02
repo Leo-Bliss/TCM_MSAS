@@ -38,7 +38,6 @@ class ModelingWidget(QDialog):
         self.resize(1300,800)
         QApplication.setStyle(QStyleFactory.keys()[2])
         self.setWindowFlags(Qt.Window|Qt.WindowMinimizeButtonHint|Qt.WindowMaximizeButtonHint|Qt.WindowCloseButtonHint)
-        self.setWindowIcon(QIcon('../imgs/school_logo.png'))
         self.setWindowTitle('建模分析')
         self.timer_thread = None
         self.worker_thread = None

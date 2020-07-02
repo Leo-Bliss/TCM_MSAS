@@ -16,7 +16,7 @@ MSAS: Mini Statistical Analysis System
 '''
 
 import sys, csv, io
-from PyQt5.QtWidgets import QApplication, QWidget, QMenu, qApp, QShortcut
+from PyQt5.QtWidgets import QApplication, QWidget, QMenu, qApp, QShortcut, QMessageBox
 from PyQt5.QtWidgets import QTableView, QFileDialog, QStyleFactory
 from PyQt5.QtWidgets import QMenuBar, QToolBar, QStatusBar, QAction
 from PyQt5.QtWidgets import QVBoxLayout
@@ -28,6 +28,7 @@ from src.SetVarsParametersWidget import SetParameterDialog
 from src.FindWidget import FindWidget
 from src.MyThreads import ReaderExcelThread, WriteExcelThread, InitVarListThread
 from src.ModelingWidget import ModelingWidget
+from src.AboutWidget import AboutWidget
 from src import  IconQrc
 
 # 自定义的信号类，用于窗口通信
@@ -216,6 +217,12 @@ class MainWindow(QWidget):
         self.clear_all_action.triggered.connect(self.triggeredClearAll)
         self.cut_action.triggered.connect(self.triggeredCut)
         self.select_all_action.triggered.connect(self.table_view.selectAll)
+
+        # 关于
+        self.help_action.triggered.connect(self.triggeredHelp)
+        self.about_action.triggered.connect(self.triggeredAbout)
+        self.update_action.triggered.connect(self.triggeredUpdate)
+
         # 表格
         self.addRow_down_action.triggered.connect(lambda: self.addRow(1))
         self.addColumn_right_action.triggered.connect(lambda: self.addColumn(1))
@@ -226,6 +233,7 @@ class MainWindow(QWidget):
         self.delColumn_action.triggered.connect(
             lambda: self.model.removeColumn(self.table_view.currentIndex().column()))
         self.customContextMenuRequested.connect(self.rightMenuShow)
+
         # 算法模型单击触发事件
         self.dsa_pls_action.triggered.connect(lambda: self.commonTriggered(0, 'DSA-PLS'))
         self.la_pls_action.triggered.connect(lambda: self.commonTriggered(1, 'LAPLS'))
@@ -297,7 +305,7 @@ class MainWindow(QWidget):
         self.find_action.setIcon(icon)
         # 界面风格，logo
         QApplication.setStyle(QStyleFactory.keys()[2])
-        self.setWindowIcon(QIcon('../imgs/school_logo.png'))
+        self.setWindowIcon(QIcon('../imgs/logo.ico'))
 
 
     # 显示状态栏消息
@@ -459,9 +467,9 @@ class MainWindow(QWidget):
         if selection:
             rows = sorted(index.row() for index in selection)
             columns = sorted(index.column() for index in selection)
-            rowcount = rows[-1] - rows[0] + 1
-            colcount = columns[-1] - columns[0] + 1
-            table = [[''] * colcount for _ in range(rowcount)]
+            row_count = rows[-1] - rows[0] + 1
+            col_count = columns[-1] - columns[0] + 1
+            table = [['' for _ in range(col_count) ] for _ in range(row_count)]
             for index in selection:
                 row = index.row() - rows[0]
                 column = index.column() - columns[0]
@@ -513,6 +521,38 @@ class MainWindow(QWidget):
         new_left = (screen.width() - size.width()) / 2
         new_top = (screen.height() - size.height()) / 2
         self.move(new_left, new_top)
+
+
+    def triggeredAbout(self):
+        '''
+        单击关于弹出about窗口
+        显示软件信息
+        :return:
+        '''
+        about_widget = AboutWidget(self)
+        about_widget.exec_()
+
+    def triggeredHelp(self):
+        '''
+        单击帮助弹出help窗口
+        跳转到软件使用说明页面
+        :return:
+        '''
+        QMessageBox.about(self,'帮助','请查看本地MFDAS_PLS使用手册\n或前往官网（https://jsj.jxutcm.edu.cn）\n搜索MFDAS_PLS查看下载使用手册')
+
+
+    def triggeredUpdate(self):
+        '''
+        单击更新弹出update窗口
+        显示软件版本信息,暂时前往
+        江西中医药大学计算机官网（https://jsj.jxutcm.edu.cn）
+        找本软件最新版本下载
+        :return:
+        '''
+        QMessageBox.about(self, '软件更新',
+                          '当前版本：v0.3\n\n在线更新功能暂未上线\n\n如需更新，'
+                          '请前往官网搜索MFDAS_PLS查看并下载最新版本\n\n官网：https://jsj.jxutcm.edu.cn')
+
 
 
 
