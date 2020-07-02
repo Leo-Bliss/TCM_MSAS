@@ -53,7 +53,7 @@ class MainWindow(QWidget):
         # self.resize(1400,900)
         # self.setCenter()
         self.showMaximized()
-        self.setWindowTitle('微型统计分析系统')
+        self.setWindowTitle('优化偏最小二乘的多功能数据分析系统')
         self.res_pos = []
         self.focus_pos = None
         self.signal = MySignal()
