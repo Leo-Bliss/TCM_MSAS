@@ -103,8 +103,28 @@ class DataViewGoupBox(QGroupBox):
         except:
             return data
 
-    #得到选中的数据
+
     def getSelectData(self):
+        '''
+        得到选中的数据：
+        目前返回的绘图数据只支持绘制部分图形（折线，散点，柱状图）
+        通用性不强，不适合绘制某些类型的图形（比如箱线图），待修改，
+        （可参考下面代码【返回一个二维矩阵】来思考如何修改）
+	    select_indexs = self.table_view.selectedIndexes()
+        if select_indexs:
+            rows = sorted(index.row() for index in select_indexs)
+            columns = sorted(index.column() for index in select_indexs)
+            row_count = rows[-1] - rows[0] + 1
+            col_count = columns[-1] - columns[0] + 1
+            table = [[0 for _ in range(col_count)] for _ in range(row_count)]
+            for index in select_indexs:
+                row = index.row() - rows[0]
+                column = index.column() - columns[0]
+                table[row][column] = self.getCell(index.data())
+            print(table)
+            return table
+        :return:
+        '''
         select_indexs = self.table_view.selectedIndexes()
         data_list = [self.getCell(index.data()) for index in select_indexs if index.data()]
         return data_list
