@@ -10,7 +10,6 @@
 关于本软件
 '''
 
-import sys
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
@@ -65,11 +64,12 @@ class AboutWidget(QDialog):
         </style>
         <div class="box">
         <p class='ename'>E-name: Multifunctional Data Analysis System Optimized For Partial Least Squares(MFDAS_PLS)</p>
-        <p>Version: 0.2</p>
+        <p>Version: 0.3</p>
         <p> Copyright: &copy;Jiangxi University of Traditional Chinese Medicine</p>
         <p>Developer: tbyouth</p>
-        <p>Contributor: Teams... </p>
+        <p>Contributor: Team Of Computer Academy In JXUTCM </p>
         <p>Email: tbyouth11@gmail.com</p>
+        <p>HomePage: https://jsj.jxutcm.edu.cn</p>
         </div>
         </html>
         '''
@@ -115,6 +115,7 @@ class AboutWidget(QDialog):
 
 
 if __name__=='__main__':
+    import sys
     app = QApplication(sys.argv)
     window = AboutWidget()
     window.show()
