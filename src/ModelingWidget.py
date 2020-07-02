@@ -131,7 +131,7 @@ class ModelingWidget(QDialog):
         var_info = '自变量：{}\n因变量：{}'.format(tmp_x, tmp_y)
         self.brief_widget.appendText(var_info)
 
-        self.brief_widget.appendText('-'*55)
+        self.brief_widget.appendText('-'*40)
 
         # 显示设置的参数
         parameter_dict = self.all_dict.get('parameter_dict')
@@ -143,14 +143,14 @@ class ModelingWidget(QDialog):
             #print(name,value)
 
     def showMainResInfo(self,dct):
-        self.brief_widget.appendText('-'*55)
+        self.brief_widget.appendText('-'*40)
         for k,v in dct.items():
             if k == 'show_data_dict':
                 self.show_data_dict = v
                 break
             line = '{}：{}'.format(k,v)
             self.brief_widget.appendText(line)
-        self.brief_widget.appendText('-'*55)
+        self.brief_widget.appendText('-'*40)
 
     def endRun(self):
         if self.worker_thread:
@@ -173,7 +173,7 @@ class ModelingWidget(QDialog):
                 data_list = data_converter.DataFrame_to_list2(value)
                 self.res_widget.addTableView(key,data_list)
         self.showVarInfo()
-        self.brief_widget.appendText('-'*55)
+        self.brief_widget.appendText('-'*40)
         self.brief_widget.appendText('总耗时：{}s\n'.format(self.brief_widget.getRunTime()))
         if self.worker_thread:
             self.worker_thread.quit()
