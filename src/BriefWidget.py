@@ -80,7 +80,6 @@ class BriefWidget(QWidget):
         self.text_edit.setReadOnly(True)
 
         self.status_bar = QStatusBar()
-        self.status_bar.hide()
         self.timeCnt = 0
         vlayout = QVBoxLayout()
         vlayout.addWidget(self.text_edit)
