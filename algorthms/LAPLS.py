@@ -6,7 +6,7 @@
 # @SoftWare:    PyCharm
 # @Blog    :    https://blog.csdn.net/tb_youth
 
-# coding:utf-8
+
 
 from numpy import *
 import numpy as np
@@ -16,28 +16,6 @@ import pandas as pd
 
 from algorthms.SplitDataSet import SplitDataHelper
 
-
-# import matplotlib.pyplot as plt
-# import matplotlib.pyplot as plt
-# import pylab
-# import numpy as np
-# import pandas as pd
-
-
-# # 数据读取-单因变量与多因变量
-# def loadDataSet01(filename):
-#     fr = open(filename)
-#     arrayLines = fr.readlines()
-#     row = len(arrayLines)
-#     x = mat(zeros((row, 9)))
-#     y = mat(zeros((row, 1)))
-#     index = 0
-#     for line in arrayLines:
-#         curLine = line.strip().split('\t')
-#         x[index, :] = curLine[0:9]
-#         y[index, :] = curLine[-1]
-#         index += 1
-#     return x, y
 
 
 class LAPLS:
@@ -326,8 +304,8 @@ class RunLAPLS:
         print('-'*100)
 
         predict_test = pd.DataFrame()
-        predict_test['预测值'] = pd.DataFrame(y_te_predict)[0]
-        predict_test['真实值'] = pd.DataFrame(test_y)[0]
+        predict_test['预测值'] = np.ravel(y_te_predict)
+        predict_test['真实值'] = np.ravel(test_y)
         print(predict_test)
 
         show_data_dict = {
@@ -349,7 +327,8 @@ class RunLAPLS:
 
 # 主函数
 if __name__ == '__main__':
-    df = pd.read_csv("../data/TCMdata.csv")
+    df = pd.read_csv("../data/LAPLS_test.csv")
+    print(df.shape)
     header = df.columns.values.tolist()
     var_dict = {
         'independ_var': header[:-1],

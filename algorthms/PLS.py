@@ -34,9 +34,9 @@
     #随机产生伯努利分布
     y = np.random.binomial(1,0.5,(1000,1000))
 '''
-# ---导入库---
 
-from numpy import *   #尽量避免这样全部导入！
+
+from numpy import *
 from sklearn import preprocessing
 import numpy as np
 

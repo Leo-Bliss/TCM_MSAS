@@ -1,11 +1,14 @@
-#coding:utf-8
-# ---导入库---
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+#@Time    :    2020/3/22 0022 18:40
+#@Author  :    tb_youth
+#@FileName:    GRAAPLS.py
+#@SoftWare:    PyCharm
+#@Blog    :    https://blog.csdn.net/tb_youth
 
-#from numpy import *   #尽量避免这样全部导入！
+
 import numpy as np
 import pandas as pd
-import seaborn as sns
-# import matplotlib.pyplot as plt
 from sklearn.cross_decomposition import PLSRegression
 from algorthms.SplitDataSet import SplitDataHelper
 
@@ -82,15 +85,16 @@ class GRA(object):
 
     ## 这里的绘图会影响界面上的绘图！！！！
 
-    # 灰色关联结果矩阵可视化
+    #灰色关联结果矩阵可视化
     # def ShowGRAHeatMap(self, graDf):
     #     # %matplotlib inline
     #     colormap = plt.cm.RdBu
-    #     plt.figure(figsize=(14, 12))
+    #     # plt.figure(figsize=(14, 12))
     #     plt.title('Pearson Correlation of Features', y=1.05, size=15)
     #     sns.heatmap(graDf.astype(float), linewidths=0.1, vmax=1.0, square=True,
     #                 cmap=colormap, linecolor='white', annot=True)
     #     plt.show()
+
     ## 保存
     def saveGRA(self, fileName, graDf):
         graDf.to_csv(fileName)
@@ -237,10 +241,10 @@ class RunGRAPLS:
         print('-' * 100)
         print(y0_te_predict)
         print('-' * 100)
-
+        dependent_str = str(self.dependent_var[0])
         predict_test = pd.DataFrame()
-        predict_test['预测值'] = pd.DataFrame(y0_te_predict)[0]
-        predict_test['真实值'] = pd.DataFrame(test_y)[0]
+        predict_test['{}_预测值'.format(dependent_str)] = np.ravel(y0_te_predict)
+        predict_test['{}_真实值'.format(dependent_str)] = np.ravel(test_y)
         print(predict_test)
 
         show_data_dict = {
@@ -253,7 +257,7 @@ class RunGRAPLS:
             'show_data_dict':show_data_dict
         }
 
-        print(gra_pls_model.X_te_tranformed.shape)
+        print(gra_pls_model.X_te_tranformed)
 
     # 获取结果中需要用到的数据（展示或画图所用数据）接口
     def getRes(self):
@@ -263,8 +267,9 @@ class RunGRAPLS:
 if __name__ == '__main__':
 
     # 读取数据
-    filename2 = "../data/TCMdata.csv"
+    filename2 = "../data/GRAPLS_test.csv"
     df2 = pd.read_csv(filename2)
+    print(df2.shape)
 
     # 变量字典：自变量，因变量
     var_dict = {
@@ -290,5 +295,8 @@ if __name__ == '__main__':
     }
     r2 = RunGRAPLS(df2, all_dict2)
     r2.run()
+    for key,value in r2.getRes().items():
+        print(key)
+        print(value)
 
     print("运行结束！")

@@ -193,7 +193,7 @@ class RunPLSCF:
         X = pd.DataFrame(X,dtype=float)
         y = pd.Series(y,dtype=float)
         # 步骤2：划分训练集测试集
-        train_x, test_x, train_y, test_y = train_test_split(X.values, y.values, test_size=self.train_size, random_state=0)
+        train_x, test_x, train_y, test_y = train_test_split(X.values, y.values, train_size=self.train_size, random_state=0)
 
         # 训练集和测试集必须含有列标，而且列标要是字符串类型； 如果没有列标或者列标是整形，可以调用getXnameList()方法
         # xname_list_demo = getXnameList(X.shape[1])
@@ -221,8 +221,10 @@ class RunPLSCF:
         print(y_te_predict)
         print('-' * 100)
         predict_test = pd.DataFrame()
-        predict_test['预测值'] = pd.DataFrame(y_te_predict)[0]
-        predict_test['真实值'] = pd.DataFrame(test_y)[0]
+        predict_test['预测值'] = np.ravel(y_te_predict)
+        predict_test['真实值'] = np.ravel(test_y)
+        # predict_test['预测值'] = pd.DataFrame(y_te_predict)[0]
+        # predict_test['真实值'] = pd.DataFrame(test_y)[0]
         print(predict_test)
 
         show_data_dict = {
@@ -231,27 +233,24 @@ class RunPLSCF:
         self.res_dict = {
             '训练集RMSE': y_RMSE,
             '测试集RMSE': y_te_RMSE,
+            '被选择的特征': plscf_model.X_selected_name,
             'show_data_dict':show_data_dict
         }
 
         # 获取特征子集
         sub_X = plscf_model.getSubX(X)
+        print(sub_X.columns.values.tolist())
 
     def getRes(self):
+        print(self.res_dict)
         return self.res_dict
 
 
 if __name__ == '__main__':
-    # 步骤1：读取数据
-    # 1.1 TCMdata：1个因变量
-    df_xy = pd.read_excel('../data/TCMdata.xlsx',index_col=0)
-    # print(df_xy)
-    # print(df_xy.shape)
+    df_xy = pd.read_excel('../data/PLSCF_test.xlsx',index_col=0)
+    print(df_xy.shape)
     xname_list = df_xy.columns.values.tolist()[0:df_xy.shape[1] - 1]
 
-    # X = df_xy[xname_list]
-    # # print(X.shape)
-    # y = df_xy['y']
     var_dict = {
         'independ_var': xname_list,
         'depend_var': ['y']
@@ -265,3 +264,4 @@ if __name__ == '__main__':
     }
     r = RunPLSCF(df_xy, all_dict)
     r.run()
+    r.getRes()

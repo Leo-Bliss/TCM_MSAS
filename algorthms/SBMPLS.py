@@ -1,11 +1,14 @@
-#coding:utf-8
-# ---导入库---
-import matplotlib.pyplot as plt
-#from numpy import *   #尽量避免这样全部导入！
-from algorthms import PLS
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
+#@Time    :    2020/4/16 0016 21:01
+#@Author  :    tb_youth
+#@FileName:    SBMPLS.py
+#@SoftWare:    PyCharm
+#@Blog    :    https://blog.csdn.net/tb_youth
+
+
 import numpy as np
 import pandas as pd
-from sklearn import preprocessing
 from scipy.optimize import fmin_slsqp
 from sklearn.cross_decomposition import PLSRegression
 from algorthms.SplitDataSet import SplitDataHelper
@@ -210,6 +213,7 @@ class RunSBMPLS:
         y = np.mat(y, dtype=float)
         # print(X)
         # print(y)
+        # 最终只有4个有效样本
         split_helper = SplitDataHelper()
         train_x, train_y, test_x, test_y = split_helper.splitDataSet(X, y, q=self.q)
         y0_tr_predict, y0_tr_RMSE = sbm_pls_model.train(train_x, test_x, train_y, test_y)
@@ -228,8 +232,9 @@ class RunSBMPLS:
         print('-' * 100)
 
         predict_test = pd.DataFrame()
-        predict_test['预测值'] = y0_te_predict[0]
-        predict_test['真实值'] = test_y[0]
+        dependent_str = str(self.dependent_var[0])
+        predict_test['{}_预测值'.format(dependent_str)] = np.ravel(y0_te_predict)
+        predict_test['{}_真实值'.format(dependent_str)] = np.ravel(test_y)
         print(predict_test)
         show_data_dict = {
             '预测值和真实值': predict_test
@@ -247,8 +252,9 @@ class RunSBMPLS:
 
 if __name__ == '__main__':
     # 读取数据
-    filename2 = "../data/TCMdata.csv"
+    filename2 = "../data/SBMPLS_test.csv"
     df2 = pd.read_csv(filename2)
+    print(df2.shape)
     # 变量字典：自变量，因变量
     var_dict = {
         'independ_var': ["x1", "x2", "x3", "x4"],

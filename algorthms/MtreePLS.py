@@ -10,8 +10,6 @@
 MTree-PLS
 """
 from copy import copy
-import numpy as np
-# from numpy import ndarray
 from numpy import *
 import pandas as pd
 from sklearn.linear_model import LinearRegression
@@ -139,8 +137,8 @@ class ModelTree:
 
     def linearRegression(self, X, Y):  # 一元一次方程
         print(X.shape)
-        X = np.ravel(X)
-        Y = np.ravel(Y)
+        X = ravel(X)
+        Y = ravel(Y)
         print(X.shape, Y.shape)
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         no = 0
@@ -219,7 +217,7 @@ class ModelTree:
         # Feature cannot be splitted if there's only one unique element.如果只有一个唯一的元素，则不能拆分特性。
         node = Node()
         # unique = set(col)
-        unique = set(np.ravel(col))
+        unique = set(ravel(col))
         if len(unique) == 1:
             return node
 
@@ -288,8 +286,8 @@ class ModelTree:
             max_depth {int} -- The maximum depth of the tree. (default: {5})树的最大深度
             min_samples_split {int} -- The minimum number of samples required to split an internal node. (default: {2})分割内部节点所需的最小样本数
         """
-        data = np.array(data)
-        label = np.array(label)
+        data = array(data)
+        label = array(label)
         data_col_number = data.shape[1]
         # Initialize with depth, node, indexes.初始化深度，节点，索引。
         # self.root.avg = label.mean()  # ！！！这是回归树的做法
@@ -349,7 +347,7 @@ class ModelTree:
         Returns:
             float -- Prediction of label.预测的标签
         """
-        row = np.ravel(row)
+        row = ravel(row)
         # row = row[0]
         node = self.root
         # print("root", node.__str__())
@@ -376,7 +374,7 @@ class ModelTree:
         Returns:
             mat -- Prediction of label.预测的标签
         """
-        y_pre = np.apply_along_axis(self.predict_one, 1, data)  # 对数组（data）里的每一个元素进行变换，得到目标的结果。
+        y_pre = apply_along_axis(self.predict_one, 1, data)  # 对数组（data）里的每一个元素进行变换，得到目标的结果。
         no = 0
         for i in y_pre:
             no = no + 1
@@ -405,7 +403,7 @@ class MTree_PLS:
         # RR = SSR / SST
         # RMSE = sqrt(SSE / row)
         RR = r2_score(y0, y0_predict)
-        RMSE = np.sqrt(mean_squared_error(y0, y0_predict))
+        RMSE = sqrt(mean_squared_error(y0, y0_predict))
         return RR, RMSE
 
     # PLS核心函数
@@ -461,8 +459,8 @@ class MTree_PLS:
         return w_star, t#, beta
 
     def train(self, x0, y0):
-        x0 = mat(x0,dtype=np.float64)
-        y0 = mat(y0,dtype=np.float64)
+        x0 = mat(x0,dtype=float64)
+        y0 = mat(y0,dtype=float64)
         self.m = shape(x0)[1]
         self.n = shape(y0)[1]  # 自变量和因变量个数
         row = shape(x0)[0]
@@ -535,8 +533,9 @@ class RunMtreePLS:
         print('-'*100)
 
         predict_test = pd.DataFrame()
-        predict_test['预测值'] = pd.DataFrame(y_te_predict)[0]
-        predict_test['真实值'] = pd.DataFrame(test_y)[0]
+        dependent_str = str(self.dependent_var[0])
+        predict_test['{}_预测值'.format(dependent_str)] = ravel(y_te_predict)
+        predict_test['{}_真实值'.format(dependent_str)] = ravel(test_y)
         show_data_dict = {
             '预测值和真实值': predict_test
         }
@@ -552,7 +551,8 @@ class RunMtreePLS:
         return self.res_dict
 
 if __name__ == '__main__':
-    df_xy = pd.read_csv('../data/blogData_test1.csv')
+    df_xy = pd.read_csv('../data/MtreePLS_test.csv')
+    print(df_xy.shape)
     xname_list = df_xy.columns.values.tolist()[0:df_xy.shape[1] - 1]
     var_dict = {
         'independ_var':  xname_list,

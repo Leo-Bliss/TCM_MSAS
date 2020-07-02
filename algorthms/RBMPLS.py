@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-#@Time    :    2020/3/12 0012 22:49
-#@Author  :    tb_youth
-#@FileName:    RBMPLS.py
-#@SoftWare:    PyCharm
-#@Blog    :    https://blog.csdn.net/tb_youth
+# @Time    :    2020/3/12 0012 22:49
+# @Author  :    tb_youth
+# @FileName:    RBMPLS.py
+# @SoftWare:    PyCharm
+# @Blog    :    https://blog.csdn.net/tb_youth
 
-# import random
-# import numpy as np
-# import matplotlib.pyplot as plt
+
 from numpy import *
 from sklearn import preprocessing
 import pandas as pd
@@ -17,6 +15,7 @@ from sklearn import neural_network
 from sklearn.cross_decomposition import PLSRegression
 
 from algorthms.SplitDataSet import SplitDataHelper
+
 
 # 一层波尔茨曼机
 class One_RBM:
@@ -252,8 +251,10 @@ class RMB_PLS:
         # 受限玻尔兹曼机RBM映射后X，Y
         self.X_tr_tranformed = self.RMB_train(X_tr)  # X训练集训练
         self.X_te_tranformed = self.tranform(X_te)  # X测试集测试
-        self.y_tr_tranformed = self.RMB_train(y_tr)  # y训练集训练
-        self.y_te_tranformed = self.tranform(y_te)  # 训练集测试
+        self.y_tr_tranformed = y_tr
+        self.y_te_tranformed = y_te
+        # self.y_tr_tranformed = self.RMB_train(y_tr)  # y训练集训练
+        # self.y_te_tranformed = self.tranform(y_te)  # 训练集测试
         # PLS回归
         y0_tr_predict, y0_tr_RR, y0_tr_RMSE = self.PLS_train(self.X_tr_tranformed, self.y_tr_tranformed)
         return y0_tr_predict, y0_tr_RMSE
@@ -274,12 +275,12 @@ class RMB_PLS:
         RMSE = sqrt(SSE / row)
         return RR, RMSE
 
+
 class RunRBMPLS:
     def __init__(self, df, all_dict):
         self.df = df
         self.all_dict = all_dict
         self.res_dict = {}
-
 
     def initParameter(self):
         var_dict = self.all_dict.get('var_dict')
@@ -293,8 +294,6 @@ class RunRBMPLS:
         self.alpha = parameter_dict.get('alpha')
         self.bs = parameter_dict.get('bs')
         self.ite = parameter_dict.get('ite')
-
-
 
     def run(self):
         self.initParameter()
@@ -315,7 +314,7 @@ class RunRBMPLS:
         alpha：学习率，默认为0.05，可自行设置
         bs：batch_size，默认为100，可自行设置
         ite：n_iter，迭代次数，默认100，可行设置
-    
+
         """
 
         rbm_pls_model = RMB_PLS(self.n_components, n01=self.n01, n02=self.n02,
@@ -327,23 +326,35 @@ class RunRBMPLS:
         y0_te_true = rbm_pls_model.y_te_tranformed
         y0_te_predict, y0_te_RMSE = rbm_pls_model.predict()
         print(y0_te_RMSE)
+        if len(self.dependent_var) == 1:
+            predict_test = pd.DataFrame()
+            # 单因变量建模，一个DataFrame显示就足够
+            dependent_str = str(self.dependent_var[0])
+            predict_test['{}_预测值'.format(dependent_str)] = np.ravel(y0_te_predict)
+            predict_test['{}_真实值'.format(dependent_str)] = np.ravel(test_y)
+            show_data_dict = {
+                '预测值和真实值': predict_test
+            }
+            print(predict_test)
+        else:
+            #多因变量建模，使用两个DataFrame显示
+            true_data = pd.DataFrame(y0_te_true)
+            true_data.columns = self.dependent_var
+            predict_data = pd.DataFrame(y0_te_predict)
+            predict_data.columns = self.dependent_var
 
-        true_data = pd.DataFrame(y0_te_true)
-        predict_data = pd.DataFrame(y0_te_predict)
-
-        show_data_dict = {
-            '预测值': predict_data,
-            '真实值': true_data
-        }
+            show_data_dict = {
+                '预测值': predict_data,
+                '真实值': true_data
+            }
 
         self.res_dict = {
             '训练集RMSE': y0_tr_RMSE,
             '测试集RMSE': y0_te_RMSE,
-            'show_data_dict':show_data_dict
+            'show_data_dict': show_data_dict
         }
 
         print(rbm_pls_model.X_te_tranformed.shape)
-
 
     # 获取结果中需要用到的数据（展示或画图所用数据）接口
     def getRes(self):
@@ -352,7 +363,8 @@ class RunRBMPLS:
 
 if __name__ == '__main__':
     # 读取数据
-    df = pd.read_excel("../data/data01.xlsx")
+    df = pd.read_excel("../data/RBMPLS_test.xlsx")
+    print(df.shape)
     # 变量字典：自变量，因变量
     var_dict = {
         'independ_var': ["x1", "x2", "x3", "x4"],

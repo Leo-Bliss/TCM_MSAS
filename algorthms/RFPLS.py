@@ -169,8 +169,9 @@ class RunRFPLS:
         print('-' * 100)
 
         predict_test = pd.DataFrame()
-        predict_test['预测值'] = y_te_predict
-        predict_test['真实值'] = test_y
+        dependent_str = str(self.dependent_var[0])
+        predict_test['{}_预测值'.format(dependent_str)] = y_te_predict
+        predict_test['{}_真实值'.format(dependent_str)] = test_y
         show_data_dict = {
             '预测值和真实值':predict_test
         }
@@ -186,7 +187,7 @@ class RunRFPLS:
 
 
 if __name__ == '__main__':
-    df_xy = pd.read_csv('../data/blogData_test1.csv')
+    df_xy = pd.read_csv('../data/RFPLS_test.csv')
     xname_list = df_xy.columns.values.tolist()[0:df_xy.shape[1] - 1]
     var_dict = {
         'independ_var': xname_list,

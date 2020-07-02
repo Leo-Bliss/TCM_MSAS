@@ -9,7 +9,6 @@
 import numpy as np
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
-# from sklearn.metrics import classification_report
 from sklearn import preprocessing
 import pandas as pd
 
@@ -355,8 +354,9 @@ class RunPLSSDA:
         print('-' * 100)
 
         predict_test = pd.DataFrame()
-        predict_test['预测值'] = pd.DataFrame(pre_test_y)[0]
-        predict_test['真实值'] = pd.DataFrame(test_y)[0]
+        dependent_str = str(self.dependent_var[0])
+        predict_test['{}_预测值'.format(dependent_str)] = np.ravel(pre_test_y)
+        predict_test['{}_真实值'.format(dependent_str)] = np.ravel(test_y)
         show_data_dict = {
             '预测值和真实值': predict_test
         }
@@ -374,7 +374,7 @@ class RunPLSSDA:
 
 if __name__ == '__main__':
     # 读取数据集
-    df = pd.read_csv('../data/balance-scale.csv')  # 导入数据
+    df = pd.read_csv('../data/PLSSDA_test.csv')  # 导入数据
     headers = df.columns.values.tolist()
     # X = df[headers[1:]]
     # y = df[headers[0:1]]

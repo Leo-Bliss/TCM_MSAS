@@ -143,8 +143,10 @@ class SAE_PLS:
         # 受限玻尔兹曼机RBM映射后X，Y
         self.X_tr_tranformed = self.SAE_train(X_tr)  # X训练集训练、映射
         self.X_te_tranformed = self.tranform(X_te)  # X测试集映射
-        self.y_tr_tranformed = self.SAE_train(y_tr)  # y训练集训练、映射
-        self.y_te_tranformed = self.tranform(y_te)  # 训练集映射
+        self.y_tr_tranformed = y_tr
+        self.y_te_tranformed = y_te
+        # self.y_tr_tranformed = self.SAE_train(y_tr)  # y训练集训练、映射
+        # self.y_te_tranformed = self.tranform(y_te)  # 训练集映射
         # PLS回归
         y0_tr_predict, y0_tr_RR, y0_tr_RMSE = self.PLS_train(self.X_tr_tranformed, self.y_tr_tranformed)
         return y0_tr_predict, y0_tr_RMSE
@@ -220,14 +222,29 @@ class RunSEAPLS:
         y0_te_true = sae_pls_model.y_te_tranformed
         y0_te_predict, y0_te_RMSE = sae_pls_model.predict()
         print("测试集", y0_te_RMSE)
+        if len(self.dependent_var) == 1:
+            predict_test = pd.DataFrame()
+            # 单因变量建模，一个DataFrame显示就足够
+            dependent_str = str(self.dependent_var[0])
+            predict_test['{}_预测值'.format(dependent_str)] = np.ravel(y0_te_predict)
+            predict_test['{}_真实值'.format(dependent_str)] = np.ravel(test_y)
+            show_data_dict = {
+                '预测值和真实值': predict_test
+            }
+            print(predict_test)
+        else:
+            #多因变量建模，使用两个DataFrame显示
+            true_data = pd.DataFrame(y0_te_true)
+            true_data.columns = self.dependent_var
+            predict_data = pd.DataFrame(y0_te_predict)
+            predict_data.columns = self.dependent_var
 
-        true_data = pd.DataFrame(y0_te_true)
-        predict_data = pd.DataFrame(y0_te_predict)
+            show_data_dict = {
+                '预测值': predict_data,
+                '真实值':true_data
+            }
 
-        show_data_dict = {
-            '预测值': predict_data,
-            '真实值':true_data
-        }
+
         self.res_dict = {
             '训练集RMSE': y0_tr_RMSE,
             '测试集RMSE': y0_te_RMSE,
@@ -246,7 +263,8 @@ class RunSEAPLS:
 #---测试---
 if __name__ == '__main__':
     # 读取数据
-    df = pd.read_excel("../data/data01.xlsx")
+    df = pd.read_excel("../data/SEAPLS_test.xlsx")
+    print(df.shape)
 
     # 变量字典：自变量，因变量
     var_dict = {

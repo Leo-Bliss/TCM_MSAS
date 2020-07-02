@@ -7,19 +7,15 @@
 #@Blog    :    https://blog.csdn.net/tb_youth
 
 
-# coding=utf-8
+
 # __author__=zqx
 
 
 """
 将DBN提取的主成分替代pls提取的主成分(主成分分析和典型相关分析)，放到pls回归模型中
 """
-from numpy import *
+# from numpy import *
 from sklearn import preprocessing
-# import sys
-# import time
-import numpy
-# import os
 import theano
 import theano.tensor as T
 import pandas as pd
@@ -27,32 +23,17 @@ import numpy as np
 
 from theano.tensor.shared_randomstreams import RandomStreams
 
-# from mlp import HiddenLayer
-# from rbm import RBM
 
-# def loadDataSet(filename):
-#     fr = open(filename)
-#     arrayLines = fr.readlines()
-#     del arrayLines[0]  # 删除列标这一行x1 	x2 	x3 	x4 	x5 	x6 	x7 	x8 	x9 	x10 	x11 	x12 	x13 	x14 	x15 	x16 	y1 	y2
-#     row = len(arrayLines)
-#     x = mat(zeros((row, 16)))
-#     y = mat(zeros((row, 2)))
-#     index = 0
-#     for line in arrayLines:
-#         curLine = line.strip().split('\t')
-#         x[index, :] = curLine[0:16]
-#         y[index, :] = curLine[16:18]
-#         index += 1
-#     return x, y
+
 
 class HiddenLayer(object):
     def __init__(self, rng, input, n_in, n_out, W=None, b=None,
                  activation=T.tanh):
 
         if W is None:
-            W_values = numpy.asarray(rng.uniform(
-                    low=-numpy.sqrt(6. / (n_in + n_out)),
-                    high=numpy.sqrt(6. / (n_in + n_out)),
+            W_values = np.asarray(rng.uniform(
+                    low=-np.sqrt(6. / (n_in + n_out)),
+                    high=np.sqrt(6. / (n_in + n_out)),
                     size=(n_in, n_out)), dtype=theano.config.floatX)
             if activation == theano.tensor.nnet.sigmoid:
                 W_values *= 4
@@ -60,7 +41,7 @@ class HiddenLayer(object):
             W = theano.shared(value=W_values, name='W', borrow=True)
 
         if b is None:
-            b_values = numpy.zeros((n_out,), dtype=theano.config.floatX)
+            b_values = np.zeros((n_out,), dtype=theano.config.floatX)
             b = theano.shared(value=b_values, name='b', borrow=True)
 
         self.W = W
@@ -73,33 +54,33 @@ class HiddenLayer(object):
 
 class RBM(object):
     def __init__(self,input=None,n_visible=None,n_hidden=None,
-                 W=None,hbias=None,vbias=None,numpy_rng=None,
+                 W=None,hbias=None,vbias=None,np_rng=None,
                  theano_rng=None):
 
         self.n_visible=n_visible
         self.n_hidden=n_hidden
 
         #生成随机数
-        if numpy_rng is None:
-            numpy_rng=numpy.random.RandomState(1234)
+        if np_rng is None:
+            np_rng=np.random.RandomState(1234)
 
         if theano_rng is None:
-            theano_rng=RandomStreams(numpy_rng.randint(2**30))
+            theano_rng=RandomStreams(np_rng.randint(2**30))
 
         if W is None:
-            initial_W=numpy.asarray(numpy_rng.uniform(
-                    low=-4*numpy.sqrt(6./(n_hidden+n_visible)),
-                    high=4*numpy.sqrt(6./(n_hidden+n_visible)),
+            initial_W=np.asarray(np_rng.uniform(
+                    low=-4*np.sqrt(6./(n_hidden+n_visible)),
+                    high=4*np.sqrt(6./(n_hidden+n_visible)),
                     size=(n_visible,n_hidden)),
                     dtype=theano.config.floatX)
             W=theano.shared(value=initial_W,name='W',borrow=True)
 
         if hbias is None:
-            hbias=theano.shared(value=numpy.zeros(n_hidden,
+            hbias=theano.shared(value=np.zeros(n_hidden,
                                                   dtype=theano.config.floatX),
                                 name='hbias',borrow=True)
         if vbias is None:
-            vbias=theano.shared(value=numpy.zeros(n_visible,
+            vbias=theano.shared(value=np.zeros(n_visible,
                                                   dtype=theano.config.floatX),
                                 name='vbias',borrow=True)
         self.input=input
@@ -216,7 +197,7 @@ class RBM(object):
 
 
 class DBN(object):
-    def __init__(self, numpy_rng, theano_rng=None, n_ins=5, hidden_layers_sizes=[4,4,4]):
+    def __init__(self, np_rng, theano_rng=None, n_ins=5, hidden_layers_sizes=[4,4,4]):
 
         self.sigmoid_layers=[]
         self.rbm_layers=[]
@@ -225,7 +206,7 @@ class DBN(object):
         assert self.n_layers>0
 
         if not theano_rng:
-            theano_rng=RandomStreams(numpy_rng.randint(123))
+            theano_rng=RandomStreams(np_rng.randint(123))
 
         self.x=T.matrix('x')
 
@@ -239,14 +220,14 @@ class DBN(object):
                 layer_input=self.x
             else:
                 layer_input=self.sigmoid_layers[i-1].output
-            sigmoid_layer=HiddenLayer(rng=numpy_rng,input=layer_input,n_in=input_size,
+            sigmoid_layer=HiddenLayer(rng=np_rng,input=layer_input,n_in=input_size,
                                       n_out=hidden_layers_sizes[i],activation=T.nnet.sigmoid)
             self.sigmoid_layers.append(sigmoid_layer)
 
             self.params.extend(sigmoid_layer.params)
 
             rbm_layer=RBM(input=layer_input,n_visible=input_size,n_hidden=hidden_layers_sizes[i],
-                          W=sigmoid_layer.W,hbias=sigmoid_layer.b,numpy_rng=numpy_rng,theano_rng=theano_rng)
+                          W=sigmoid_layer.W,hbias=sigmoid_layer.b,np_rng=np_rng,theano_rng=theano_rng)
 
             self.rbm_layers.append(rbm_layer)
 
@@ -280,9 +261,9 @@ class DBN_PLS:
         self.pretrain_lr = pretrain_lr
         self.k = k
         self.batch_size = batch_size
-        numpy_rng = numpy.random.RandomState(123)
+        np_rng = np.random.RandomState(123)
         print('...building the model')
-        self.dbn = DBN(numpy_rng, n_ins=16, hidden_layers_sizes=[10, 10, 8, 5, 5])
+        self.dbn = DBN(np_rng, n_ins=16, hidden_layers_sizes=[10, 10, 8, 5, 5])
 
     # 数据标准化
     def stardantDataSet(self, x0, y0):
@@ -291,42 +272,42 @@ class DBN_PLS:
         return e0, f0
 
     def data_Mean_Std(self, x0, y0):
-        mean_x = mean(x0, 0)
-        mean_y = mean(y0, 0)
-        std_x = std(x0, axis=0, ddof=1)
-        std_y = std(y0, axis=0, ddof=1)
+        mean_x = np.mean(x0, 0)
+        mean_y = np.mean(y0, 0)
+        std_x = np.std(x0, axis=0, ddof=1)
+        std_y = np.std(y0, axis=0, ddof=1)
         return mean_x, mean_y, std_x, std_y
     # 计算反标准化之后的系数
     def Calxishu(self, e0, f0, row, mean_x, mean_y, std_x, std_y):
-        x = numpy.hstack((e0[:, :], numpy.mat(ones((row, 1)))))
+        x = np.hstack((e0[:, :], np.mat(np.ones((row, 1)))))
         # 计算回归系数
-        xishu = numpy.linalg.lstsq(x, f0,rcond=None)[0]
+        xishu = np.linalg.lstsq(x, f0,rcond=None)[0]
         xishu = list(xishu)
         del xishu[-1]  # 删除常数项
-        xishu = mat(xishu)
-        m = shape(mean_x)[1]
-        n = shape(mean_y)[1]
-        xish = numpy.mat(numpy.zeros((m, n)))
-        ch0 = numpy.mat(numpy.zeros((1, n)))
+        xishu = np.mat(xishu)
+        m = np.shape(mean_x)[1]
+        n = np.shape(mean_y)[1]
+        xish = np.mat(np.zeros((m, n)))
+        ch0 = np.mat(np.zeros((1, n)))
         for i in range(n):
             ch0[:, i] = mean_y[:, i] - std_y[:, i] * mean_x / std_x * xishu[:, i]
             xish[:, i] = std_y[0, i] * xishu[:, i] / std_x.T
         return ch0, xish
 
     def getRRandRMSE(self, y0, y0_predict):
-        row = shape(y0)[0]
-        mean_y = mean(y0, 0)
-        y_mean = tile(mean_y, (row, 1))
-        SSE = sum(sum(power((y0 - y0_predict), 2), 0))
-        SST = sum(sum(power((y0 - y_mean), 2), 0))
-        SSR = sum(sum(power((y0_predict - y_mean), 2), 0))
+        row = np.shape(y0)[0]
+        mean_y = np.mean(y0, 0)
+        y_mean = np.tile(mean_y, (row, 1))
+        SSE = sum(sum(np.power((y0 - y0_predict), 2), 0))
+        SST = sum(sum(np.power((y0 - y_mean), 2), 0))
+        SSR = sum(sum(np.power((y0_predict - y_mean), 2), 0))
         RR = SSR / SST
-        RMSE = sqrt(SSE / row)
+        RMSE = np.sqrt(SSE / row)
         return RR, RMSE
 
     def DBN_train(self, x0):
-        x0 = numpy.asarray(x0, dtype=theano.config.floatX)
-        x0 = theano.shared(numpy.asarray(x0, dtype=theano.config.floatX), borrow=True)
+        x0 = np.asarray(x0, dtype=theano.config.floatX)
+        x0 = theano.shared(np.asarray(x0, dtype=theano.config.floatX), borrow=True)
         n_train_batches = round(x0.get_value(borrow=True).shape[0] / self.batch_size)  # 四舍五入
 
         print("...getting the pretraining functions")
@@ -339,7 +320,7 @@ class DBN_PLS:
                 for batch_index in range(n_train_batches):
                     c.append(pretraining_fns[i](index=batch_index, lr=self.pretrain_lr))
                 print("pretraining layer %i, epoch %i,cost " % (i, epoch))
-                print(numpy.mean(c))
+                print(np.mean(c))
         # end_time = time.clock()
         # print(sys.stderr, ("The pretraining code for file " + os.path.split(__file__)[1] + " ran for %0.2fm") % (
         # (end_time - start_time) / 60.))
@@ -348,12 +329,12 @@ class DBN_PLS:
             a = []
             for batch_index in range(n_train_batches):
                 a.append(last_all[i](index=batch_index, lr=self.pretrain_lr))
-            tran_x = numpy.array(a)
+            tran_x = np.array(a)
         list = []
         for line in tran_x:
             for newline in line:
                 list.append(newline)
-        X = mat(list)  # 经特征提取之后，x的维度发生了变化
+        X = np.mat(list)  # 经特征提取之后，x的维度发生了变化
         print("经特征提取之后的X", X)  # 经特征提取之后的X
         return X
 
@@ -362,10 +343,10 @@ class DBN_PLS:
 
         e0, f0 = self.stardantDataSet(X, y0)  # 标准化
         mean_x, mean_y, std_x, std_y = self.data_Mean_Std(X, y0)
-        row = shape(X)[0]
+        row = np.shape(X)[0]
         self.ch0, self._coef = self.Calxishu(e0, f0, row, mean_x, mean_y, std_x, std_y)  # 反标准化
         # 求可决系数和均方根误差
-        y_predict = X * self._coef + tile(self.ch0[0, :], (row, 1))
+        y_predict = X * self._coef + np.tile(self.ch0[0, :], (row, 1))
         y_tr_RR, y_tr_RMSE = self.getRRandRMSE(y0, y_predict)
         return y_predict, y_tr_RR, y_tr_RMSE
 
@@ -395,18 +376,45 @@ class RunDBNPLS:
         dbn_pls_model = DBN_PLS(pretraining_epochs=self.pretraining_epochs, pretrain_lr=self.pretrain_lr, k=self.k,
                                 batch_size=self.batch_size)
         y_predict, y_tr_RR, y_tr_RMSE = dbn_pls_model.train(x0, y0)
+
+        # 仅提取了x0，y没有提取，因此y和从前一样
         for real_value,predict_value in zip(y0,y_predict):
             print(real_value,predict_value)
         # 不太确点，待修正
+
+        if len(self.dependent_var) == 1:
+            predict_test = pd.DataFrame()
+            # 单因变量建模，一个DataFrame显示就足够
+            dependent_str = str(self.dependent_var[0])
+            predict_test['{}_预测值'.format(dependent_str)] = np.ravel(y_predict)
+            predict_test['{}_真实值'.format(dependent_str)] = np.ravel(y0)
+            show_data_dict = {
+                '预测值和真实值': predict_test
+            }
+        else:
+            #多因变量建模，使用两个DataFrame显示
+            true_data = pd.DataFrame(y0)
+            true_data.columns = self.dependent_var
+            predict_data = pd.DataFrame(y_predict)
+            predict_data.columns = self.dependent_var
+
+
+            show_data_dict = {
+                '预测值': predict_data,
+                '真实值':true_data
+            }
+
         self.res_dict = {
             '可决系数':y_tr_RR,
             '均方根误差':y_tr_RMSE,
-            '回归系数':dbn_pls_model.ch0
+            # '回归系数':dbn_pls_model.ch0,
+            'show_data_dict': show_data_dict
         }
         print(u"可决系数:", y_tr_RR)
         print(u"均方根误差:", y_tr_RMSE)
         print(u"回归系数：")
         print(dbn_pls_model.ch0)
+        # 经DBN特征提取之后，x0的维度变成5维，所以回归系数的维度5维
         print(dbn_pls_model._coef)
 
     def getRes(self):
@@ -415,7 +423,8 @@ class RunDBNPLS:
 
 
 if __name__ == '__main__':
-    df = pd.read_excel('../data/cbm.xlsx')
+    df = pd.read_excel('../data/DBNPLS_test.xlsx')
+    print(df.shape)
     headers = df.columns.values.tolist()
     var_dict = {
         'independ_var': headers[0:16],
