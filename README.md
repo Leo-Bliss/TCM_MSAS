@@ -5,7 +5,9 @@
 
 ### 项目地址
 
-github: [https://github.com/tbyouth/TCM_MSAS](https://github.com/tbyouth/TCM_MSAS)
++ github: [https://github.com/tbyouth/TCM_MSAS](https://github.com/tbyouth/TCM_MSAS)
+
++ gitee: [https://gitee.com/tbyouth/TCM_MSAS](https://gitee.com/tbyouth/TCM_MSAS)
 
 ### 项目预览
 [![dr35Wj.png](https://s1.ax1x.com/2020/08/24/dr35Wj.png)](https://imgchr.com/i/dr35Wj)
@@ -19,9 +21,9 @@ github: [https://github.com/tbyouth/TCM_MSAS](https://github.com/tbyouth/TCM_MSA
 
 该项目目前已经完成了版本v1.0的开发工作,
 
-并且以**偏最小二乘的多功能统计分析系统**v1.0版本打包发布（软件著作权归江西中医药大学计算机学院所有），
+并且以**偏最小二乘的多功能统计分析系统**v1.0版本打包发布，
 
-该发布版本有幸选为江西中医药大学杜建强教授的论著《偏最小二乘法优化及其在中医药领域的应用研究》的配套软件。
+该发布版本有幸作为JXUTCM杜教授的论著《偏最小二乘法优化及其在中医药领域的应用研究》的配套软件。
 
 本项目后续的的功能开发和算法集成工作正在进行中...
 
