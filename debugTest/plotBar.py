@@ -2,10 +2,13 @@
 # -*- coding:utf-8 -*-
 #@Time    :    2020/5/2 0002 23:44
 #@Author  :    tb_youth
-#@FileName:    bar0.py
+#@FileName:    plotBar.py
 #@SoftWare:    PyCharm
 #@Blog    :    https://blog.csdn.net/tb_youth
 
+'''
+绘制柱状图
+'''
 import numpy as np
 from matplotlib import pyplot as plt
 

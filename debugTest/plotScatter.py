@@ -2,10 +2,13 @@
 # -*- coding:utf-8 -*-
 #@Time    :    2020/5/3 0003 0:09
 #@Author  :    tb_youth
-#@FileName:    scatter0.py
+#@FileName:    plotScatter.py
 #@SoftWare:    PyCharm
 #@Blog    :    https://blog.csdn.net/tb_youth
 
+'''
+绘制散点图
+'''
 import numpy as np
 import matplotlib.pyplot as plt
 

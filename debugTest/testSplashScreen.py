@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 #@Time    :    2020/5/1 0001 23:46
 #@Author  :    tb_youth
-#@FileName:    test2.py
+#@FileName:    testSplashScreen.py
 #@SoftWare:    PyCharm
 #@Blog    :    https://blog.csdn.net/tb_youth
 #
