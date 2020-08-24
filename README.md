@@ -96,9 +96,11 @@
 
     使用 `pip install -r requirements.txt` 安装相关依赖模块；
     
-    如果您使用pip安装依赖模块市下载太慢，建议您使用：
+    如果您使用pip安装依赖模块时下载太慢，建议您使用：
     
-    `pip install -i https://pypi.douban.com/simple  -r requirements.txt`
+    ```py
+    pip install -i https://pypi.douban.com/simple  -r requirements.txt
+    ```
     
     调用python 执行项目目录下的**runApp.py**:
     
@@ -106,18 +108,21 @@
 	python runApp.py
 	```
 
-3. 此外，你可以[下载本项目打包发布的Release v1.0](https://github.com/tbyouth/TCM_MSAS/releases/tag/v1.0)使用，也可以使用pyinstaller进行编译打包成exe后使用，
+3. 此外，你可以[下载本项目打包发布的Release v1.0](https://github.com/tbyouth/TCM_MSAS/releases/tag/v1.0)使用（构建好的exe文件），
 
-    编译打包成exe语句：pyinstaller -i logo.ico -F src/MainWindow.py
+    也可以自己使用pyinstaller进行编译打包成exe后使用，
+
+    编译打包成exe语句：`pyinstaller -i logo.ico -F src/MainWindow.py`
 
 
 #### 功能TODO
 - [ ] 软件皮肤设置.
-- [ ] 数据库导入导出数据.
+- [ ] 数据库导入导出数据（已写demo暂未集成）.
 - [ ] 数据预处理操作撤销回退.
 - [ ] 数据可视化模框重构.
 - [ ] 集成更多数据分析算法.
 - [ ] 集成更多可视化分析模型.
+- [ ] 加入启动界面（已写demo暂未集成））.
 - [ ] 软件在线更新.
 - [ ] 代码优化...
 
